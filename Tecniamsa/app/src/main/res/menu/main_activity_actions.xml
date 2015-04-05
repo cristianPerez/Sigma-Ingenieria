@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:LlaveUdeC="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_BOn"
+        android:icon="@mipmap/ic_action_onbluetooth"
+        LlaveUdeC:showAsAction="ifRoom"
+        android:title="@string/action_onBluetooth"/>
+    <item
+        android:id="@+id/action_BOff"
+        android:icon="@mipmap/ic_action_offbluetooth"
+        LlaveUdeC:showAsAction="ifRoom"
+        android:title="@string/action_offBluetooth"/>
+
+</menu>

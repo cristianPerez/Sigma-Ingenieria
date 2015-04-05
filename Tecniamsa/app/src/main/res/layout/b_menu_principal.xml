@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="co.qualitysolutions.tecniamsa.B_MenuPrincipal">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue2"
+        android:orientation="horizontal"
+        >
+
+
+        <TextView
+            android:id="@+id/dateNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/blue1"
+            android:text="@string/date_example"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextClock
+            android:id="@+id/clock1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/dateNow"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/dateNow"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/btn_Logout"
+            android:layout_width="80dp"
+            android:layout_height="43dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/logout_conten_description"
+            android:onClick="logOut"
+            android:src="@mipmap/btn_logout" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/RelativeLayout1"
+        >
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Grupo de trabajo"
+            android:layout_margin="10sp"
+            android:id="@+id/btn_grupo_trabajo"
+            android:background="@color/btn1"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="iniciar Dia"
+            android:onClick="startDay"
+            android:layout_margin="10sp"
+            android:id="@+id/btn_iniciar_dia"
+            android:background="@color/btn2"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:layout_below="@+id/btn_grupo_trabajo"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Cerrar Dia"
+            android:layout_margin="10sp"
+            android:id="@+id/btn_cerrar_dia"
+            android:background="@color/btn4"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:layout_below="@+id/btn_iniciar_dia"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Combustible"
+            android:layout_margin="10sp"
+            android:id="@+id/btn_combustible"
+            android:background="@color/btn5"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:layout_below="@+id/btn_cerrar_dia"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Peaje"
+            android:layout_margin="10sp"
+            android:id="@+id/btn_peaje"
+            android:background="@color/btn6"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:layout_below="@+id/btn_combustible"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Mapa"
+            android:layout_margin="10sp"
+            android:id="@+id/btn_mapa"
+            android:background="@color/btn7"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:layout_below="@+id/btn_peaje"
+            />
+
+
+        </RelativeLayout>
+
+
+</RelativeLayout>

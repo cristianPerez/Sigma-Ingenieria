@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <!--Comunes-->
+    <string name="tipo_embalaje">Tipo Embalaje: </string>
+    <string name="enviar">Enviar</string>
+    <string name="Button_save">Guardar</string>
+    <string name="accept_button">ACEPTAR</string>
+    <string name="confirm_button_1">SI</string>
+    <string name="confirm_button_2">NO</string>
+    <string name="nn"></string>
+    <string name="app_name">Tecniamsa</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_a__login">Login</string>
+    <string name="title_activity_b__menu_principal">Menu Principal</string>
+
+
+    <!--Formulario Registrar Peso-->
+    <string name="peso_total">Peso Total: </string>
+    <string name="tipo">PESOS</string>
+    <string name="select">Select</string>
+    <string name="buscando_dispositivo">BUSCAR DISPOSITIVOS</string>
+    <string name="buscando_pesa">BUSCAR PESA</string>
+    <string name="agregar_peso">Agregar peso</string>
+    <string name="barras">CODIGOS DE BARRAS</string>
+    <string name="cant_barras">CANTIDAD: </string>
+
+
+    <!--Bluetooth-->
+    <string name="estado">Ninguno</string>
+    <string name="action_offBluetooth">Apagar Bluetooth</string>
+    <string name="action_onBluetooth">Prender Bluetooth</string>
+
+
+
+
+
+
+
+
+    <!-- A Login -->
+    <string name="txtUser">Usuario</string>
+    <string name="txtPassword">Contraseña</string>
+    <string name="btnLogin">Ingresar</string>
+    <string name="toastIncompleteFields">Hay campos incompletos</string>
+    <string name="toastErrorLogin">Error al iniciar sesión</string>
+    <string name="titleProgress">Iniciando sesión</string>
+    <string name="messageProgress">Por favor espere un momento&#8230;</string>
+    <string name="toastInternetFail">No hay conexión a internet.</string>
+    <string name="titleSelectTruck">Seleccionar vehículo</string>
+    <string name="placaExample">XXX-XXX</string>
+    <string name="numeroInternoExample">XX-XX</string>
+    <string name="SendLogin2">Entrar</string>
+    <string name="placaConfirm">Seguro que quiere iniciar sesion con la placa </string>
+    <string name="numeroInternoConfirm">y con el numero interno  </string>
+    <string name="alertMensaje">Alerta!</string>
+    <string name="alertSinClientes">No tiene clientes planeados para atender</string>
+    <string name="alertInvalidos">Datos invalidos!</string>
+
+    <string-array name="systemV">
+        <item>Ninguno</item>
+        <item>SIS_32</item>
+        <item>SIS_18</item>
+        <item>SIS_00</item>
+        <item>SIS_31</item>
+        <item>SIS_25</item>
+        <item>SIS_30</item>
+        <item>SIS_36</item>
+        <item>SIS_35</item>
+        <item>SIS_34</item>
+        <item>SIS_33</item>
+    </string-array>
+
+    <string-array name="system">
+        <item>Ninguno</item>
+        <item>Aseo Urbano</item>
+        <item>Sigma Ingenieria S.A.</item>
+        <item>Grupo Sala Moviles</item>
+        <item>Emas Cali</item>
+        <item>Pruebas</item>
+        <item>Emas</item>
+        <item>Tecniamsa</item>
+        <item>Adesa</item>
+        <item>Aseo Urbano Costa</item>
+        <item>Emas Pasto</item>
+    </string-array>
+
+
+
+    <!-- B Menu Principal -->
+    <string name="date_example">31/03/2015</string>
+    <string name="logout">X</string>
+    <string name="logout_confirm">¿Deseas cerrar sesión?</string>
+    <string name="logout_conten_description">Boton para cerrar sesión</string>
+    <string name="group_of_work_description">Boton para crear grupo de trabajo</string>
+    <string name="start_day_description">Boton para iniciar dia</string>
+    <string name="Create_route_description">Boton para crear una ruta</string>
+    <string name="Close_route_description">Boton para cerrar una ruta</string>
+    <string name="Bottom_banner_description">Banner inferior</string>
+    <string name="Maps_description">Boton para cargar el mapa</string>
+    <string name="Gas_description">Boton para comprar gasolina</string>
+    <string name="Toll_description">Boton para pagar un peaje</string>
+    <string name="AreYouSureCloseDay">¿ESTA USTED SEGURO DE QUERER CERRAR EL DIA?</string>
+
+    <!-- C Grupo de trabajo -->
+    <string name="selectedOperaors">Operarios seleccionados:</string>
+    <string name="searchOperator">Buscar operario</string>
+    <string name="title_activity_c__item_selected_operator">C_ItemSelectedOperator</string>
+    <string name="alertVoidListOperators">SELECCIONE LOS OPERARIOS PARA INICIAR EL DIA.</string>
+    <string name="alertFinishJourneyWithoutRouteInit">NO SE PUEDE TERMINAR LA JORNADA SIN ANTES HABER INICIADO UNA RUTA.</string>
+    <string name="alertFinishJourneyAllWithoutOperators">TODOS LOS OPERARIOS HAN TERMINADO SUS JORNADAS.</string>
+    <string name="confirmFinishAllOperators">¿REALMENTE DESEA FINALIZAR LA JORNADA DE TODOS LOS OPERARIOS?</string>
+    <string name="confirmSelectedOperators">¿REALMENTE DESEA INICIAR CON LOS OPERARIOS SELECCIONADOS?</string>
+    <string name="confirmEndJourney">¿REALMENTE DESEA TERMINAR LA JORNADA DEL OPERARIO </string>
+    <string name="btnFinishAll">Finalizar todos</string>
+
+    <!-- D Datos del vehiculo -->
+    <string name="truck_dates_hour_meter">HOROMETRO</string>
+    <string name="truck_dates_odometer">ODOMETRO</string>
+    <string name="alertEditTextEmpty">COMPLETE LOS CAMPOS PARA PODER CONTINUAR</string>
+    <string name="alertOdometer">EL VALOR DE SU ODOMETRO DEL DIA ANTERIOR ES:</string>
+    <string name="alertHourMeter">EL VALOR DE SU HOROMETRO DEL DIA ANTERIOR ES:</string>
+    <string name="alertAux">, EL NUEVO VALOR NO PUEDE SER MENOR.</string>
+
+    <!-- E Menu de ciclo -->
+    <string name="addOperators">DEBE AGREGAR UN GRUPO DE OPERARIOS</string>
+    <string name="baseOutput">ESTA SEGURO QUE VA A SALIR DE LA BASE</string>
+    <string name="sureCompaction">SEGURO QUE DESEA REALIZAR UNA COMPACTACIÓN</string>
+    <string name="confirmFinishCollection">DESEA FINALIZAR EL PORTE</string>
+    <string name="alertFinishColectionOne">HA FINALIZADO EL PORTE EN LA RUTA </string>
+    <string name="alertFinishColectionTwo">¿HA TERMINADO DE LIMPIARLA? </string>
+    <string name="areYouSureBase">ESTA SEGURO QUE LLEGO A LA BASE </string>
+
+    <!-- F Seleccionar ruta -->
+    <string name="lblSelectedRoute">Ruta seleccionada:</string>
+    <string name="lblSheetNumber">Número de hoja:</string>
+    <string name="routeState">Estado de la ruta:</string>
+    <string name="toastLoadRoutes">Error al cargar las rutas</string>
+    <string name="alertNotSelectedRoute">NO SE HA SELECCIONADO NINGUNA RUTA.</string>
+    <string name="alertRouteStarted">LA RUTA HA SIDO INICIADA SATISFACTORIAMENTE.</string>
+    <string name="lblBotomBar">Grupo de trabajo</string>
+    <string name="btnContinueRoute">Continuar</string>
+    <string name="btnStartRoute">Iniciar</string>
+    <string name="startRoute">Iniciar</string>
+    <string name="title_activity_g_form_tiket_exit">G_form_tiket_exit</string>
+
+    <!-- H Registrar inoperatividad -->
+    <string name="lblInoperativityReason">Motivo:</string>
+    <string name="hntTxtInoperativityDescription">Observación</string>
+    <string name="btnInoperativityStart">Iniciar</string>
+    <string name="btnInoperativityTerminar">Terminar</string>
+    <string name="rdoAccident">Accidente</string>
+    <string name="btnStrandedVehicle">Vehiculo varado</string>
+    <string name="btnTraffic">Trafico</string>
+    <string name="btnDamageAnotherCar">Problema con otro vehiculo</string>
+    <string name="btnDamageAProperty">Problema con un inmueble</string>
+    <string name="btnPublicOrder">Orden publico</string>
+    <string name="lblBottomInoperativity">Inoperatividad</string>
+    <string name="confirmStartInoperability">¿REALMENTE DESEA INICIAR INOPERATIVIDAD?</string>
+    <string name="confirmFinishInoperability">¿REALMENTE DESEA TERMINAR INOPERATIVIDAD?</string>
+    <string name="alertVoidDetail">DEBE AGREGAR UNA OBSERVACION DE INOPERATIVIDAD</string>
+
+    <!-- G REGISTRAR TIKET -->
+    <string-array name="kindOfRecidue">
+        <item>Domestica</item>
+        <item>Escombros</item>
+        <item>Podas</item>
+        <item>Lodos</item>
+    </string-array>
+
+    <string-array name="arrayEstados">
+        <item>Normal</item>
+        <item>No generó residuos</item>
+        <item>No se atendió</item>
+    </string-array>
+
+
+    <string name="alertTicketEmpty"> DEBE COMPLETAR LOS CAMPOS NUMERO Y PESO DEL TIKET</string>
+    <string name="weight">Peso inicial en relleno</string>
+    <string name="alert_start_weight">DESEA ALMACENAR EL PESO INICIAL DEL TICKET</string>
+    <string name="alert_bad_weight">EL PESO DE SALIDA DEBE SER MENOR AL PESO DE ENTRADA</string>
+
+    <!-- I CREAR RUTA -->
+    <string name="lblBottomCrateRoute">Crear ruta</string>
+    <string name="lblSelectTheRoute">Seleccione la ruta</string>
+    <string name="lblSelectTypeOfRoute">Seleccione el tipo de ruta</string>
+    <string name="hntSearchRoute">Buscar ruta por peso</string>
+    <string name="btnSupport">Apoyo</string>
+    <string name="btnRegularCollection">Recoleccion de ordinarios</string>
+    <string name="btnSweepCollection">Recoleccion de barrido</string>
+    <string name="btnTransport">Transporte</string>
+    <string name="btnDebris">Escombros</string>
+    <string name="btnSludge">Lodos</string>
+    <string name="btnSave">Guardar</string>
+
+    <!-- J CERRAR RUTA -->
+    <string name="lblNotSelection">No hay nada seleccionado</string>
+    <string name="lblButtonCloseRoute">Cerrar ruta</string>
+
+    <!-- L REGISTRAR PEAJE -->
+    <string name="newTicketToll">Numero del Ticket del peaje</string>
+    <string name="registerToll">Registrar Peaje</string>
+    <string name="numberToll"># Ticket</string>
+    <string name="truckInformation">Datos del vehículo</string>
+    <string name="alertEmptyToll">INTRODUCE EL NUEMRO DE TICKET Y SELECCIONA UN TIPO DE PEAJE PARA CONTINUAR</string>
+    <string name="alertPayToll">SEGURO QUE PAGO UN PEAJE TIPO</string>
+    <string name="version">Version 1.1.8</string>
+
+
+    <!-- I CREAR RUTA -->
+    <string name="confirmSaveSelectedRoute">¿REALMENTE DESEA CREAR LA RUTA </string>
+    <string name="alertSuccessCreateRoute">LA RUTA HA SIDO CREADA SATISFACTORIAMENTE.</string>
+    <string name="alertNotSelectedNewRoute">DEBE SELECCIONAR UNA RUTA PARA CREARLA.</string>
+
+    <!-- K REGISTRAR COMBUSTIBLE -->
+    <string name="hntTicket">Ticket combustible</string>
+    <string name="hntGallons">Galones</string>
+    <string name="hntProvaider">Proveedor</string>
+    <string name="hntCost">Valor</string>
+    <string name="lblGasKind">Tipo de combustible:</string>
+    <string name="btnDiesel">Diesel</string>
+    <string name="btnCorriente">Corriente</string>
+    <string name="btnExtra">Extra</string>
+    <string name="btnGas">Gas</string>
+    <string name="btnSaveGasTicket">Guardar</string>
+    <string name="lblBottomGasStation">Combustible</string>
+    <string name="confirmSaveInformation">¿REALMENTE DESEA ALMACENAR LA INFORMACIÓN SUMINISTRADA?</string>
+
+    <string name="usuarioLogin">Jhon Doe</string>
+    <string name="title_activity_a__login_second">Login Second</string>
+    <string name="title_activity_c__registrar_datos_vehiculo">Datos del vehiculo</string>
+    <string name="title_activity_e__menu_ciclo">Menu de ciclo</string>
+    <string name="title_activity_f__seleccionar_cliente">Seleccionar Cliente</string>
+    <string name="title_activity_f__datos_cliente">Datos_cliente</string>
+    <string name="title_activity_g__trazas_embalaje">G_TrazasEmbalaje</string>
+
+</resources>
