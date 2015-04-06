@@ -50,7 +50,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-       android:layout_below="@+id/RelativeLayout1">
+        android:layout_below="@+id/RelativeLayout1">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -65,15 +65,17 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/tipo_embalaje"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                android:padding="10dp"/>
             <TextView
-                android:id="@+id/numeroInterno"
+                android:id="@+id/tipoEmbalaje"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/numeroInternoExample"
+                android:text="Bolsas"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                android:padding="10dp"/>
 
         </LinearLayout>
 
@@ -90,22 +92,23 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/cant_barras"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                android:padding="10dp"/>
 
             <TextView
-                android:id="@+id/peso_total"
+                android:id="@+id/cant_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/placaExample"
+                android:text="0"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25sp"/>
-
+                android:textSize="25sp"
+                android:padding="10dp"/>
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/addWeigth"
+            android:id="@+id/addCbarras"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -113,47 +116,41 @@
             android:gravity="center_vertical|center_horizontal|center"
             android:layout_margin="10dp"
             android:onClick="registrarBarras"
-            android:text="@string/agregar_peso"
+            android:text="@string/agregar_codigo"
             android:textColor="@android:color/white"
             android:textColorLink="@android:color/white"/>
 
-        <LinearLayout
+
+
+        <TextView
+            android:id="@+id/text1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingTop="10dp"
+            android:text="@string/barras"
+            android:textSize="25sp"
+            android:gravity="center"/>
 
-            <TextView
-                android:id="@+id/text1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:text="@string/barras"
-                android:textSize="30sp"
-                android:gravity="center"/>
+        <ListView
+            android:id="@+id/list_pesos"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp">
+        </ListView>
 
-            <ListView
-                android:id="@+id/list_pesos"
-                android:layout_width="fill_parent"
-                android:layout_height="300dp">
-            </ListView>
-
-        </LinearLayout>
-        <Button
-            android:id="@+id/btn_save_r"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/blue1"
-            android:gravity="center_vertical|center_horizontal|center"
-            android:padding="10dp"
-            android:onClick=""
-            android:text="@string/Button_save"
-            android:textColor="@android:color/white"
-            android:textColorLink="@android:color/white"
-
-            />
     </LinearLayout>
 
-
+    <!--<Button
+        android:id="@+id/btn_save_r"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/blue1"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:layout_margin="10dp"
+        android:text="@string/Button_save"
+        android:textColor="@android:color/white"
+        android:layout_alignParentBottom="true"
+        />-->
 
 </RelativeLayout>
