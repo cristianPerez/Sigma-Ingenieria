@@ -21,18 +21,18 @@ import co.qualitysolutions.tecniamsa.R;
 /**
  * Created by Andres on 05/04/2015.
  */
-public class ItemAdapterZ extends BaseAdapter{
+public class ItemAdapterJsonCodigos extends BaseAdapter{
     private final Activity activity;
     private JSONArray jsonSelected;
     private SharedPreferences sharedpreferences;
 
-    public ItemAdapterZ(){
+    public ItemAdapterJsonCodigos(){
         this.activity = null;
         this.jsonSelected = null;
         this.sharedpreferences = null;
     }
 
-    public ItemAdapterZ(Activity activity, JSONArray jsonSelected) {
+    public ItemAdapterJsonCodigos(Activity activity, JSONArray jsonSelected) {
         super();
 
         this.activity = activity;

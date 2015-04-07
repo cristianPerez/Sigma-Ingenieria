@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="co.qualitysolutions.tecniamsa">
+    package="co.qualitysolutions.tecniamsa" >
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -9,28 +9,22 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,label"
-        >
-
-        <activity
-            android:name=".A_Login" >
+        tools:replace="android:icon,label" >
+        <activity android:name=".A_Login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".Dispositivos"
             android:label="Seleccion de Dispositivo" >
-
         </activity>
         <activity
             android:name=".RegistrarPeso"
@@ -69,18 +63,26 @@
             android:label="@string/title_activity_g__trazas_embalaje" >
         </activity>
         <activity
-            android:clearTaskOnLaunch="true"
-            android:stateNotNeeded="true"
-            android:configChanges="orientation|keyboardHidden"
             android:name="com.google.zxing.client.android.CaptureActivity"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
+            android:stateNotNeeded="true"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" >
-
-            <intent-filter >
+            <intent-filter>
                 <action android:name="com.google.zxing.client.android.SCAN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".C_GrupoTrabajo"
+            android:label="@string/title_activity_c__grupo_trabajo" >
+        </activity>
+        <activity
+            android:name=".C_SeleccionarOperadores"
+            android:label="@string/title_activity_c__seleccionar_operadores" >
         </activity>
     </application>
 

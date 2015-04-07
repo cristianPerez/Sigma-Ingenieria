@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import utilidades.ItemAdapterZ;
+import utilidades.ItemAdapterJsonCodigos;
 
 /**
  * Created by teresa on 31/03/15.
@@ -22,7 +22,7 @@ import utilidades.ItemAdapterZ;
 public class RegistrarBarras extends Activity{
     public static JSONArray view_barras_json;
     private ListView listView;
-    private ItemAdapterZ adapterJson;
+    private ItemAdapterJsonCodigos adapterJson;
 
     private TextView tipoEmbalaje,cantTotal;
     private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes,listaBarrasPorEmbalaje;
@@ -70,7 +70,7 @@ public class RegistrarBarras extends Activity{
             this.view_barras_json = new JSONArray();
             e.printStackTrace();
         }
-        adapterJson = new ItemAdapterZ(this, view_barras_json);
+        adapterJson = new ItemAdapterJsonCodigos(this, view_barras_json);
         listView.setAdapter(adapterJson);
     }
 

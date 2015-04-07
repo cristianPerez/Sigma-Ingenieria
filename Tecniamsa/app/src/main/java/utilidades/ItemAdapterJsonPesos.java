@@ -20,19 +20,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ItemAdapterJson extends BaseAdapter {
+public class ItemAdapterJsonPesos extends BaseAdapter {
 
 	private final Activity activity;
 	private JSONArray jsonSelected;
 	private SharedPreferences sharedpreferences;
 
-    public ItemAdapterJson(){
+    public ItemAdapterJsonPesos(){
         this.activity = null;
         this.jsonSelected = null;
         this.sharedpreferences = null;
     }
 
-	public ItemAdapterJson(Activity activity, JSONArray jsonSelected) {
+	public ItemAdapterJsonPesos(Activity activity, JSONArray jsonSelected) {
 		super();
 
 		this.activity = activity;
@@ -90,12 +90,40 @@ public class ItemAdapterJson extends BaseAdapter {
 										new DialogInterface.OnClickListener() {
 											@Override
 											public void onClick(DialogInterface dialog,int which) {
-												/*try {
-													((C_GrupoTrabajo) activity).changeOperator(jsonSelected.getJSONObject(pos));
-													jsonSelected = Utilities.delete(jsonSelected,pos);
-                                                    Toast.makeText(activity, "El operario se bajo satisfactoriamente", Toast.LENGTH_LONG).show();
-												} catch (JSONException e) {
-												}*/
+
+
+											  jsonSelected = Utilities.delete(jsonSelected,pos);
+
+                                                JSONArray clientesPlaneados = null;
+                                                JSONObject clienteSeleccionado = null;
+                                                JSONArray listaTrazas = null;
+                                                JSONObject trazaSeleccionada = null;
+                                                JSONArray listaEmbalajes = null;
+                                                JSONObject embalajeSeleccionado = null;
+                                                Double pesoNuevo = 0.0;
+
+                                                try {
+                                                    clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                                                    clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+                                                    listaTrazas = clienteSeleccionado.getJSONArray("lsttrazas");
+                                                    trazaSeleccionada = listaTrazas.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
+                                                    listaEmbalajes = trazaSeleccionada.getJSONArray("lstembalaje");
+                                                    embalajeSeleccionado = listaEmbalajes.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE", 0));
+                                                    embalajeSeleccionado.put("pesos_embalaje",jsonSelected);
+                                                    pesoNuevo = embalajeSeleccionado.getDouble("pesoTotal") - jsonSelected.getJSONObject(pos).getDouble("peso_asignado");
+                                                    embalajeSeleccionado.put("pesoTotal", pesoNuevo);
+                                                }catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                                    editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
+                                                    editor.commit();
+
+                                                ((RegistrarPeso)activity).actionAdapter();
+                                                ((RegistrarPeso)activity).restarPeso(String.valueOf(pesoNuevo)+" KG");
+                                                Toast.makeText(activity, "Eliminado satisfactoriamente", Toast.LENGTH_LONG).show();
+
 											}
 										});
 								adb.setNegativeButton(activity.getResources()

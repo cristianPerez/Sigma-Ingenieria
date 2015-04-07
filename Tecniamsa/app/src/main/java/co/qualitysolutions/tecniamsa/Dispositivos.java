@@ -27,9 +27,6 @@ import java.util.ArrayList;
 import utilidades.BluetoothChatService;
 import utilidades.ItemAdapter;
 
-/**
- * Created by Andres on 27/03/2015.
- */
 public class Dispositivos extends Activity implements View.OnClickListener {
 
 
@@ -50,7 +47,6 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     private String mConnectedDeviceName = null;
     private static final String TAG = "Tecniamsa";
     private static final boolean D = true;
-    //private String address;
 
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_DEVICE_NAME = 4;
@@ -60,10 +56,10 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_READ = 2;
 
-    //variables gordo
     private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes,listaPesosPorEmbalaje;
     private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
     private SharedPreferences sharedpreferences;
+    private Double pesoTotalTraza;
 
 
     @Override
@@ -271,8 +267,15 @@ public class Dispositivos extends Activity implements View.OnClickListener {
                             nuevoPeso.put("peso_asignado",Double.parseDouble(line.substring(7,line.length() - 2)));
                             listaPesosPorEmbalaje.put(nuevoPeso);
                             embalajeSeleccionado.put("pesos_embalaje",listaPesosPorEmbalaje);
+                            pesoTotalTraza = trazaSeleccionada.getDouble("pesoTotal") + Double.parseDouble(line.substring(7,line.length() - 2));
+                            trazaSeleccionada.put("pesoTotal",pesoTotalTraza);
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            pesoTotalTraza = Double.parseDouble(line.substring(7,line.length() - 2));
+                            try {
+                                trazaSeleccionada.put("pesoTotal",pesoTotalTraza);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
                         }
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
@@ -280,7 +283,7 @@ public class Dispositivos extends Activity implements View.OnClickListener {
 
                         mChatService.stop();
                         unregisterReceiver(mReceiver);
-                        Intent intent = new Intent(getApplicationContext(), RegistrarPeso.class);
+                        Intent intent = new Intent();
                         setResult(24, intent);
                         finish();
                     }
@@ -288,7 +291,7 @@ public class Dispositivos extends Activity implements View.OnClickListener {
                     {
                         mChatService.stop();
                         unregisterReceiver(mReceiver);
-                        Intent intent = new Intent(getApplicationContext(), RegistrarPeso.class);
+                        Intent intent = new Intent();
                         setResult(25, intent);
                         finish();
                     }

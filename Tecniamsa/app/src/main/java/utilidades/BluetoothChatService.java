@@ -466,7 +466,8 @@ public class BluetoothChatService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(mmInStream));
 			int bytes;
 			// Keep listening to the InputStream while connected
-			while (true) {
+            int action=1;
+			while (action==1) {
 				try {
 					// Read from the InputStream
                     String line = reader.readLine();
@@ -475,6 +476,7 @@ public class BluetoothChatService {
                     if (line != null && line.length()>=15) {
                         mHandler.obtainMessage(Dispositivos.MESSAGE_READ, -1, -1, line).sendToTarget();
                     }
+                    action=0;
 				} catch (IOException e) {
 					Log.e(TAG, "disconnected", e);
 					connectionLost();

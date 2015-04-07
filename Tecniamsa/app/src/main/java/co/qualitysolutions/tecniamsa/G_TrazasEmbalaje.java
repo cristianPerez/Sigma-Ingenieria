@@ -31,7 +31,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
     private JSONArray clientesPlaneados,trazasSelect,embalajeSelect;
     private JSONObject clienteSeleccionado;
     private SharedPreferences sharedpreferences;
-    private TextView codigoCliente,nombreCliente;
+    private TextView codigoCliente,nombreCliente,peso_total_traza;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
         this.codigoCliente = (TextView) findViewById(R.id.codigoCliente);
         this.nombreCliente = (TextView) findViewById(R.id.nombreCliente);
+        this.peso_total_traza = (TextView) findViewById(R.id.peso_total_traza);
         this.spinner_trazas = (Spinner) findViewById(R.id.spinnerTrazas);
         this.spinner_trazas.setOnItemSelectedListener(this);
         this.spinnerEmbalajes = (Spinner) findViewById(R.id.spinnerEmbalajes);
@@ -139,6 +140,11 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             editor.putInt("SELECT_TRAZA",position);
             editor.commit();
             llenarSpinnerEmbalaje();
+            try {
+                this.peso_total_traza.setText(String.valueOf(this.trazasSelect.getJSONObject(position).getDouble("pesoTotal"))+" KG");
+            } catch (JSONException e) {
+                this.peso_total_traza.setText("0 KG");
+            }
         }
 
         else if(parent.getId()==this.spinnerEmbalajes.getId()){

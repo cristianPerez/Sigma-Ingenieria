@@ -235,5 +235,9 @@
     <string name="title_activity_f__seleccionar_cliente">Seleccionar Cliente</string>
     <string name="title_activity_f__datos_cliente">Datos_cliente</string>
     <string name="title_activity_g__trazas_embalaje">G_TrazasEmbalaje</string>
+    <string name="title_activity_c__grupo_trabajo">Grupo de Trabajo</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_c__seleccionar_operadores">Seleccionar Operadores</string>
 
 </resources>

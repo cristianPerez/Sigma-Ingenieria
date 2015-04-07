@@ -52,60 +52,51 @@
         android:orientation="vertical"
        android:layout_below="@+id/RelativeLayout1">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left">
+
 
             <TextView
                 android:id="@+id/numero"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/tipo_embalaje"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="25sp"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:gravity="center_horizontal"/>
+
             <TextView
                 android:id="@+id/tipoEmbalaje"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="Bolsas"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="25sp"
-                android:padding="10dp"/>
+                android:gravity="center_horizontal"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left">
 
             <TextView
                 android:id="@+id/tipo_embalaje"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/peso_total"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="25sp"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:gravity="center_horizontal"/>
 
             <TextView
                 android:id="@+id/peso_total"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="0kg"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="25sp"
-                android:padding="10dp"/>
+                android:gravity="center_horizontal"/>
 
-        </LinearLayout>
 
         <Button
             android:id="@+id/addWeigth"
@@ -126,9 +117,8 @@
                 android:id="@+id/text1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:text="@string/tipo"
-                android:textSize="25sp"
+                android:text="Lista de pesos"
+                android:textSize="20sp"
                 android:gravity="center"/>
 
             <ListView

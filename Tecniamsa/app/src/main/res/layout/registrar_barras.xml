@@ -116,7 +116,7 @@
             android:gravity="center_vertical|center_horizontal|center"
             android:layout_margin="10dp"
             android:onClick="registrarBarras"
-            android:text="@string/agregar_codigo"
+            android:text="Agregar Codigo"
             android:textColor="@android:color/white"
             android:textColorLink="@android:color/white"/>
 
