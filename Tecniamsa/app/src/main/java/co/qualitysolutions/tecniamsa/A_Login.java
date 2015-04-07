@@ -305,13 +305,14 @@ public class A_Login extends Activity {
                     }*/
 
                     SharedPreferences.Editor editor = sharedpreferences.edit();
-                    //editor.putString("TOKEN", token);
+                    editor.putString("TOKEN", "SIS_25.OQA5ADAALQA5ADkAMAA=");
                     //editor.putString("URL_MAP", url);
                     //editor.putBoolean("SERVER_SYNC", false);
                     editor.putString("USER_ID", user);
                     editor.putString("OPERATORS", operators.toString());
+                    editor.putString("SELECT_OPERATORS", "[]");
                     editor.putString("PLANNED_CLIENTS", listaClientes.toString());
-                    //editor.putString("ALTERNATE_ROUTES", alternateRoutes.toString());
+                    editor.putInt("EMPEZO_JORNADA",0);
                     editor.putString("TRUCK_INFO", truckInformation.toString());
                     editor.putString("CASETAS", getStringArrayList(casetas2));
                     editor.putBoolean("INOPERABILITY", false);

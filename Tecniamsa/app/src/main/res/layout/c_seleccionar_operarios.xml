@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="co.qualitysolutions.supervision.E_asignar_operarios">
+    tools:context="co.qualitysolutions.supervision.F_lista_operarios">
 
     <RelativeLayout
         android:id="@+id/RelativeLayout1"
@@ -43,48 +43,24 @@
             android:background="@android:color/transparent"
             android:onClick="logOut"
             android:src="@mipmap/btn_logout"/>
+
     </RelativeLayout>
 
-    <LinearLayout
+
+    <SearchView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:id="@+id/searchView"
+        android:layout_weight="2"
         android:layout_below="@+id/RelativeLayout1"
-        android:id="@+id/adicionar_operario"
-        android:weightSum="1">
-
-        <Button
-            android:id="@+id/agregarOperario"
-           style="@style/buttons"
-            android:text="Agregar Operario"
-            android:background="@color/blue2"
-            android:onClick="agregarOperarios"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"/>
-
-
-        <Button
-            style="@style/buttons"
-            android:text="ayuda"
-            android:background="@color/blue1"
-            android:onClick="verAyuda"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
+        android:queryHint="Busqueda por nombre"/>
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewOperariosSeleccionados"
-        android:layout_below="@+id/adicionar_operario"
-        android:layout_above="@+id/linearLayout2"
-        android:clickable="false" />
-
-
+        android:id="@+id/listViewOperadores"
+        android:layout_below="@+id/searchView"
+        android:layout_above="@+id/linearLayout2" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -96,15 +72,7 @@
         android:id="@+id/linearLayout2">
 
 
-        <Button
-            style="@style/buttons"
-            android:text="Empezar Jornada"
-            android:id="@+id/empezarJornada"
-            android:background="@color/btn6"
-            android:layout_weight="1"
-            android:onClick="start"
-            />
     </LinearLayout>
 
-
 </RelativeLayout>
+

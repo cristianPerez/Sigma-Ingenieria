@@ -81,7 +81,7 @@
             android:label="@string/title_activity_c__grupo_trabajo" >
         </activity>
         <activity
-            android:name=".C_SeleccionarOperadores"
+            android:name=".C_SeleccionarOperarios"
             android:label="@string/title_activity_c__seleccionar_operadores" >
         </activity>
     </application>

@@ -45,10 +45,18 @@
             android:src="@mipmap/btn_logout" />
     </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/RelativeLayout1">
+
+
+
+
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/RelativeLayout1">
+        android:layout_height="fill_parent">
 
         <Button
             android:layout_width="fill_parent"
@@ -59,6 +67,7 @@
             android:background="@color/btn1"
             android:textColor="@color/white"
             android:textSize="25dp"
+            android:onClick="grupoDeTrabajo"
             />
 
         <Button
@@ -84,6 +93,7 @@
             android:textColor="@color/white"
             android:textSize="25dp"
             android:layout_below="@+id/btn_iniciar_dia"
+            android:onClick="closeDay"
             />
 
         <Button
@@ -124,6 +134,7 @@
 
 
         </RelativeLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

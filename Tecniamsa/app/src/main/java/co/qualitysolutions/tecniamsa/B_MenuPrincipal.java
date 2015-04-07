@@ -11,13 +11,17 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import utilidades.SaveInformation;
+import utilidades.Utilities;
 
 
 public class B_MenuPrincipal extends Activity {
@@ -26,39 +30,34 @@ public class B_MenuPrincipal extends Activity {
     private JSONArray send_data_json;
     private String method;
     private String methodInt;
+    private int posCurrentRout;
+    private Button btn_grupo_trabajo,btn_iniciar_dia,btn_cerrar_dia,btn_combustible,btn_peaje,btn_mapa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b_menu_principal);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        this.inizializarComponentes();
        /* SharedPreferences.Editor editor = sharedpreferences.edit();
         String datos="[{'hoja':'HREC_10','placa':'NAF 206','codigo_cliente':'1','nombre_cliente':'DROGUERIA CARACAS','estado':'2','fecha':'3\\/31\\/2015 12:00:00 AM','direccion':'AV 5  8-96 CENTRO','ciudad':'cucuta','departamento':'','latitud':'-72.480578349','longitud':'7.895862627','residuo':'Concreto','traza':'12','orden':'1','lsttrazas':[{'traza':'11','hoja':'HREC_10','definicion':'1122','nombre':'Bio','descripcion':'Biologicos','residuo':'Bloques','lstembalaje':[{'traza':'11','embalaje':'01','definicion':'2211','cantidad':'20','peso':'22','nombre':'Med Amb','descripcion':'Medio Ambiente','pesoTotal':77.1,'pesos_embalaje':[{'peso_asignado':0.4},{'peso_asignado':0.4},{'peso_asignado':0.4},{'peso_asignado':0.4},{'peso_asignado':0.4},{'peso_asignado':0.4},{'peso_asignado':0.4},{'peso_asignado':0.4},{'peso_asignado':0.4},{'peso_asignado':0.2},{'peso_asignado':0.2},{'peso_asignado':0.2},{'peso_asignado':0.2},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25},{'peso_asignado':0.25}],'barras_embalaje':[{'barra_asignada':359350050079405}]},{'traza':'11','embalaje':'02','definicion':'2222','cantidad':'22','peso':'120','nombre':'Mad','descripcion':'Maderas','pesoTotal':0}]},{'traza':'12','hoja':'HREC_10','definicion':'1133','nombre':'Med','descripcion':'Medicos','residuo':'Concreto','lstembalaje':[{'traza':'12','embalaje':'03','definicion':'2211','cantidad':'23','peso':'120','nombre':'Med Amb','descripcion':'Medio Ambiente'}]}],'observacion':'   lohola'},{'hoja':'HREC_10','placa':'NAF 206','codigo_cliente':'1','nombre_cliente':'DROGUERIA CARACAS','estado':'0','fecha':'3\\/31\\/2015 12:00:00 AM','direccion':'AV 5  8-96 CENTRO','ciudad':'cucuta','departamento':'','latitud':'-72.480578349','longitud':'7.895862627','residuo':'Bloques','traza':'11','orden':'1','lsttrazas':[{'traza':'11','hoja':'HREC_10','definicion':'1122','nombre':'Bio','descripcion':'Biologicos','residuo':'Bloques','lstembalaje':[{'traza':'11','embalaje':'01','definicion':'2211','cantidad':'20','peso':'22','nombre':'Med Amb','descripcion':'Medio Ambiente'},{'traza':'11','embalaje':'02','definicion':'2222','cantidad':'22','peso':'120','nombre':'Mad','descripcion':'Maderas'}]},{'traza':'12','hoja':'HREC_10','definicion':'1133','nombre':'Med','descripcion':'Medicos','residuo':'Concreto','lstembalaje':[{'traza':'12','embalaje':'03','definicion':'2211','cantidad':'23','peso':'120','nombre':'Med Amb','descripcion':'Medio Ambiente'}]}],'observacion':''},{'hoja':'HREC_11','placa':'NAF 206','codigo_cliente':'2','nombre_cliente':'PUESTO DE SALUD CUNDINAMARCA','estado':'2','fecha':'3\\/31\\/2015 12:00:00 AM','direccion':'CL 12 22-70 CUNDINAMARCA','ciudad':'cucuta','departamento':'','latitud':'-72.5419785668','longitud':'7.89425107821','residuo':'Elementos Perecederos','traza':'13','orden':'2','lsttrazas':[{'traza':'13','hoja':'HREC_11','definicion':'1133','nombre':'Med','descripcion':'Medicos','residuo':'Elementos Perecederos','lstembalaje':[]}],'observacion':''},{'hoja':'HREC_31','placa':'NAF 206','codigo_cliente':'1100','nombre_cliente':'INSUMOS GRAJALES','estado':'1','fecha':'3\\/31\\/2015 12:00:00 PM','direccion':'AV 99 3-33 NORTE','ciudad':'cucuta','departamento':'','latitud':'-99.480578349','longitud':'9.895862627','residuo':'PRUEBA RESIDUO2','traza':'2367','orden':'5','lsttrazas':[{'traza':'2366','hoja':'HREC_31','definicion':'1122','nombre':'Bio','descripcion':'Biologicos','residuo':'PRUEBA RESIDUO','lstembalaje':[{'traza':'2366','embalaje':'EMB_6','definicion':'2211','cantidad':'1','peso':'2211','nombre':'Med Amb','descripcion':'Medio Ambiente'},{'traza':'2366','embalaje':'EMB_7','definicion':'2233','cantidad':'2','peso':'200','nombre':'Met','descripcion':'Metales'}]},{'traza':'2367','hoja':'HREC_31','definicion':'1133','nombre':'Med','descripcion':'Medicos','residuo':'PRUEBA RESIDUO2','lstembalaje':[{'traza':'2367','embalaje':'EMB_8','definicion':'2233','cantidad':'20','peso':'100','nombre':'Met','descripcion':'Metales'}]}],'observacion':'hola'},{'hoja':'HREC_31','placa':'NAF 206','codigo_cliente':'1100','nombre_cliente':'INSUMOS GRAJALES','estado':'1','fecha':'3\\/31\\/2015 12:00:00 PM','direccion':'AV 99 3-33 NORTE','ciudad':'cucuta','departamento':'','latitud':'-99.480578349','longitud':'9.895862627','residuo':'PRUEBA RESIDUO','traza':'2366','orden':'5','lsttrazas':[{'traza':'2366','hoja':'HREC_31','definicion':'1122','nombre':'Bio','descripcion':'Biologicos','residuo':'PRUEBA RESIDUO','lstembalaje':[{'traza':'2366','embalaje':'EMB_6','definicion':'2211','cantidad':'1','peso':'2211','nombre':'Med Amb','descripcion':'Medio Ambiente','pesoTotal':0.30000000000000004},{'traza':'2366','embalaje':'EMB_7','definicion':'2233','cantidad':'2','peso':'200','nombre':'Met','descripcion':'Metales'}]},{'traza':'2367','hoja':'HREC_31','definicion':'1133','nombre':'Med','descripcion':'Medicos','residuo':'PRUEBA RESIDUO2','lstembalaje':[{'traza':'2367','embalaje':'EMB_8','definicion':'2233','cantidad':'20','peso':'100','nombre':'Met','descripcion':'Metales'}]}],'observacion':''},{'hoja':'HREC_18','placa':'NAF 206','codigo_cliente':'5','nombre_cliente':'PUESTO DE SALUD LA DIVINA PAST','estado':'0','fecha':'3\\/31\\/2015 12:00:00 AM','direccion':'CL 31  39-15 DIVINA PASTORA','ciudad':'cucuta','departamento':'','latitud':'-72.53646276','longitud':'7.87688609262','residuo':'Bloques','traza':'18','orden':'4','lsttrazas':[{'traza':'17','hoja':'HREC_18','definicion':'1133','nombre':'Med','descripcion':'Medicos','residuo':'Construccion','lstembalaje':[{'traza':'17','embalaje':'04','definicion':'2233','cantidad':'10','peso':'100','nombre':'Met','descripcion':'Metales'}]},{'traza':'18','hoja':'HREC_18','definicion':'1122','nombre':'Bio','descripcion':'Biologicos','residuo':'Bloques','lstembalaje':[{'traza':'18','embalaje':'05','definicion':'2222','cantidad':'5','peso':'80','nombre':'Mad','descripcion':'Maderas'}]}],'observacion':'se'},{'hoja':'HREC_18','placa':'NAF 206','codigo_cliente':'5','nombre_cliente':'PUESTO DE SALUD LA DIVINA PAST','estado':'0','fecha':'3\\/31\\/2015 12:00:00 AM','direccion':'CL 31  39-15 DIVINA PASTORA','ciudad':'cucuta','departamento':'','latitud':'-72.53646276','longitud':'7.87688609262','residuo':'Construccion','traza':'17','orden':'4','lsttrazas':[{'traza':'17','hoja':'HREC_18','definicion':'1133','nombre':'Med','descripcion':'Medicos','residuo':'Construccion','lstembalaje':[{'traza':'17','embalaje':'04','definicion':'2233','cantidad':'10','peso':'100','nombre':'Met','descripcion':'Metales'}]},{'traza':'18','hoja':'HREC_18','definicion':'1122','nombre':'Bio','descripcion':'Biologicos','residuo':'Bloques','lstembalaje':[{'traza':'18','embalaje':'05','definicion':'2222','cantidad':'5','peso':'80','nombre':'Mad','descripcion':'Maderas'}]}]}]";
         editor.putString("PLANNED_CLIENTS",datos);
         editor.commit();*/
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_b__menu_principal, menu);
-        return true;
-    }
+    public void inizializarComponentes(){
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        this.btn_grupo_trabajo = (Button) findViewById(R.id.btn_grupo_trabajo);
+        this.btn_iniciar_dia = (Button) findViewById(R.id.btn_iniciar_dia);
+        this.btn_cerrar_dia = (Button) findViewById(R.id.btn_cerrar_dia);
+        this.btn_combustible = (Button) findViewById(R.id.btn_combustible);
+        this.btn_peaje = (Button) findViewById(R.id.btn_peaje);
+        this.btn_mapa = (Button) findViewById(R.id.btn_mapa);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        if(sharedpreferences.getBoolean("CLOSE_DAY",false))
+            bloquearMenu();
 
-        return super.onOptionsItemSelected(item);
+
     }
 
     /**
@@ -91,6 +90,21 @@ public class B_MenuPrincipal extends Activity {
         startActivity(intent);
 
     }
+
+    /**
+     * Method to start day of work, if the hour meter today is empty, the system
+     * displays the truck information form interface. Else displays the cycle
+     * menu interface.
+     *
+     * @param v
+     */
+    public void grupoDeTrabajo(View v) {
+
+        Intent intent = new Intent(this, C_GrupoTrabajo.class);
+        startActivity(intent);
+
+    }
+
 
     /**
      * Method to close the session
@@ -127,6 +141,89 @@ public class B_MenuPrincipal extends Activity {
     }
 
     /**
+     * Method to display the close route interface
+     *
+     * @param v
+     */
+    public void closeDay(View v) {
+        posCurrentRout = sharedpreferences.getInt("CLIENTE_SELECCIONADO", -1);
+        if(posCurrentRout==-1){
+
+            Utilities.showAlert(this, "Debe al menos haber atendido un clinete para finalizar el dia");
+        }
+        else{
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            adb.setTitle("Alert!");
+            adb.setMessage(getResources().getString(R.string.AreYouSureCloseDay));
+            adb.setPositiveButton(getResources().getString(R.string.confirm_button_1),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String selectedOperators = sharedpreferences.getString("SELECT_OPERATORS",null);
+                            String horaFin= Utilities.getDate();
+                            try {
+                                if(selectedOperators!=null){
+                                    JSONArray savedOperators = new JSONArray(selectedOperators);
+
+                                    for(int i=0; i<savedOperators.length(); i++){
+                                        if(savedOperators.getJSONObject(i).getString("hora_fin").equals("")){
+                                            savedOperators.getJSONObject(i).put("hora_fin", horaFin);
+                                        }
+                                    }
+                                    JSONArray plannedClients = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                                    JSONArray truckInfo = new JSONArray(sharedpreferences.getString("TRUCK_INFO", "[]"));
+                                    send_data_json = new JSONArray();
+                                    JSONObject aux = new JSONObject();
+                                    aux.put("clientes_planeados", plannedClients);
+                                    aux.put("operarios_fin_jornada", savedOperators);
+                                    send_data_json.put(aux);
+                                    send_data_json.put(truckInfo.get(0));
+
+                                    methodInt="??";
+                                    method="cerrar_dia";
+
+                                    bloquearMenu();
+                                    sendInformation();
+
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putBoolean("CLOSE_DAY",true);
+                                    editor.commit();
+
+                                    Toast.makeText(getApplicationContext(), "El dia ha sido cerrado satisfactoriamente", Toast.LENGTH_LONG).show();
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+            adb.setNegativeButton(getResources().getString(R.string.confirm_button_2),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            adb.show();
+        }
+
+    }
+
+    public void bloquearMenu(){
+
+        this.btn_grupo_trabajo.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.btn_grupo_trabajo.setEnabled(false);
+
+        this.btn_iniciar_dia.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.btn_iniciar_dia.setEnabled(false);
+
+        this.btn_cerrar_dia.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.btn_cerrar_dia.setEnabled(false);
+
+    }
+
+
+    /**
      * Method to send information
      */
     public void sendInformation(){
@@ -138,11 +235,6 @@ public class B_MenuPrincipal extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
-
-                 /*if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-                 return true;
-             }
-                  */
         moveTaskToBack(true);
         return super.onKeyDown(keyCode, event);
     }

@@ -6,13 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +29,7 @@ import utilidades.Utilities;
 public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongClickListener {
 
     private JSONArray operariosSeleccionados,operariosTotales;
+    private JSONObject operarioSeleccionado;
     private SharedPreferences sharedpreferences;
     private AlertDialog.Builder adb;
     private ListView lstOperadoresSeleccionados;
@@ -37,6 +37,7 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
     private String method;
     private String methodInt;
     private TextView date;
+    private Button empezarJornada,agregarOperario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +68,11 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
 
         try {
             this.operariosTotales = new JSONArray(this.sharedpreferences.getString("OPERATORS", "[]"));
-            this.operariosSeleccionados = new JSONArray(this.sharedpreferences.getString("OPERATORS_SELECT","[]"));
+            this.operariosSeleccionados = new JSONArray(this.sharedpreferences.getString("SELECT_OPERATORS","[]"));
 
             if(operariosSeleccionados.length()==0){
+                operariosSeleccionados = new JSONArray(sharedpreferences.getString("SELECT_OPERATORS","[]"));
+                displayOperadoresSeleccionados(operariosSeleccionados);
                 adb.setTitle("Alerta");
                 adb.setMessage("No tienes ningun operario asignado, quieres agregar alguno?");
                 adb.setPositiveButton(
@@ -77,8 +80,7 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
                         new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(getApplicationContext(),C_SeleccionarOperadores.class);
-                                intent.putExtra("Metodo",1);
+                                Intent intent = new Intent(getApplicationContext(),C_SeleccionarOperarios.class);
                                 startActivityForResult(intent,10);
                             }
                         });
@@ -89,6 +91,14 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
                             public void onClick(DialogInterface dialog, int which) {
                                 // TODO Auto-generated method stub
                                 dialog.dismiss();
+
+                                try {
+                                    operariosSeleccionados = new JSONArray(sharedpreferences.getString("SELECT_OPERATORS","[]"));
+                                    displayOperadoresSeleccionados(operariosSeleccionados);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                         });
                 adb.show();
@@ -111,34 +121,41 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
         this.lstOperadoresSeleccionados.setOnItemLongClickListener(this);
         this.date = (TextView)findViewById(R.id.dateNow);
         this.date.setText(this.sharedpreferences.getString("DATE", Utilities.getDate().split(" ")[0]));
+        this.agregarOperario = (Button) findViewById(R.id.agregarOperario);
+        this.empezarJornada = (Button) findViewById(R.id.empezarJornada);
 
+        if(sharedpreferences.getInt("EMPEZO_JORNADA",0)==1){
+
+            blockElements();
+
+        }
+
+
+    }
+
+    public void blockElements(){
+
+        this.agregarOperario.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.agregarOperario.setEnabled(false);
+        this.empezarJornada.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.empezarJornada.setEnabled(false);
 
     }
 
     public void agregarOperarios(View view){
 
-
-        Intent intent = new Intent(getApplicationContext(),C_SeleccionarOperadores.class);
-        intent.putExtra("Metodo",1);
+        Intent intent = new Intent(getApplicationContext(),C_SeleccionarOperarios.class);
         startActivityForResult(intent, 10);
 
 
     }
 
-    public void quitarOperarios(View view){
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setTitle("Alerta");
-        adb.setMessage("Seguro que quiere bajar al operario");
-        adb.setPositiveButton(
-                getResources().getString(R.string.accept_button),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        adb.show();
+
+    public void verAyuda(View view){
+
+        Utilities.showAlert(this,getResources().getString(R.string.alert_info_remover));
+
     }
 
 
@@ -149,17 +166,6 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * Method to save the name of the planned routes in arrayList and display this in the listView
@@ -185,34 +191,47 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
         final int posicion=position;
+
+
         try {
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("Alerta!");
 
-            adb.setMessage("Desea remover al operario: "+ this.operariosSeleccionados.getJSONObject(position).getString("nombre"));
+            adb.setMessage(getResources().getString(R.string.alert_info_remover_instruccions) + " " + this.operariosSeleccionados.getJSONObject(position).getString("nombre"));
 
             adb.setPositiveButton(
                     getResources().getString(R.string.confirm_button_1),
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-/*
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
-                            try {
 
-                                rutasAsignadas = new JSONArray(sharedpreferences.getString("ASIGNED_ROUTES_BARRIDO" , "[]"));
-                                JSONObject aux = rutasAsignadas.getJSONObject(sharedpreferences.getInt("SELECT_ROUTE_BARRIDO", 0)).getJSONArray("operarios_asignados").getJSONObject(posicion);
-                                operariosSeleccionados = Utilities.delete(rutasAsignadas.getJSONObject(sharedpreferences.getInt("SELECT_ROUTE_BARRIDO", 0)).getJSONArray("operarios_asignados"),posicion);
-                                rutasAsignadas.getJSONObject(sharedpreferences.getInt("SELECT_ROUTE_BARRIDO", 0)).put("operarios_asignados",operariosSeleccionados);
-                                operariosTotales = new JSONArray(sharedpreferences.getString("OPERATORS" , "[]"));
-                                operariosTotales.put(aux);
-                                editor.putString("OPERATORS", operariosTotales.toString());
-                                editor.putString("ASIGNED_ROUTES_BARRIDO", rutasAsignadas.toString());
-                                editor.commit();
-                                displayOperadoresSeleccionados(operariosSeleccionados);
+
+                            try {
+                                if (sharedpreferences.getInt("EMPEZO_JORNADA", 0) == 1) {
+
+
+
+
+
+
+                                } else {
+
+                                    operariosTotales.put(operariosSeleccionados.getJSONObject(posicion));
+                                    operariosSeleccionados = Utilities.delete(operariosSeleccionados, posicion);
+
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString("OPERATORS", operariosTotales.toString());
+                                    editor.putString("SELECT_OPERATORS", operariosSeleccionados.toString());
+                                    editor.commit();
+                                    configurarLista();
+
+                                }
+
+
+                                //displayOperadoresSeleccionados(operariosSeleccionados);
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            }*/
+                            }
                         }
                     });
             adb.setNegativeButton(
@@ -233,65 +252,85 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
     }
 
     /**
-     * Method to register when the truck arrive in the base, finally register in the server the route list.
+     * Method for ask about if really want to save the selected operators, if the answer
+     * is positive call the next method to save the selected operators
+     *
      * @param v
      */
-    public void guardarOperariosSeleccionados(View v){
-/*
-        if(this.operariosSeleccionados.length()>0){
-
-            this.adb.setTitle(getResources().getString(R.string.titulo_alerta));
-            this.adb.setMessage(getResources().getString(R.string.alert_guardar));
-            this.adb.setPositiveButton(getResources().getString(R.string.confirm_button_1),
+    public void start(View v) {
+        if (this.operariosSeleccionados.length() > 0) {
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            adb.setTitle("Alerta !");
+            adb.setMessage("¿Realmente desea iniciar la jornada de los operarios seleccionados?");
+            adb.setPositiveButton(
+                    getResources().getString(R.string.confirm_button_1),
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
-                            JSONObject auxobject= new JSONObject();
-                            JSONArray auxjson;
-                            try {
-                                auxjson =  new JSONArray(sharedpreferences.getString("ASIGNED_ROUTES_BARRIDO","[]").toString());
-
-                                send_data_json = new JSONArray();
-
-                                auxobject.put("fecha_hora_evento", Utilities.getDate());
-                                auxobject.put("metodo","operarios_seleccionados");
-                                auxobject.put("supervisor",sharedpreferences.getString("USER_ID","xxx"));
-
-
-                                send_data_json.put(auxobject);
-                                send_data_json.put(auxjson.getJSONObject(sharedpreferences.getInt("SELECT_ROUTE_BARRIDO",0)));
-                                methodInt="27";
-                                method="guardar_gestion_barrido";
-
-                                SharedPreferences.Editor editor = sharedpreferences.edit();
-                                editor.putString("ASIGNED_ROUTES_BARRIDO", auxjson.toString());
-                                editor.commit();
-
-                                sendInformation();
-
-                                showALert("los operarios asignados fueron guardados correctamente");
-
-                            } catch (JSONException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
+                            saveSelectedOperators();
+                            blockElements();
+                            finish();
                         }
                     });
-            this.adb.setNegativeButton(getResources().getString(R.string.confirm_button_2),
+            adb.setNegativeButton(
+                    getResources().getString(R.string.confirm_button_2),
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            // TODO Auto-generated method stub
                             dialog.dismiss();
                         }
                     });
-            this.adb.show();
+            adb.show();
+        } else {
+            Utilities.showAlert(this, getResources().getString(R.string.alertVoidListOperators));
+        }
 
+    }
+
+    /**
+     * Method to change of list the operators or finish the journey of someone
+     *
+     */
+    public void bajarOperario(int position) {
+
+        //falta
+
+    }
+
+    /**
+     * Read the description of the previous method
+     */
+    private void saveSelectedOperators() {
+        send_data_json = new JSONArray();
+        JSONArray truckInfo;
+        JSONObject aux = new JSONObject();
+        String hour = Utilities.getDate();
+        for (int i = 0; i < this.operariosSeleccionados.length(); i++) {
+            try {
+                this.operariosSeleccionados.getJSONObject(i).put("hora_inicio", hour);
+                this.operariosSeleccionados.getJSONObject(i).put("hora_fin", "");
+            } catch (JSONException e) {
+            }
         }
-        else{
-            Toast.makeText(getApplication().getBaseContext(), getResources().getString(R.string.alert_sin_seleccionados), Toast.LENGTH_LONG).show();
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("SELECT_OPERATORS", operariosSeleccionados.toString());
+        editor.putInt("EMPEZO_JORNADA", 1);
+        editor.commit();
+
+        try {
+            truckInfo = new JSONArray(sharedpreferences.getString("TRUCK_INFO", "[]"));
+            aux.put("operarios_seleccionados", operariosSeleccionados);
+            aux.put("informacion_vehiculo", truckInfo);
+            send_data_json.put(aux);
+
+            method = "json_tecni_operarios";
+            methodInt = "42";
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-*/
+        sendInformation();
     }
 
     public void showALert(String mensaje){
@@ -312,5 +351,39 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
                     this.send_data_json.toString());
         } catch (Exception e) {
         }
+    }
+
+    /**
+     * Method to close the session
+     *
+     * @param v
+     */
+    public void logOut(View v) {
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setTitle(getResources().getString(R.string.logout_confirm));
+        adb.setPositiveButton(
+                getResources().getString(R.string.confirm_button_1),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.clear();
+                        editor.commit();
+                        Intent intent = new Intent(getApplicationContext(),A_Login.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+        adb.setNegativeButton(
+                getResources().getString(R.string.confirm_button_2),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                    }
+                });
+        adb.show();
     }
 }
