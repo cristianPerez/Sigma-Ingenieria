@@ -305,7 +305,7 @@ public class A_Login extends Activity {
                     }*/
 
                     SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString("TOKEN", "SIS_25.OQA5ADAALQA5ADkAMAA=");
+                    editor.putString("TOKEN", "SIS_36.OQA5ADAALQA5ADkAMAA=");
                     //editor.putString("URL_MAP", url);
                     //editor.putBoolean("SERVER_SYNC", false);
                     editor.putString("USER_ID", user);
@@ -322,8 +322,6 @@ public class A_Login extends Activity {
                     editor.putInt("SELECT_TRAZA",0);
                     editor.putInt("SELECT_EMBALAJE",0);
                     editor.commit();
-
-
                     return true;
                 }
                 else{
