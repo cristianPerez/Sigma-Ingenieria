@@ -1,26 +1,96 @@
 package co.qualitysolutions.tecniamsa;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
+import org.json.JSONArray;
+
+import utilidades.Utilities;
 
 
 public class D_RegistrarDatosVehiculo extends Activity {
 
+    private SharedPreferences sharedpreferences;
+    private EditText hourmeter, odometer;
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.d_registrar_datos_vehiculo);
+        this.hourmeter = (EditText) findViewById(R.id.editText_hourmeter);
+        this.odometer = (EditText) findViewById(R.id.editText_odometer);
+        this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    /**
+     * Method to save the truck information if fields are not empty, and if the
+     * fields are not higher than the previous day
+     *
+     * @param v
+     */
+    public void Save_truck_information(View v) {
+        if (this.hourmeter.getText().toString().equals("")
+                || this.odometer.getText().toString().equals("")) {
+            Utilities.showAlert(this,
+                    getResources().getString(R.string.alertEditTextEmpty));
+        } else {
+            try {
+                JSONArray truckInformation = new JSONArray((String) sharedpreferences.getString("TRUCK_INFO", ""));
+                if ((int) truckInformation.getJSONObject(0).getInt("horometro") <= Integer.parseInt(this.hourmeter.getText().toString())){
+                    if ((int) truckInformation.getJSONObject(0).getInt("odometro") <= Integer.parseInt(this.odometer.getText().toString())) {
+
+                        truckInformation.getJSONObject(0).put("nuevo_horometro", Integer.parseInt(this.hourmeter.getText().toString()));
+                        truckInformation.getJSONObject(0).put("nuevo_odometro", Integer.parseInt(this.odometer.getText().toString()));
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString("TRUCK_INFO",truckInformation.toString());
+                        editor.putInt("CURRENT_STATE",0);
+                        editor.commit();
+                        Intent intent = new Intent(this, E_MenuCiclo.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Utilities.showAlert(
+                                this,
+                                getResources()
+                                        .getString(R.string.alertOdometer)
+                                        + truckInformation.getJSONObject(0)
+                                        .getInt("odometro")
+                                        + getResources().getString(
+                                        R.string.alertAux));
+                    }
+                } else {
+                    Utilities.showAlert(
+                            this,
+                            getResources().getString(R.string.alertHourMeter)
+                                    + truckInformation.getJSONObject(0).getInt(
+                                    "horometro")
+                                    + getResources().getString(
+                                    R.string.alertAux));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    /**
+     * Override method to hide the keyboard when the user touch outside of an
+     * element
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
     }
 }

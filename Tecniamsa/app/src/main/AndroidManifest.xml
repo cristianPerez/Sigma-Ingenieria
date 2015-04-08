@@ -43,10 +43,6 @@
             android:label="@string/title_activity_b__menu_principal" >
         </activity>
         <activity
-            android:name=".D_RegistrarDatosVehiculo"
-            android:label="@string/title_activity_c__registrar_datos_vehiculo" >
-        </activity>
-        <activity
             android:name=".E_MenuCiclo"
             android:label="@string/title_activity_e__menu_ciclo" >
         </activity>
@@ -83,6 +79,12 @@
         <activity
             android:name=".C_SeleccionarOperarios"
             android:label="@string/title_activity_c__seleccionar_operadores" >
+        </activity>
+        <activity
+            android:name=".D_RegistrarDatosVehiculo"
+            android:label="@string/title_activity_d__registrar_datos_vehiculo"
+
+            android:theme="@android:style/Theme.Holo.Dialog">
         </activity>
     </application>
 

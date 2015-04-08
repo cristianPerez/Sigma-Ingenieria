@@ -80,7 +80,20 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         editor.putInt("CLIENTE_SELECCIONADO",position);
         editor.commit();
         Intent intent = new Intent(this, F_Datos_cliente.class);
-        startActivity(intent);
+        startActivityForResult(intent, 10);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 10) {
+            if (resultCode == 2) {
+                Intent intent = new Intent();
+                setResult(2, intent);
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
 
     }
 

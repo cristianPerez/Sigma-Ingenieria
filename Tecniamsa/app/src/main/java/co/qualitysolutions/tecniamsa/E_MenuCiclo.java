@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ public class E_MenuCiclo extends Activity {
 
     private SharedPreferences sharedpreferences;
     private AlertDialog.Builder adb;
+
+    private Button btn_manejo_trazas;
 
     private ImageButton btn_base_exit, btn_start_collection,
             btn_collection_finish, btn_arrive_final_disposition,
@@ -60,39 +63,25 @@ public class E_MenuCiclo extends Activity {
      * @param v
      */
     public void baseOut(View v){
-       /* this.adb.setTitle(getResources().getString(R.string.addOperators));
-        this.adb.setPositiveButton(getResources().getString(R.string.accept_button),
-                new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startTeamOfWork();
-                        finish();
-                        dialog.dismiss();
-                    }
-                });
-        String selectedOperators = sharedpreferences.getString("SELECTED_OPERATORS", null);
-        if (selectedOperators == null || selectedOperators.length() <= 2) {
-            this.adb.show();
-        } else {*/
+
             this.adb.setTitle("Alerta!");
             this.adb.setMessage(getResources().getString(R.string.baseOutput));
             this.adb.setPositiveButton(getResources().getString(R.string.confirm_button_1),
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            /*try {
+                            try {
                                 JSONArray truckInformation = new JSONArray((String) sharedpreferences.getString("TRUCK_INFO", ""));
                                 truckInformation.getJSONObject(0).put("hora_salida_base",Utilities.getDate());
                                 SharedPreferences.Editor editor = sharedpreferences.edit();
                                 editor.putString("TRUCK_INFO",truckInformation.toString());
                                 editor.commit();
                                 buttonsOutBase();
+                                dialog.dismiss();
+
                             } catch (Exception e) {
                                 // TODO: handle exception
-                            }*/
-                            buttonsOutBase();
-                            dialog.dismiss();
-
+                            }
                         }
                     });
             this.adb.setNegativeButton(getResources().getString(R.string.confirm_button_2),
@@ -104,7 +93,6 @@ public class E_MenuCiclo extends Activity {
                     });
             this.adb.show();
         }
-  //  }
 
 
     /**
@@ -118,41 +106,15 @@ public class E_MenuCiclo extends Activity {
     }
 
     /**
-     * Method to register one compaction and add to selected sheet of route
-     * and ask user if really wants to do one compaction, if the answer is "yes"
-     * save essential information in preferences
+     * Method to display the select route interface
      * @param v
      */
-    public void compaction(View v) {
+    public void trazasCliente(View v) {
 
-        this.adb.setTitle(getResources().getString(R.string.alertMensaje));
-        adb.setMessage(getResources().getString(R.string.sureCompaction));
-        this.adb.setPositiveButton(
-                getResources().getString(R.string.confirm_button_1),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
-                            int compactions = sharedpreferences.getInt("COMPACTIONS",0);
-                            editor.putInt("COMPACTIONS",compactions+1);
-                            editor.commit();
-                            setCompactationsAndSheet();
-                        } catch (Exception e) {
-                            // TODO: handle exception
-                        }
-                    }
-                });
-        this.adb.setNegativeButton(
-                getResources().getString(R.string.confirm_button_2),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        this.adb.show();
+        Intent intent = new Intent(this, G_TrazasEmbalaje.class);
+        startActivityForResult(intent, 10);
     }
+
 
     /**
      * Method to finish the collection and close the route if the driver response is the positive button
@@ -181,7 +143,7 @@ public class E_MenuCiclo extends Activity {
                             JSONObject auxobject = new JSONObject();
                             auxobject.put("fecha_hora_evento",Utilities.getDate());
                             auxobject.put("metodo","fin_porte");
-                            auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
+                            //auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putInt("CURRENT_STATE", 4);
                             editor.putInt("COMPACTIONS", 0);
@@ -339,12 +301,8 @@ public class E_MenuCiclo extends Activity {
                 finishFiller();
             }
             else if(resultCode == 1){
-                if(sharedpreferences.getBoolean("CHANGE_TRUCK_FLAG",false)){
-                    Toast.makeText(this, "El cambio de vehiculo fue exitoso, recuerda cerrar sesión e iniciar en el otro dispositivo.", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(this,"No se ha podido cambiar de vehículo, comprueba tu conección a internet y vuelve a realizarlo.",Toast.LENGTH_LONG).show();
-                }
+
+
             }
         }
     }
@@ -410,6 +368,10 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setImageDrawable(this.d_start_collection);
         this.btn_start_collection.setEnabled(true);
 
+        //boton nuevo
+        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.btn_manejo_trazas.setEnabled(false);
+
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
 
@@ -448,6 +410,10 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
         this.btn_start_collection.setEnabled(false);
 
+        //boton nuevo
+        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.btn2));
+        this.btn_manejo_trazas.setEnabled(true);
+
         /*this.btn_compaction.setImageDrawable(this.d_compactation);
         this.btn_compaction.setEnabled(true);*/
 
@@ -485,6 +451,10 @@ public class E_MenuCiclo extends Activity {
 
         this.btn_start_collection.setImageDrawable(this.d_start_collection);
         this.btn_start_collection.setEnabled(true);
+
+        //boton nuevo
+        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.btn_manejo_trazas.setEnabled(false);
 
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
@@ -531,6 +501,10 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
         this.btn_start_collection.setEnabled(false);
 
+        //boton nuevo
+        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.btn_manejo_trazas.setEnabled(false);
+
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
 
@@ -569,6 +543,10 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setEnabled(false);
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
 
+        //boton nuevo
+        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.btn_manejo_trazas.setEnabled(false);
+
        /* this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
 
@@ -585,80 +563,6 @@ public class E_MenuCiclo extends Activity {
         this.btn_arrive_final_disposition.setEnabled(true);
 
         this.btn_inoperability.setImageDrawable(this.d_inoperability_two);
-        this.btn_inoperability.setEnabled(false);
-
-        /*this.btn_transbordo.setImageDrawable(this.d_transbordo_two);
-        this.btn_transbordo.setEnabled(false);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo_two);
-        this.btn_cambio_vehiculo.setEnabled(false);*/
-
-    }
-    /**
-     * Method to configure the buttons logic, when there is inoperability or filler
-     *
-     */
-    public void buttonsInicioTransbordo(){
-
-        this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
-        this.btn_base_exit.setEnabled(false);
-
-        this.btn_start_collection.setEnabled(false);
-        this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
-
-        /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
-        this.btn_compaction.setEnabled(false);*/
-
-        this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
-        this.btn_collection_finish.setEnabled(false);
-
-        this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base_two);
-        this.btn_come_back_to_base.setEnabled(false);
-
-        /*this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
-        this.btn_arrive_final_disposition.setImageDrawable(this.d_arrive_final_disposition_two);
-        this.btn_arrive_final_disposition.setEnabled(false);
-
-        this.btn_inoperability.setImageDrawable(this.d_inoperability);
-        this.btn_inoperability.setEnabled(true);
-
-        /*this.btn_transbordo.setImageDrawable(this.d_transbordo);
-        this.btn_transbordo.setEnabled(true);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo_two);
-        this.btn_cambio_vehiculo.setEnabled(false);*/
-
-    }
-    /**
-     * Method to configure the buttons logic, when there is inoperability or filler
-     *
-     */
-    public void buttonsFinTransbordoTransbordo(){
-
-        this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
-        this.btn_base_exit.setEnabled(false);
-
-        this.btn_start_collection.setEnabled(true);
-        this.btn_start_collection.setImageDrawable(this.d_start_collection);
-
-        /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
-        this.btn_compaction.setEnabled(false);*/
-
-        this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
-        this.btn_collection_finish.setEnabled(false);
-
-        this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base);
-        this.btn_come_back_to_base.setEnabled(true);
-
-        /*this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
-        this.btn_arrive_final_disposition.setImageDrawable(this.d_arrive_final_disposition_two);
-        this.btn_arrive_final_disposition.setEnabled(false);
-
-        this.btn_inoperability.setImageDrawable(this.d_inoperability);
         this.btn_inoperability.setEnabled(true);
 
         /*this.btn_transbordo.setImageDrawable(this.d_transbordo_two);
@@ -668,6 +572,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_cambio_vehiculo.setEnabled(false);*/
 
     }
+
+
 
 
 
@@ -682,6 +588,10 @@ public class E_MenuCiclo extends Activity {
 
         this.btn_start_collection.setImageDrawable(this.d_start_collection);
         this.btn_start_collection.setEnabled(true);
+
+        //boton nuevo
+        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.btn_manejo_trazas.setEnabled(false);
 
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
@@ -723,6 +633,10 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setEnabled(false);
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
 
+        //boton nuevo
+        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
+        this.btn_manejo_trazas.setEnabled(false);
+
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
 
@@ -751,44 +665,6 @@ public class E_MenuCiclo extends Activity {
 
     }
 
-    /**
-     * Method to configure the buttons logic, when there is inoperability or filler
-     *
-     */
-    public void buttonsChangetruck(){
-
-        this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
-        this.btn_base_exit.setEnabled(false);
-
-        this.btn_start_collection.setEnabled(false);
-        this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
-
-        /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
-        this.btn_compaction.setEnabled(false);*/
-
-        this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
-        this.btn_collection_finish.setEnabled(false);
-
-        this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base);
-        this.btn_come_back_to_base.setEnabled(true);
-
-        /*this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
-        this.btn_inoperability.setImageDrawable(this.d_inoperability);
-        this.btn_inoperability.setEnabled(true);
-
-        this.btn_arrive_final_disposition.setImageDrawable(this.d_arrive_final_disposition_two);
-        this.btn_arrive_final_disposition.setEnabled(false);
-
-       /* this.btn_transbordo.setImageDrawable(this.d_transbordo_two);
-        this.btn_transbordo.setEnabled(false);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo_two);
-        this.btn_cambio_vehiculo.setEnabled(false);*/
-
-
-    }
 
     /**
      * Method to close the session
@@ -847,6 +723,11 @@ public class E_MenuCiclo extends Activity {
         this.btn_base_exit = (ImageButton) findViewById(R.id.btn_base_exit);
         this.btn_start_collection = (ImageButton) findViewById(R.id.btn_start_collection);
         this.btn_start_collection.setEnabled(false);
+
+        //nuevo boton
+        this.btn_manejo_trazas = (Button) findViewById(R.id.btn_manejo_trazas);
+        this.btn_manejo_trazas.setEnabled(false);
+
         //this.btn_compaction = (ImageButton) findViewById(R.id.btn_compaction);
         //this.btn_compaction.setEnabled(false);
         this.btn_collection_finish = (ImageButton) findViewById(R.id.btn_collection_finish);
@@ -926,15 +807,7 @@ public class E_MenuCiclo extends Activity {
             }else if(current_state == 5){
                 finishFiller();
             }
-            else if(current_state == 6){
-                buttonsChangetruck();
-            }
-            else if(current_state == 7){
-                buttonsInicioTransbordo();
-            }
-            else if(current_state == 8){
-                buttonsFinTransbordoTransbordo();
-            }
+
         }
         else{
             buttonsInBase();

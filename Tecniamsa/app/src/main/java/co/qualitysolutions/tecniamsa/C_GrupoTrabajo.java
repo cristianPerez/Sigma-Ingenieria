@@ -227,8 +227,6 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
 
                                 }
 
-
-                                //displayOperadoresSeleccionados(operariosSeleccionados);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -283,7 +281,7 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
                     });
             adb.show();
         } else {
-            Utilities.showAlert(this, getResources().getString(R.string.alertVoidListOperators));
+            Utilities.showAlert(this, "Seleccione operarios para empezar su jornada de trabajo");
         }
 
     }
