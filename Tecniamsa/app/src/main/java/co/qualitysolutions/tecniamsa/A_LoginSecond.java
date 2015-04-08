@@ -258,19 +258,8 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
                 if(listaClientes.length()>0){
 
                     for(int i=0; i<listaClientes.length(); i++){
-                        //cambio del cero
-                        /*if (listaClientes.getJSONObject(i).getBoolean("ticket_pendiente")) {
-                            plannedRoutes.getJSONObject(i).put("estado", "terminada");
-                            plannedRoutes.getJSONObject(i).put("tickets", new JSONArray());
-
-                        }
-                        else{*/
-
-                        //listaClientes.getJSONObject(i).put("estado", "inactiva");
+                        listaClientes.getJSONObject(i).put("estado", "inactiva");
                         listaClientes.getJSONObject(i).put("tipo", "planeada");
-                        listaClientes.getJSONObject(i).put("tickets", new JSONArray());
-
-                        //}
                     }
 
                     SharedPreferences.Editor editor = sharedpreferences.edit();

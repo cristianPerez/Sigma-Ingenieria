@@ -211,7 +211,7 @@ public class B_MenuPrincipal extends Activity {
                                     send_data_json.put(aux);
                                     send_data_json.put(truckInfo.get(0));
 
-                                    methodInt="??";
+                                    methodInt="11";
                                     method="cerrar_dia";
 
                                     bloquearMenu();

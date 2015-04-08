@@ -39,7 +39,8 @@ public class E_MenuCiclo extends Activity {
             d_come_back_to_base, d_come_back_to_base_two,
             d_inoperability, d_inoperability_two;
 
-    private JSONArray send_data_json;
+    private JSONArray send_data_json,clientesPlaneados;
+    private JSONObject clienteSeleccionado;
     private String method;
     private TextView numberOfCompactions,nameRoute;
     private String methodInt;
@@ -131,13 +132,13 @@ public class E_MenuCiclo extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
 
 
-                        JSONArray auxRutes;
-                        JSONObject auxRoute;
+
                         JSONArray auxjson;
                         try {
                             auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
-                            auxRutes = new JSONArray(sharedpreferences.getString("PLANNED_ROUTES", null));
-                            int position = sharedpreferences.getInt("POS_CURRENT_ROUTE", -1);
+
+                            clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                            clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
 
                             send_data_json = new JSONArray();
                             JSONObject auxobject = new JSONObject();
@@ -146,59 +147,17 @@ public class E_MenuCiclo extends Activity {
                             //auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putInt("CURRENT_STATE", 4);
-                            editor.putInt("COMPACTIONS", 0);
                             editor.commit();
                             send_data_json.put(auxobject);
                             auxobject = new JSONObject();
-                            auxobject.put("operarios", new JSONArray(sharedpreferences.getString("SELECTED_OPERATORS", "[]")));
-                            send_data_json.put((JSONObject)auxRutes.getJSONObject(position));
+                            auxobject.put("operarios", new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", "[]")));
+                            send_data_json.put(clienteSeleccionado);
                             send_data_json.put(auxobject);
                             send_data_json.put(auxjson.get(0));
                             method="fin_porte";
                             methodInt="2";
-                            clearCompactions();
                             sendInformation();
                         } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            adb.setTitle(getResources().getString(R.string.alertMensaje));
-                            adb.setMessage(getResources().getString(R.string.alertFinishColectionOne) +" "+ nameRoute.getText() +" "+getResources().getString(R.string.alertFinishColectionTwo));
-                            adb.setPositiveButton(
-                                    getResources().getString(R.string.confirm_button_1),
-                                    new DialogInterface.OnClickListener(){
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            JSONArray auxRutes;
-                                            JSONObject auxRoute;
-                                            JSONArray auxjson;
-                                            try {
-                                                auxRutes = new JSONArray(sharedpreferences.getString("PLANNED_ROUTES", null));
-                                                int position = sharedpreferences.getInt("POS_CURRENT_ROUTE", -1);
-                                                auxRoute = (JSONObject)auxRutes.getJSONObject(position);
-                                                auxRoute.put("ticket_pendiente", true);
-                                                auxRoute.put("estado", "terminada");
-                                                SharedPreferences.Editor editor = sharedpreferences.edit();
-                                                editor.putString("PLANNED_ROUTES",auxRutes.toString());
-                                                editor.commit();
-                                            } catch (Exception e) {
-                                                // TODO: handle exception
-                                            }
-                                        }
-                                    });
-                            adb.setNegativeButton(
-                                    getResources().getString(R.string.confirm_button_2),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            clearSheet();
-                                            dialog.dismiss();
-                                        }
-                                    });
-                            adb.setCancelable(false);
-                            adb.show();
-
-                        }catch (Exception e){
                             e.printStackTrace();
                         }
                         buttonsFinishCollection();
@@ -230,7 +189,7 @@ public class E_MenuCiclo extends Activity {
      */
     public void comeBackToBase(View v){
 
-        this.adb.setTitle(getResources().getString(R.string.alertMensaje));
+        this.adb.setTitle("Alerta");
         this.adb.setMessage(getResources().getString(R.string.areYouSureBase));
         this.adb.setPositiveButton(getResources().getString(R.string.confirm_button_1),
                 new DialogInterface.OnClickListener() {
@@ -246,15 +205,13 @@ public class E_MenuCiclo extends Activity {
                             auxobject.put("fecha_hora_evento",Utilities.getDate());
                             auxobject.put("metodo","regreso_base");
 
-
-                            JSONArray auxRutes = new JSONArray(sharedpreferences.getString("PLANNED_ROUTES", "[]"));
-                            int position = sharedpreferences.getInt("POS_CURRENT_ROUTE", -1);
-                            JSONObject auxCurrentRoute = auxRutes.getJSONObject(position);
-                            auxobject.put("hoja", auxCurrentRoute.get("hoja"));
+                            clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                            clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+                            auxobject.put("hoja", clienteSeleccionado.get("hoja"));
                             send_data_json.put(auxobject);
 
                             auxobject = new JSONObject();
-                            auxobject.put("rutas_planeadas", auxRutes);
+                            auxobject.put("rutas_planeadas", clientesPlaneados);
                             send_data_json.put(auxobject);
                             send_data_json.put(auxjson.get(0));
                             methodInt="7";
@@ -444,6 +401,7 @@ public class E_MenuCiclo extends Activity {
      * Method to configure the buttons logic, when finish collection or Finish in filler
      *
      */
+
     public void buttonsFinishCollection() {
 
         this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
