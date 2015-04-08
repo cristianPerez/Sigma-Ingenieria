@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="co.qualitysolutions.tecniamsa.D_RegistrarDatosVehiculo"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue2"
+        android:orientation="vertical"
+        android:id="@+id/banner"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="@string/truckInformation"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            />
+    </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/editText_hourmeter"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/black"
+            android:ems="10"
+            android:hint="Horometro"
+            android:inputType="number"
+            android:textSize="25sp"
+            android:layout_below="@+id/banner">
+        </EditText>
+
+        <EditText
+            android:id="@+id/editText_odometer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:ems="10"
+            android:hint="Odometro"
+            android:inputType="number"
+            android:textSize="25sp"
+            android:layout_below="@+id/editText_hourmeter"
+            android:textColor="@color/black"/>
+
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:ems="13"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:onClick="Save_truck_information"
+        android:padding="10dp"
+        android:text="Guardar"
+        android:background="@color/blue1"
+        android:textColor="@android:color/white"
+        android:textColorLink="@android:color/white"
+        android:textSize="25sp"
+        android:layout_below="@+id/editText_odometer"/>
+
+</RelativeLayout>

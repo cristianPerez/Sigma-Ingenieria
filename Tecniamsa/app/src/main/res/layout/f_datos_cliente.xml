@@ -242,13 +242,12 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar"
+            android:text="Iniciar"
             android:id="@+id/button"
             android:layout_margin="10dp"
             android:background="@color/blue2"
             android:textColor="@android:color/white"
-            android:onClick="guardarCliente"/>
-
+            android:onClick="startRoute"/>
 
     </LinearLayout>
 
