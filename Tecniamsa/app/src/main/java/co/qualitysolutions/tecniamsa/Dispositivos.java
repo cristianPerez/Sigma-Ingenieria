@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import utilidades.BluetoothChatService;
 import utilidades.ItemAdapter;
 
+/**
+ * Created by Andres on 27/03/2015.
+ */
 public class Dispositivos extends Activity implements View.OnClickListener {
 
 
@@ -41,12 +44,14 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     private boolean unregistered;
     public static ArrayList<BluetoothDevice> listdisp;
     private static final int REQUEST_ENABLE_BT = 2;
+    private boolean bandera = true;
 
     private BluetoothDevice device;
-    private BluetoothChatService mChatService = null;
+    private BluetoothChatService mBlueService = null;
     private String mConnectedDeviceName = null;
     private static final String TAG = "Tecniamsa";
     private static final boolean D = true;
+    private String Address;
 
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_DEVICE_NAME = 4;
@@ -56,10 +61,10 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_READ = 2;
 
+    //variables gordo
     private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes,listaPesosPorEmbalaje;
     private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
     private SharedPreferences sharedpreferences;
-    private Double pesoTotalTraza;
 
 
     @Override
@@ -68,7 +73,6 @@ public class Dispositivos extends Activity implements View.OnClickListener {
         setContentView(R.layout.dispositivos);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         inicializarComponenetes();
-
 
 
     }
@@ -85,10 +89,10 @@ public class Dispositivos extends Activity implements View.OnClickListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
+                mBluetoothAdapter.cancelDiscovery();
                 Item model = (Item) (parent.getItemAtPosition(position));
                 leerPeso(model.getAddress());
-                mBluetoothAdapter.cancelDiscovery();
+
             }
         });
 
@@ -144,7 +148,7 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     public void startLookingForDevices() {
         // Register the BroadcastReceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         this.registerReceiver(mReceiver, filter); // Don't forget to unregister
         // during onDestroy
 
@@ -157,67 +161,137 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     }
 
     public void leerPeso(String address) {
+
         if (mBluetoothAdapter == null) {
             Toast.makeText(this, "Bluetooth no esta activo", Toast.LENGTH_LONG)
                     .show();
-            //finish();
-            return;
         }
-        else if (mChatService == null)
-        {
-            septup(address);
+        else {
+            Address=address;
+            setup();
+
         }
     }
 
-    public void septup(String address)
-    {
-        mChatService = new BluetoothChatService(this, mHandler);
-        conectar(address);
+    public void conectar() {
+
+        device = mBluetoothAdapter.getRemoteDevice(Address);
+        mBlueService.connect(device);
 
     }
-    public void conectar(String address) {
+/*
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (D)
+            Log.e(TAG, "++ INICIO ++");
+        // If BT is not on, request that it be enabled.
+        // setup() will then be called during onActivityResult
+        if (start) {
+            if (mBlueService == null)
+                setup();
+        }
+    }*/
 
-        device = mBluetoothAdapter.getRemoteDevice(address);
-        mChatService.connect(device);
-
-    }
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            // When discovery finds a device
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // Get the BluetoothDevice object from the Intent
-                BluetoothDevice device = intent
-                        .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // Add the name and address to an array adapter to show in a
-                // ListView
-                if (device != null && device.getName() != null
-                        && device.getAddress() != null) {
-
-                    // if (permitir(device.getAddress())) {
-                    Item i = new Item(cont, device.getName(),
-                            "Tecniamsa",device.getAddress(),
-                            "mipmap/ic_action_secure");
-                    view_devices.add(i);
-                    listdisp.add(device);
-                    cont++;
-                    //}
-
-                    Log.d("DISPOSITIVO", "[" + device.getName() + "]" + "{" + device.getAddress() + "}");
-                } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
-                        .equals(action)) {
-                    if (!unregistered) {
-                        mBluetoothAdapter.cancelDiscovery();
-                        // this.unregisterReceiver(mReceiver);
-                        // mHandler.sendEmptyMessage(DONE_LOOKING_FOR_DEVICES);
-                        unregistered = true;
-                    }
-                }
-                actionAdapter();
+    /*@Override
+    public synchronized void onResume() {
+        super.onResume();
+        if (D)
+            Log.e(TAG, "+ REANUDAR +");
+        if (mBlueService != null) {
+            if (mBlueService.getState() == BluetoothChatService.STATE_NONE) {
+                mBlueService.start();
             }
-
         }
-    };
+    }*/
+
+    private void setup() {
+        Log.d(TAG, "MOSTRAR RESPUESTA");
+        ensureDiscoverable();
+        mBlueService = new BluetoothChatService(this, mHandler);
+        conectar();
+
+    }
+
+   /* @Override
+    public synchronized void onPause() {
+        super.onPause();
+        if (bandera)
+            Log.d("ATENCION", "- PAUSADO -");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (bandera)
+            Log.e("ATENCION", "-- DETENIDO --");
+    }*/
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+           this.unregisterReceiver(mReceiver);
+        }
+        catch (Exception e)
+        {
+            Log.d("Reciver->",e.toString());
+        }
+        // Stop the Bluetooth  services
+        if (mBlueService != null)
+            mBlueService.stop();
+        if (bandera)
+            Log.d("ATENCION", "--- DESTRUIDO ---");
+    }
+
+    private void ensureDiscoverable() {
+        if (bandera)
+            Log.d("ATENCION", "Garantizando Visibilidad");
+        if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Intent discoverableIntent = new Intent(
+                    BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(
+                    BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivity(discoverableIntent);
+        }
+    }
+     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+         public void onReceive(Context context, Intent intent) {
+             String action = intent.getAction();
+             // When discovery finds a device
+             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                 // Get the BluetoothDevice object from the Intent
+                 BluetoothDevice device = intent
+                         .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                 // Add the name and address to an array adapter to show in a
+                 // ListView
+                 if (device != null && device.getName() != null
+                         && device.getAddress() != null) {
+
+                     // if (permitir(device.getAddress())) {
+                     Item i = new Item(cont, device.getName(),
+                             "Tecniamsa",device.getAddress(),
+                             "mipmap/ic_action_secure");
+                     view_devices.add(i);
+                     listdisp.add(device);
+                     cont++;
+                     //}
+
+                     Log.d("DISPOSITIVO", "[" + device.getName() + "]" + "{" + device.getAddress() + "}");
+                 } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
+                         .equals(action)) {
+                     if (!unregistered) {
+                         mBluetoothAdapter.cancelDiscovery();
+                         unregisterReceiver(mReceiver);
+                         // mHandler.sendEmptyMessage(DONE_LOOKING_FOR_DEVICES);
+                         unregistered = true;
+                     }
+                 }
+                 actionAdapter();
+             }
+
+         }
+     };
     private final Handler mHandler = new Handler() {
 
         @Override
@@ -228,25 +302,17 @@ public class Dispositivos extends Activity implements View.OnClickListener {
                         Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
-                            // mTitle.setText(R.string.title_connected_to);
-                            // mTitle.append(mConnectedDeviceName);
-                            // mConversationArrayAdapter.clear();
-                            //Toast.makeText(getApplicationContext(), "Conectado",
-                              //      Toast.LENGTH_SHORT).show();
                             Log.d("Handler->","conectado");
-
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
-                            // mTitle.setText(R.string.title_connecting);
                             Toast.makeText(getApplicationContext(),
-                                    "Conectando a dispositivo" + device.getName(),
+                                    "Conectando a dispositivo: " + device.getName(),
                                     Toast.LENGTH_SHORT).show();
                             break;
                         case BluetoothChatService.STATE_LISTEN:
+                            Log.d("Handler->","Escuchando");
+                            break;
                         case BluetoothChatService.STATE_NONE:
-                            // mTitle.setText(R.string.title_not_connected);
-                            //Toast.makeText(getApplicationContext(), "No Conectado",
-                              //      Toast.LENGTH_SHORT).show();
                             Log.d("Handler->","No conectado");
                             break;
                     }
@@ -259,38 +325,30 @@ public class Dispositivos extends Activity implements View.OnClickListener {
                     break;
                 case MESSAGE_READ:
                     String line = (String) msg.obj;
+                    Log.d("RECIBIDO->",line);
                     if(line.substring(0,2).equals("ST")&&line.substring(6,7).equals("+")) {
 
-                        //Item i = new Item(1, line, "Tecniamsa", line.substring(7,line.length() - 2), "", "mipmap/ic_action_good");
                         JSONObject nuevoPeso= new JSONObject();
                         try {
                             nuevoPeso.put("peso_asignado",Double.parseDouble(line.substring(7,line.length() - 2)));
                             listaPesosPorEmbalaje.put(nuevoPeso);
                             embalajeSeleccionado.put("pesos_embalaje",listaPesosPorEmbalaje);
-                            pesoTotalTraza = trazaSeleccionada.getDouble("pesoTotal") + Double.parseDouble(line.substring(7,line.length() - 2));
-                            trazaSeleccionada.put("pesoTotal",pesoTotalTraza);
                         } catch (JSONException e) {
-                            pesoTotalTraza = Double.parseDouble(line.substring(7,line.length() - 2));
-                            try {
-                                trazaSeleccionada.put("pesoTotal",pesoTotalTraza);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            }
+                            e.printStackTrace();
                         }
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
                         editor.commit();
-
-                        mChatService.stop();
-                        unregisterReceiver(mReceiver);
+                        //mBlueService.stop();
+                        onDestroy();
                         Intent intent = new Intent();
                         setResult(24, intent);
                         finish();
                     }
                     else
                     {
-                        mChatService.stop();
-                        unregisterReceiver(mReceiver);
+                        //mBlueService.stop();
+                        onDestroy();
                         Intent intent = new Intent();
                         setResult(25, intent);
                         finish();
@@ -300,9 +358,9 @@ public class Dispositivos extends Activity implements View.OnClickListener {
                 case MESSAGE_DEVICE_NAME:
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-                   // Toast.makeText(getApplicationContext(),
-                       //     "Conectado a " + mConnectedDeviceName,
-                     //       Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getApplicationContext(),
+                    //     "Conectado a " + mConnectedDeviceName,
+                    //       Toast.LENGTH_SHORT).show();
                     Log.d("Handler->","conectado a: "+mConnectedDeviceName);
                     break;
                 case MESSAGE_TOAST:

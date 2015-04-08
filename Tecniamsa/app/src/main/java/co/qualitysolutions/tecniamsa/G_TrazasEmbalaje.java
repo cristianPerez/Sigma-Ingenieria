@@ -28,10 +28,10 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
     private ArrayList<String> lstItemsCategoria1,lstItemsCategoria2;
     private ArrayAdapter<String> adapterItemsCategoria1,adapterItemsCategoria2;
     private Spinner spinner_trazas,spinnerEmbalajes;
-    private JSONArray clientesPlaneados,trazasSelect,embalajeSelect;
+    private JSONArray clientesPlaneados,trazasSelect,embalajeSelect,listaEmbalajes;
     private JSONObject clienteSeleccionado;
     private SharedPreferences sharedpreferences;
-    private TextView codigoCliente,nombreCliente,peso_total_traza;
+    private TextView codigoCliente,nombreCliente,peso_total_traza,barras_total_traza;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +48,45 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
     }
 
+    @Override
+    protected void onResume() {
+    super.onResume();
+        try {
+            cantidadTotalBarrasTraza();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cantidadTotalBarrasTraza() throws JSONException {
+        int cont=0;
+            if(trazasSelect.length()>0)
+            {
+
+                this.listaEmbalajes = trazasSelect.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0)).getJSONArray("lstembalaje");
+                for (int i=0; i<listaEmbalajes.length();i++)
+                {
+                    JSONObject aux= listaEmbalajes.getJSONObject(i);
+                    try {
+                        JSONArray lis = aux.getJSONArray("barras_embalaje");
+                        cont+=lis.length();
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+            }
+
+        this.barras_total_traza.setText(String.valueOf(cont));
+    }
+
     public void inicializarComponentes() {
 
+        barras_total_traza=(TextView) findViewById(R.id.cantidad_total_traza);
         this.codigoCliente = (TextView) findViewById(R.id.codigoCliente);
         this.nombreCliente = (TextView) findViewById(R.id.nombreCliente);
         this.peso_total_traza = (TextView) findViewById(R.id.peso_total_traza);
@@ -65,6 +102,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             this.nombreCliente.setText(this.clienteSeleccionado.getString("nombre_cliente"));
             llenarSpinnerTrazas();
             llenarSpinnerEmbalaje();
+            cantidadTotalBarrasTraza();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -141,6 +179,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             editor.commit();
             llenarSpinnerEmbalaje();
             try {
+                cantidadTotalBarrasTraza();
                 this.peso_total_traza.setText(String.valueOf(this.trazasSelect.getJSONObject(position).getDouble("pesoTotal"))+" KG");
             } catch (JSONException e) {
                 this.peso_total_traza.setText("0 KG");
@@ -154,6 +193,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         }
 
     }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
