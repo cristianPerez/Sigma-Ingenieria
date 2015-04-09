@@ -122,7 +122,7 @@
                 android:background="@color/btn6"
                 android:gravity="center_vertical|center_horizontal|center"
                 android:layout_margin="10dp"
-                android:onClick=""
+                android:onClick="back"
                 android:text="Listo"
                 android:textColor="@android:color/white"
                 android:textColorLink="@android:color/white"

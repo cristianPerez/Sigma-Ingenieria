@@ -27,17 +27,15 @@ public class E_MenuCiclo extends Activity {
     private SharedPreferences sharedpreferences;
     private AlertDialog.Builder adb;
 
-    private Button btn_manejo_trazas;
-
     private ImageButton btn_base_exit, btn_start_collection,
             btn_collection_finish, btn_arrive_final_disposition,
-            btn_come_back_to_base, btn_inoperability;
+            btn_come_back_to_base, btn_inoperability, btn_trazas;
     private Drawable d_base_exit, d_base_exit_two, d_start_collection,
             d_start_collection_two,
             d_collection_finish, d_collection_finish_two,
             d_arrive_final_disposition, d_arrive_final_disposition_two,
             d_come_back_to_base, d_come_back_to_base_two,
-            d_inoperability, d_inoperability_two;
+            d_inoperability, d_inoperability_two , g_trazas, g_trazas_two;
 
     private JSONArray send_data_json,clientesPlaneados;
     private JSONObject clienteSeleccionado;
@@ -326,8 +324,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setEnabled(true);
 
         //boton nuevo
-        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
-        this.btn_manejo_trazas.setEnabled(false);
+        this.btn_trazas.setImageDrawable(this.g_trazas_two);
+        this.btn_trazas.setEnabled(false);
 
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
@@ -368,8 +366,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setEnabled(false);
 
         //boton nuevo
-        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.btn2));
-        this.btn_manejo_trazas.setEnabled(true);
+        this.btn_trazas.setImageDrawable(this.g_trazas);
+        this.btn_trazas.setEnabled(true);
 
         /*this.btn_compaction.setImageDrawable(this.d_compactation);
         this.btn_compaction.setEnabled(true);*/
@@ -411,8 +409,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setEnabled(true);
 
         //boton nuevo
-        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
-        this.btn_manejo_trazas.setEnabled(false);
+        this.btn_trazas.setImageDrawable(this.g_trazas_two);
+        this.btn_trazas.setEnabled(false);
 
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
@@ -460,8 +458,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setEnabled(false);
 
         //boton nuevo
-        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
-        this.btn_manejo_trazas.setEnabled(false);
+        this.btn_trazas.setImageDrawable(this.g_trazas_two);
+        this.btn_trazas.setEnabled(false);
+
 
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
@@ -502,8 +501,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
 
         //boton nuevo
-        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
-        this.btn_manejo_trazas.setEnabled(false);
+        this.btn_trazas.setImageDrawable(this.g_trazas_two);
+        this.btn_trazas.setEnabled(false);
 
        /* this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
@@ -548,8 +547,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setEnabled(true);
 
         //boton nuevo
-        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
-        this.btn_manejo_trazas.setEnabled(false);
+        this.btn_trazas.setImageDrawable(this.g_trazas_two);
+        this.btn_trazas.setEnabled(false);
 
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
@@ -592,8 +591,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
 
         //boton nuevo
-        this.btn_manejo_trazas.setBackgroundColor(getResources().getColor(R.color.gray));
-        this.btn_manejo_trazas.setEnabled(false);
+        this.btn_trazas.setImageDrawable(this.g_trazas_two);
+        this.btn_trazas.setEnabled(false);
 
         /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
         this.btn_compaction.setEnabled(false);*/
@@ -683,8 +682,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_start_collection.setEnabled(false);
 
         //nuevo boton
-        this.btn_manejo_trazas = (Button) findViewById(R.id.btn_manejo_trazas);
-        this.btn_manejo_trazas.setEnabled(false);
+        this.btn_trazas = (ImageButton) findViewById(R.id.btn_trazas);
+        this.btn_trazas.setEnabled(false);
 
         //this.btn_compaction = (ImageButton) findViewById(R.id.btn_compaction);
         //this.btn_compaction.setEnabled(false);
@@ -729,6 +728,9 @@ public class E_MenuCiclo extends Activity {
 
         this.d_inoperability = this.getResources().getDrawable(R.mipmap.btn_inoperability);
         this.d_inoperability_two = this.getResources().getDrawable(R.mipmap.btn_inoperability_two);
+
+        this.g_trazas = this.getResources().getDrawable(R.mipmap.btn_trazas);
+        this.g_trazas_two = this.getResources().getDrawable(R.mipmap.btn_trazas_two);
 
         //this.d_transbordo = this.getResources().getDrawable(R.mipmap.btn_transbordo_residuos);
         //this.d_transbordo_two = this.getResources().getDrawable(R.mipmap.btn_transbordo_residuos_activo);

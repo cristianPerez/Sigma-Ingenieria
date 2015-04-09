@@ -226,7 +226,10 @@
             android:background="@color/btn6"
             android:text="Menu Principal"
             android:textColor="@color/white"
-            android:onClick="mainMenu"/>
+            android:onClick="mainMenu"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
 
     </LinearLayout>
     </ScrollView>

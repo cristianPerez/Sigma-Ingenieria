@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import utilidades.ItemAdapterJsonPesos;
+import utilidades.SaveInformation;
 import utilidades.Utilities;
 
 public class RegistrarPeso extends Activity{
@@ -30,6 +33,10 @@ public class RegistrarPeso extends Activity{
     private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes;
     private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
     private SharedPreferences sharedpreferences;
+    private JSONArray send_data_json;
+    private String method;
+    private String methodInt;
+    private TextView date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -139,6 +146,69 @@ public class RegistrarPeso extends Activity{
     public void restarPeso(String peso)
     {
         this.pesoTotal.setText(peso);
+    }
+
+
+    /**
+     * Method to close the session
+     *
+     * @param v
+     */
+    public void logOut(View v) {
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setTitle(getResources().getString(R.string.logout_confirm));
+        adb.setPositiveButton(
+                getResources().getString(R.string.confirm_button_1),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        JSONObject auxobject= new JSONObject();
+                        JSONArray auxjson;
+                        try {
+                            auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
+                            send_data_json = new JSONArray();
+
+                            auxobject.put("fecha_hora_evento", Utilities.getDate());
+                            auxobject.put("metodo","cerrar_sesion");
+                            auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
+                            send_data_json.put(auxobject);
+                            send_data_json.put(auxjson.get(0));
+                            methodInt="14";
+                            method="cerrar_sesion";
+                            Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
+                            sendInformation();
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+        adb.setNegativeButton(
+                getResources().getString(R.string.confirm_button_2),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                    }
+                });
+        adb.show();
+    }
+
+    /**
+     *Method that send the information to server, from whatever method
+     */
+    public void sendInformation(){
+
+        try {
+            new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
+                    this.methodInt,
+                    this.method,
+                    this.send_data_json.toString());
+        } catch (Exception e) {
+        }
     }
 
 }
