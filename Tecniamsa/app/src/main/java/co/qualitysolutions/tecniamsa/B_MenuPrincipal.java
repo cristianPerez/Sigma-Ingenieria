@@ -177,10 +177,9 @@ public class B_MenuPrincipal extends Activity {
      *
      * @param v
      */
-    public void closeDay(View v) {
+    public void closeDay(View v){
         posCurrentRout = sharedpreferences.getInt("CLIENTE_SELECCIONADO", -1);
         if(posCurrentRout==-1){
-
             Utilities.showAlert(this, "Debe al menos haber atendido un clinete para finalizar el dia");
         }
         else{

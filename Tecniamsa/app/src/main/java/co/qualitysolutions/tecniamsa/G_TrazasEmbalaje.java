@@ -53,14 +53,21 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
     super.onResume();
         try {
             cantidadTotalBarrasTraza();
+            cantidadTotalPesosTraza();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+
     public void cantidadTotalBarrasTraza() throws JSONException {
         int cont=0;
-            if(trazasSelect.length()>0)
+
+        this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+        this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+        trazasSelect = this.clienteSeleccionado.getJSONArray("lsttrazas");
+
+        if(trazasSelect.length()>0)
             {
 
                 this.listaEmbalajes = trazasSelect.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0)).getJSONArray("lstembalaje");
@@ -84,6 +91,37 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         this.barras_total_traza.setText(String.valueOf(cont));
     }
 
+    public void cantidadTotalPesosTraza() throws JSONException {
+        float cont=0;
+
+        this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+        this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+        trazasSelect = this.clienteSeleccionado.getJSONArray("lsttrazas");
+
+        if(trazasSelect.length()>0)
+            {
+
+                this.listaEmbalajes = trazasSelect.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0)).getJSONArray("lstembalaje");
+                for (int i=0; i<listaEmbalajes.length();i++)
+                {
+                    JSONObject aux= listaEmbalajes.getJSONObject(i);
+                    try {
+
+                        cont+=aux.getDouble("pesoTotal");
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+            }
+
+        this.peso_total_traza.setText(String.valueOf(cont) + "KG");
+    }
+
     public void inicializarComponentes() {
 
         barras_total_traza=(TextView) findViewById(R.id.cantidad_total_traza);
@@ -102,7 +140,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             this.nombreCliente.setText(this.clienteSeleccionado.getString("nombre_cliente"));
             llenarSpinnerTrazas();
             llenarSpinnerEmbalaje();
-            cantidadTotalBarrasTraza();
+            //cantidadTotalBarrasTraza();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -180,9 +218,11 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             llenarSpinnerEmbalaje();
             try {
                 cantidadTotalBarrasTraza();
-                this.peso_total_traza.setText(String.valueOf(this.trazasSelect.getJSONObject(position).getDouble("pesoTotal"))+" KG");
+                cantidadTotalPesosTraza();
+                //this.peso_total_traza.setText(String.valueOf(this.trazasSelect.getJSONObject(position).getDouble("pesoTotal"))+" KG");
             } catch (JSONException e) {
-                this.peso_total_traza.setText("0 KG");
+                e.printStackTrace();
+                //this.peso_total_traza.setText("0 KG");
             }
         }
 
