@@ -194,7 +194,7 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
 
             <Button
                 android:layout_width="fill_parent"
@@ -219,6 +219,15 @@
                 android:textColor="@android:color/white"
                 android:onClick="agregarPesos"/>
         </LinearLayout>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/btn6"
+            android:text="Menu Principal"
+            android:textColor="@color/white"
+            android:onClick="mainMenu"/>
+
     </LinearLayout>
     </ScrollView>
 

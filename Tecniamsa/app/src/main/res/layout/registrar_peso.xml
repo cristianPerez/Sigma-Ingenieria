@@ -61,8 +61,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/tipo_embalaje"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25sp"
-                android:padding="10dp"
+                android:textSize="20sp"
                 android:gravity="center_horizontal"/>
 
             <TextView
@@ -72,7 +71,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="Bolsas"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:gravity="center_horizontal"/>
 
 
@@ -83,8 +82,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/peso_total"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25sp"
-                android:padding="10dp"
+                android:textSize="20sp"
                 android:gravity="center_horizontal"/>
 
             <TextView
@@ -94,24 +92,51 @@
                 android:layout_gravity="center_horizontal"
                 android:text="0kg"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:gravity="center_horizontal"/>
 
 
-        <Button
-            android:id="@+id/addWeigth"
+
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/blue1"
-            android:gravity="center_vertical|center_horizontal|center"
-            android:layout_margin="10dp"
-            android:onClick="buscar_dispositivo"
-            android:text="@string/agregar_peso"
-            android:textColor="@android:color/white"
-            android:textColorLink="@android:color/white"/>
+            android:layout_height="wrap_content">
 
 
+
+            <Button
+                android:id="@+id/addWeigth"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/blue1"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:layout_margin="10dp"
+                android:onClick="buscar_dispositivo"
+                android:text="@string/agregar_peso"
+                android:textColor="@android:color/white"
+                android:textColorLink="@android:color/white"
+                android:layout_weight="1"/>
+
+
+            <Button
+                android:id="@+id/ok"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/btn6"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:layout_margin="10dp"
+                android:onClick="back"
+                android:text="Listo"
+                android:textColor="@android:color/white"
+                android:textColorLink="@android:color/white"
+                android:layout_weight="1"
+                />
+
+
+
+
+        </LinearLayout>
 
             <TextView
                 android:id="@+id/text1"

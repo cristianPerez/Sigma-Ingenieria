@@ -246,4 +246,11 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         startActivity(intent);
 
     }
+
+    public void mainMenu(View view){
+
+        Intent intent = new Intent(this, B_MenuPrincipal.class);
+        startActivity(intent);
+
+    }
 }

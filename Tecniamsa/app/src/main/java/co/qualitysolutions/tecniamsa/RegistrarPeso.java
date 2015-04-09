@@ -129,6 +129,12 @@ public class RegistrarPeso extends Activity{
         }
     }
 
+    public void back(View view){
+
+        finish();
+
+    }
+
 
     public void restarPeso(String peso)
     {

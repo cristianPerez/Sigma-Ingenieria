@@ -62,6 +62,12 @@ public class RegistrarBarras extends Activity{
         }
     }
 
+    public void back(View view){
+
+        finish();
+
+    }
+
     public void actionAdapter(){
         try {
             this.view_barras_json = this.embalajeSeleccionado.getJSONArray("barras_embalaje");
