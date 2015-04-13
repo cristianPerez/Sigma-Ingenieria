@@ -117,7 +117,7 @@
     <string name="confirmSelectedOperators">¿REALMENTE DESEA INICIAR CON LOS OPERARIOS SELECCIONADOS?</string>
     <string name="confirmEndJourney">¿REALMENTE DESEA TERMINAR LA JORNADA DEL OPERARIO </string>
     <string name="alert_info_remover">Si quieres remover un operario de los seleccionados en esta lista, debes mantenerlo pulsado un tiempo minimo de 2 segundos y seguir las instrucciones</string>
-    <string name="alert_info_remover_instruccions">Si ya se inicio la jornada de los operarios con esta accion terminará la jornada de un operario, ó si no simplemente volvera a la lista de operarios no seleccionados ¿Realmente desea hacerlo ? recuerde selecciono el operario :</string>
+    <string name="alert_info_remover_instruccions">Quiere remover el operario :</string>
 
 
     <!-- D Datos del vehiculo -->
