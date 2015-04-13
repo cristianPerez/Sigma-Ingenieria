@@ -49,6 +49,9 @@ public class RegistrarBarras extends Activity{
     }
 
     public void inicializarComponentes(){
+
+        this.date = (TextView)findViewById(R.id.dateNow);
+        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
         listView = (ListView) findViewById(R.id.list_barras);
 
         this.tipoEmbalaje = (TextView) findViewById(R.id.tipoEmbalaje);
@@ -80,6 +83,7 @@ public class RegistrarBarras extends Activity{
 
     public void actionAdapter(){
         try {
+            actualizarEmbalaje();
             this.view_barras_json = this.embalajeSeleccionado.getJSONArray("barras_embalaje");
             this.cantTotal.setText(String.valueOf(this.embalajeSeleccionado.getInt("cantTotal")));
         } catch (JSONException e) {
@@ -90,12 +94,32 @@ public class RegistrarBarras extends Activity{
         listView.setAdapter(adapterJson);
     }
 
+    public void actualizarEmbalaje(){
+
+        try {
+            this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+            this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+            this.listaTrazas = this.clienteSeleccionado.getJSONArray("lsttrazas");
+            this.trazaSeleccionada = listaTrazas.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
+            this.listaEmbalajes = this.trazaSeleccionada.getJSONArray("lstembalaje");
+            this.embalajeSeleccionado = this.listaEmbalajes.getJSONObject(this.sharedpreferences.getInt("SELECT_EMBALAJE", 0));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void registrarBarras(View view)
     {
         Intent intent = new Intent("com.google.zxing.client.android.SCAN");
         intent.putExtra("SCAN_MODE", "ONE_D_MODE");
         startActivityForResult(intent, 0);
 
+    }
+
+    public void restarBarras(String barras)
+    {
+        this.cantTotal.setText(barras);
     }
 
     @Override

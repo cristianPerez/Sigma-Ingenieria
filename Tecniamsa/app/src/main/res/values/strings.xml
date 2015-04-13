@@ -210,7 +210,7 @@
     <string name="truckInformation">Datos del vehículo</string>
     <string name="alertEmptyToll">INTRODUCE EL NUEMRO DE TICKET Y SELECCIONA UN TIPO DE PEAJE PARA CONTINUAR</string>
     <string name="alertPayToll">SEGURO QUE PAGO UN PEAJE TIPO</string>
-    <string name="version">Version 1.1.8</string>
+    <string name="version">Version 0.8</string>
 
 
     <!-- I CREAR RUTA -->
@@ -244,5 +244,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_c__seleccionar_operadores">Seleccionar Operadores</string>
     <string name="title_activity_d__registrar_datos_vehiculo">Registrar Datos Vehiculo</string>
+    <string name="title_activity_h__formulario_disposicion_final">Formulario Disposicion FInal
+    </string>
+    <string name="title_activity_i_inoperatividad">inoperatividad</string>
+    <string name="title_activity_j__combustible">J_Combustible</string>
+    <string name="title_activity_k__peaje">Peaje</string>
 
 </resources>

@@ -134,6 +134,8 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
     public void inicializarComponentes() {
 
+        this.date = (TextView)findViewById(R.id.dateNow);
+        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
         barras_total_traza=(TextView) findViewById(R.id.cantidad_total_traza);
         this.codigoCliente = (TextView) findViewById(R.id.codigoCliente);
         this.nombreCliente = (TextView) findViewById(R.id.nombreCliente);
@@ -240,6 +242,14 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt("SELECT_EMBALAJE",position);
             editor.commit();
+            try {
+                cantidadTotalBarrasTraza();
+                cantidadTotalPesosTraza();
+                //this.peso_total_traza.setText(String.valueOf(this.trazasSelect.getJSONObject(position).getDouble("pesoTotal"))+" KG");
+            } catch (JSONException e) {
+                e.printStackTrace();
+                //this.peso_total_traza.setText("0 KG");
+            }
         }
 
     }
@@ -259,7 +269,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
     public void mainMenu(View view){
 
-        Intent intent = new Intent(this, B_MenuPrincipal.class);
+        Intent intent = new Intent(this, E_MenuCiclo.class);
         startActivity(intent);
 
     }

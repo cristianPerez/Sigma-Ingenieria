@@ -83,8 +83,23 @@
         <activity
             android:name=".D_RegistrarDatosVehiculo"
             android:label="@string/title_activity_d__registrar_datos_vehiculo"
-
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:theme="@android:style/Theme.Holo.Dialog" >
+        </activity>
+        <activity
+            android:name=".H_FormularioDisposicionFInal"
+            android:label="@string/title_activity_h__formulario_disposicion_final" >
+        </activity>
+        <activity
+            android:name=".I_inoperatividad"
+            android:label="@string/title_activity_i_inoperatividad" >
+        </activity>
+        <activity
+            android:name=".J_Combustible"
+            android:label="@string/title_activity_j__combustible" >
+        </activity>
+        <activity
+            android:name=".K_Peaje"
+            android:label="@string/title_activity_k__peaje" >
         </activity>
     </application>
 

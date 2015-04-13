@@ -42,7 +42,8 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.c_grupo_trabajo);this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        setContentView(R.layout.c_grupo_trabajo);
+        this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         identifyElements();
         configurarLista();
 
@@ -123,6 +124,8 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
         this.date.setText(this.sharedpreferences.getString("DATE", Utilities.getDate().split(" ")[0]));
         this.agregarOperario = (Button) findViewById(R.id.agregarOperario);
         this.empezarJornada = (Button) findViewById(R.id.empezarJornada);
+        this.date = (TextView)findViewById(R.id.dateNow);
+        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
 
         if(sharedpreferences.getInt("EMPEZO_JORNADA",0)==1){
 
@@ -365,12 +368,25 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.clear();
-                        editor.commit();
-                        Intent intent = new Intent(getApplicationContext(),A_Login.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        JSONObject auxobject= new JSONObject();
+                        JSONArray auxjson;
+                        try {
+                            auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
+                            send_data_json = new JSONArray();
+
+                            auxobject.put("fecha_hora_evento",Utilities.getDate());
+                            auxobject.put("metodo","cerrar_sesion");
+                            auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
+                            send_data_json.put(auxobject);
+                            send_data_json.put(auxjson.get(0));
+                            methodInt="14";
+                            method="cerrar_sesion";
+                            Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
+                            sendInformation();
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 });
         adb.setNegativeButton(

@@ -105,7 +105,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Trazas"
             android:id="@+id/textView12"
-            android:gravity="center_horizontal" />
+            android:layout_marginLeft="10dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -113,7 +113,7 @@
             android:layout_height="fill_parent">
 
             <Spinner
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinnerTrazas"
                 android:layout_margin="10dp" />
@@ -126,11 +126,11 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Tipo embalaje"
             android:id="@+id/textView13"
-            android:gravity="center_horizontal"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"/>
 
         <Spinner
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/spinnerEmbalajes"
             android:layout_weight="1"

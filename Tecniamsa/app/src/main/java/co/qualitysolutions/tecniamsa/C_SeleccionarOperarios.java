@@ -14,12 +14,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import utilidades.SaveInformation;
 import utilidades.Utilities;
 
 
@@ -30,6 +33,9 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
     private AlertDialog.Builder adb;
     private ListView listaOperarios;
     private SearchView busqueda;
+    private JSONArray send_data_json;
+    private String method;
+    private String methodInt;
     private TextView date;
     private boolean flagCollection;
     private JSONObject operadorSeleccionado;
@@ -59,6 +65,8 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
         this.listaOperarios.setOnItemClickListener(this);
         this.busqueda = (SearchView) findViewById(R.id.searchView);
         this.busqueda.setOnQueryTextListener(this);
+        this.date = (TextView)findViewById(R.id.dateNow);
+        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
 
         this.displayedListOperators = new JSONArray();
         this.operariosSeleccionados = new JSONArray();
@@ -178,12 +186,25 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.clear();
-                        editor.commit();
-                        Intent intent = new Intent(getApplicationContext(),A_Login.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        JSONObject auxobject= new JSONObject();
+                        JSONArray auxjson;
+                        try {
+                            auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
+                            send_data_json = new JSONArray();
+
+                            auxobject.put("fecha_hora_evento",Utilities.getDate());
+                            auxobject.put("metodo","cerrar_sesion");
+                            auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
+                            send_data_json.put(auxobject);
+                            send_data_json.put(auxjson.get(0));
+                            methodInt="14";
+                            method="cerrar_sesion";
+                            Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
+                            sendInformation();
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 });
         adb.setNegativeButton(
@@ -196,5 +217,19 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
                     }
                 });
         adb.show();
+    }
+
+    /**
+     *Method that send the information to server, from whatever method
+     */
+    public void sendInformation(){
+
+        try {
+            new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
+                    this.methodInt,
+                    this.method,
+                    this.send_data_json.toString());
+        } catch (Exception e) {
+        }
     }
 }

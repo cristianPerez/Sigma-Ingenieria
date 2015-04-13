@@ -33,6 +33,7 @@ public class B_MenuPrincipal extends Activity {
     private int posCurrentRout;
     private Button btn_grupo_trabajo,btn_iniciar_dia,btn_cerrar_dia,btn_combustible,btn_peaje,btn_mapa;
     private JSONArray operariosSelect;
+    private TextView date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,8 @@ public class B_MenuPrincipal extends Activity {
         this.btn_combustible = (Button) findViewById(R.id.btn_combustible);
         this.btn_peaje = (Button) findViewById(R.id.btn_peaje);
         this.btn_mapa = (Button) findViewById(R.id.btn_mapa);
+        this.date = (TextView)findViewById(R.id.dateNow);
+        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
 
         if(sharedpreferences.getBoolean("CLOSE_DAY",false))
             bloquearMenu();
@@ -124,6 +127,26 @@ public class B_MenuPrincipal extends Activity {
     }
 
     /**
+     * Method to display the ticket gasoline register interface
+     *
+     * @param v
+     */
+    public void registerGas(View v) {
+        Intent intent = new Intent(this, J_Combustible.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Method to display the ticket toll register interface
+     *
+     * @param v
+     */
+    public void registerToll(View v) {
+        Intent intent = new Intent(this, K_Peaje.class);
+        startActivity(intent);
+    }
+
+    /**
      * Method to start day of work, if the hour meter today is empty, the system
      * displays the truck information form interface. Else displays the cycle
      * menu interface.
@@ -152,12 +175,25 @@ public class B_MenuPrincipal extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.clear();
-                        editor.commit();
-                        Intent intent = new Intent(getApplicationContext(),A_Login.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        JSONObject auxobject= new JSONObject();
+                        JSONArray auxjson;
+                        try {
+                            auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
+                            send_data_json = new JSONArray();
+
+                            auxobject.put("fecha_hora_evento",Utilities.getDate());
+                            auxobject.put("metodo","cerrar_sesion");
+                            auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
+                            send_data_json.put(auxobject);
+                            send_data_json.put(auxjson.get(0));
+                            methodInt="14";
+                            method="cerrar_sesion";
+                            Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
+                            sendInformation();
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 });
         adb.setNegativeButton(

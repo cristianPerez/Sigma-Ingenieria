@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 
 import utilidades.BluetoothChatService;
 import utilidades.ItemAdapter;
+import utilidades.Utilities;
 
 /**
  * Created by Andres on 27/03/2015.
@@ -40,7 +42,7 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     private ItemAdapter adapter;
     private ArrayList<String> mac;
     private int cont = 1;
-
+    private TextView date;
     private boolean unregistered;
     public static ArrayList<BluetoothDevice> listdisp;
     private static final int REQUEST_ENABLE_BT = 2;
@@ -81,6 +83,8 @@ public class Dispositivos extends Activity implements View.OnClickListener {
         Button btn = (Button) findViewById(R.id.buscar);
         unregistered = false;
         listView = (ListView) findViewById(R.id.listView);
+        this.date = (TextView)findViewById(R.id.dateNow);
+        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
         view_devices = new ArrayList<Item>();
         listdisp = new ArrayList<BluetoothDevice>();
         mac = new ArrayList<String>();

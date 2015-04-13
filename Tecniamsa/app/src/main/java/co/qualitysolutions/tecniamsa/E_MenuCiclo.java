@@ -176,9 +176,9 @@ public class E_MenuCiclo extends Activity {
      * Method to display the filler interface
      * @param v
      */
-    public void arriveFinalDisposition(View v){/*
-        Intent intent = new Intent(this, G_formulario_Relleno.class);
-        startActivityForResult(intent, 10);*/
+    public void arriveFinalDisposition(View v){
+        Intent intent = new Intent(this, H_FormularioDisposicionFInal.class);
+        startActivityForResult(intent, 10);
     }
 
     /**
@@ -237,9 +237,9 @@ public class E_MenuCiclo extends Activity {
      * @param v
      */
     public void inoperability(View v){
-        /*
-        Intent intent = new Intent(this, H_RegistrarInoperatividad.class);
-        startActivity(intent);*/
+
+        Intent intent = new Intent(this, I_inoperatividad.class);
+        startActivity(intent);
     }
 
 
@@ -685,34 +685,21 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas = (ImageButton) findViewById(R.id.btn_trazas);
         this.btn_trazas.setEnabled(false);
 
-        //this.btn_compaction = (ImageButton) findViewById(R.id.btn_compaction);
-        //this.btn_compaction.setEnabled(false);
         this.btn_collection_finish = (ImageButton) findViewById(R.id.btn_collection_finish);
         this.btn_collection_finish.setEnabled(false);
         this.btn_arrive_final_disposition = (ImageButton) findViewById(R.id.btn_arrive_final_disposition);
         this.btn_arrive_final_disposition.setEnabled(false);
         this.btn_come_back_to_base = (ImageButton) findViewById(R.id.btn_come_back_to_base);
         this.btn_come_back_to_base.setEnabled(false);
-        //this.btn_special_service = (ImageButton) findViewById(R.id.btn_special_service);
-        //this.btn_special_service.setEnabled(false);
         this.btn_inoperability = (ImageButton) findViewById(R.id.btn_inoperability);
         this.btn_inoperability.setEnabled(false);
         this.btn_inoperability = (ImageButton) findViewById(R.id.btn_inoperability);
         this.btn_inoperability.setEnabled(false);
-
-        //this.btn_cambio_vehiculo = (ImageButton) findViewById(R.id.btn_cambio_vehiculo);
-        //this.btn_cambio_vehiculo.setEnabled(false);
-        //this.btn_transbordo = (ImageButton) findViewById(R.id.btn_transbordo);
-        //this.btn_transbordo.setEnabled(false);
-
         this.d_base_exit = this.getResources().getDrawable(R.mipmap.btn_base_exit);
         this.d_base_exit_two = this.getResources().getDrawable(R.mipmap.btn_base_exit_two);
 
         this.d_start_collection = this.getResources().getDrawable(R.mipmap.btn_start_collection);
         this.d_start_collection_two = this.getResources().getDrawable(R.mipmap.btn_start_collection_two);
-
-        //this.d_compactation = this.getResources().getDrawable(R.mipmap.btn_compaction);
-        //this.d_compactation_two = this.getResources().getDrawable(R.mipmap.btn_compaction_two);
 
         this.d_collection_finish = this.getResources().getDrawable(R.mipmap.btn_collection_finish);
         this.d_collection_finish_two = this.getResources().getDrawable(R.mipmap.btn_collection_finish_two);
@@ -723,27 +710,15 @@ public class E_MenuCiclo extends Activity {
         this.d_come_back_to_base = this.getResources().getDrawable(R.mipmap.btn_come_back_to_base);
         this.d_come_back_to_base_two = this.getResources().getDrawable(R.mipmap.btn_come_back_to_base_two);
 
-        //this.d_special_service = this.getResources().getDrawable(R.mipmap.btn_special_service);
-        //this.d_special_service_two = this.getResources().getDrawable(R.mipmap.btn_special_service_two);
-
         this.d_inoperability = this.getResources().getDrawable(R.mipmap.btn_inoperability);
         this.d_inoperability_two = this.getResources().getDrawable(R.mipmap.btn_inoperability_two);
 
         this.g_trazas = this.getResources().getDrawable(R.mipmap.btn_trazas);
         this.g_trazas_two = this.getResources().getDrawable(R.mipmap.btn_trazas_two);
 
-        //this.d_transbordo = this.getResources().getDrawable(R.mipmap.btn_transbordo_residuos);
-        //this.d_transbordo_two = this.getResources().getDrawable(R.mipmap.btn_transbordo_residuos_activo);
-
-        //this.d_cambio_vehiculo = this.getResources().getDrawable(R.mipmap.btn_cambio_vehiculo);
-        //this.d_cambio_vehiculo_two = this.getResources().getDrawable(R.mipmap.btn_cambio_vehiculo_activo);
-
         this.send_data_json= new JSONArray();
-        //this.numberOfCompactions = (TextView) findViewById(R.id.numberOfCompatations);
-        //this.nameRoute=(TextView) findViewById(R.id.nameRoute);
-        //setCompactationsAndSheet();
-        //this.date = (TextView)findViewById(R.id.TextView1);
-        //this.date.setText(this.sharedpreferences.getString("DATE", Utilities.getDate().split(" ")[0]));
+        this.date = (TextView)findViewById(R.id.dateNow);
+        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
     }
     /**
      * Method to change the buttons logic according to the state

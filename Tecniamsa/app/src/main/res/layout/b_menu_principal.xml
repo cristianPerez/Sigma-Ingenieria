@@ -106,6 +106,7 @@
             android:textColor="@color/white"
             android:textSize="25dp"
             android:layout_below="@+id/btn_cerrar_dia"
+            android:onClick="registerGas"
             />
 
         <Button
@@ -118,6 +119,7 @@
             android:textColor="@color/white"
             android:textSize="25dp"
             android:layout_below="@+id/btn_combustible"
+            android:onClick="registerToll"
             />
 
         <Button
@@ -126,7 +128,7 @@
             android:text="Mapa"
             android:layout_margin="10sp"
             android:id="@+id/btn_mapa"
-            android:background="@color/btn7"
+            android:background="@color/gray"
             android:textColor="@color/white"
             android:textSize="25dp"
             android:layout_below="@+id/btn_peaje"

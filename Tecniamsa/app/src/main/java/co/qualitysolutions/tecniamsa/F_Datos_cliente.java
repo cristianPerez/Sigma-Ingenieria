@@ -51,6 +51,9 @@ public class F_Datos_cliente extends Activity {
 
     public void inicializarComponentes() {
 
+        this.date = (TextView)findViewById(R.id.dateNow);
+        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
+
         this.codigo_cliente = (TextView) findViewById(R.id.codigo_cliente);
         this.nombre_cliente = (TextView) findViewById(R.id.nombre_cliente);
         this.direccion_cliente = (TextView) findViewById(R.id.direccion_cliente);
@@ -159,6 +162,55 @@ public class F_Datos_cliente extends Activity {
             Utilities.showAlert(this, "Seleccione un cliente por favor en la lista anterior");
         }
     }
+
+    /**
+     * Method to close the session
+     *
+     * @param v
+     */
+    public void logOut(View v) {
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setTitle(getResources().getString(R.string.logout_confirm));
+        adb.setPositiveButton(
+                getResources().getString(R.string.confirm_button_1),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        JSONObject auxobject= new JSONObject();
+                        JSONArray auxjson;
+                        try {
+                            auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
+                            send_data_json = new JSONArray();
+
+                            auxobject.put("fecha_hora_evento",Utilities.getDate());
+                            auxobject.put("metodo","cerrar_sesion");
+                            auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
+                            send_data_json.put(auxobject);
+                            send_data_json.put(auxjson.get(0));
+                            methodInt="14";
+                            method="cerrar_sesion";
+                            Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
+                            sendInformation();
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+        adb.setNegativeButton(
+                getResources().getString(R.string.confirm_button_2),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                    }
+                });
+        adb.show();
+    }
+
 
 
     /**

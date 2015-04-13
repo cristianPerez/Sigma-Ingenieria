@@ -47,6 +47,9 @@ public class RegistrarPeso extends Activity{
     }
 
     public void inicializarComponentes(){
+        this.date = (TextView)findViewById(R.id.dateNow);
+        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
+
         listView = (ListView) findViewById(R.id.list_pesos);
         this.tipoEmbalaje = (TextView) findViewById(R.id.tipoEmbalaje);
         this.pesoTotal = (TextView)findViewById(R.id.peso_total);
