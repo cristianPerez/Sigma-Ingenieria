@@ -137,14 +137,16 @@ public class E_MenuCiclo extends Activity {
 
                             clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
                             clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+                            clienteSeleccionado.put("estado","terminada");
 
                             send_data_json = new JSONArray();
                             JSONObject auxobject = new JSONObject();
                             auxobject.put("fecha_hora_evento",Utilities.getDate());
-                            auxobject.put("metodo","fin_porte");
+                            auxobject.put("metodo","json_tecni_finportejson");
                             //auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putInt("CURRENT_STATE", 4);
+                            editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
                             editor.commit();
                             send_data_json.put(auxobject);
                             auxobject = new JSONObject();
@@ -152,8 +154,8 @@ public class E_MenuCiclo extends Activity {
                             send_data_json.put(clienteSeleccionado);
                             send_data_json.put(auxobject);
                             send_data_json.put(auxjson.get(0));
-                            method="fin_porte";
-                            methodInt="2";
+                            method="json_tecni_finportejson";
+                            methodInt="47";
                             sendInformation();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -212,8 +214,8 @@ public class E_MenuCiclo extends Activity {
                             auxobject.put("rutas_planeadas", clientesPlaneados);
                             send_data_json.put(auxobject);
                             send_data_json.put(auxjson.get(0));
-                            methodInt="7";
-                            method="regreso_base";
+                            methodInt="48";
+                            method="json_tecni_regresobase";
                             sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
@@ -268,7 +270,6 @@ public class E_MenuCiclo extends Activity {
      */
     @Override
     protected void onResume() {
-        setCompactationsAndSheet();
         if (sharedpreferences.getBoolean("INOPERABILITY", false)) {
             buttonsInoperability();
         }
@@ -297,14 +298,6 @@ public class E_MenuCiclo extends Activity {
     }
 
     /**
-     *Method to display the teamwork select interface
-     */
-    public void startTeamOfWork() {
-        /*Intent intent = new Intent(this, C_GrupoTrabajo.class);
-        startActivity(intent);*/
-    }
-
-    /**
      *Method to configure the buttons logic, when the truck go out the base
      */
     public void buttonsOutBase() {
@@ -327,8 +320,6 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
-        /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
-        this.btn_compaction.setEnabled(false);*/
 
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
@@ -339,17 +330,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base_two);
         this.btn_come_back_to_base.setEnabled(false);
 
-       /* this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
         this.btn_inoperability.setImageDrawable(this.d_inoperability);
         this.btn_inoperability.setEnabled(true);
 
-       /* this.btn_transbordo.setImageDrawable(this.d_transbordo_two);
-        this.btn_transbordo.setEnabled(false);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo_two);
-        this.btn_cambio_vehiculo.setEnabled(false);*/
     }
 
 
@@ -369,8 +352,6 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas);
         this.btn_trazas.setEnabled(true);
 
-        /*this.btn_compaction.setImageDrawable(this.d_compactation);
-        this.btn_compaction.setEnabled(true);*/
 
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish);
         this.btn_collection_finish.setEnabled(true);
@@ -381,17 +362,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base_two);
         this.btn_come_back_to_base.setEnabled(false);
 
-        /*this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
         this.btn_inoperability.setImageDrawable(this.d_inoperability);
         this.btn_inoperability.setEnabled(true);
 
-        /*this.btn_transbordo.setImageDrawable(this.d_transbordo_two);
-        this.btn_transbordo.setEnabled(false);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo_two);
-        this.btn_cambio_vehiculo.setEnabled(false);*/
 
     }
 
@@ -412,9 +385,6 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
-        /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
-        this.btn_compaction.setEnabled(false);*/
-
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
 
@@ -422,26 +392,11 @@ public class E_MenuCiclo extends Activity {
         this.btn_arrive_final_disposition.setImageDrawable(this.d_arrive_final_disposition);
         this.btn_arrive_final_disposition.setEnabled(true);
 
-
-        /*
-        this.btn_arrive_final_disposition.setImageDrawable(this.d_arrive_final_disposition_two);
-        this.btn_arrive_final_disposition.setEnabled(false);*/
-
-
         this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base);
         this.btn_come_back_to_base.setEnabled(true);
 
-        /*this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
         this.btn_inoperability.setImageDrawable(this.d_inoperability);
         this.btn_inoperability.setEnabled(true);
-
-        /*this.btn_transbordo.setImageDrawable(this.d_transbordo);
-        this.btn_transbordo.setEnabled(true);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo);
-        this.btn_cambio_vehiculo.setEnabled(true);*/
     }
 
     /**
@@ -461,10 +416,6 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
-
-        /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
-        this.btn_compaction.setEnabled(false);*/
-
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
 
@@ -474,17 +425,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base_two);
         this.btn_come_back_to_base.setEnabled(false);
 
-        /*this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
         this.btn_inoperability.setImageDrawable(this.d_inoperability);
         this.btn_inoperability.setEnabled(true);
-
-        /*this.btn_transbordo.setImageDrawable(this.d_transbordo_two);
-        this.btn_transbordo.setEnabled(false);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo_two);
-        this.btn_cambio_vehiculo.setEnabled(false);*/
     }
 
 
@@ -504,29 +446,17 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
-       /* this.btn_compaction.setImageDrawable(this.d_compactation_two);
-        this.btn_compaction.setEnabled(false);*/
-
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
 
         this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base_two);
         this.btn_come_back_to_base.setEnabled(false);
 
-       /* this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
         this.btn_arrive_final_disposition.setImageDrawable(this.d_arrive_final_disposition);
         this.btn_arrive_final_disposition.setEnabled(true);
 
         this.btn_inoperability.setImageDrawable(this.d_inoperability_two);
         this.btn_inoperability.setEnabled(true);
-
-        /*this.btn_transbordo.setImageDrawable(this.d_transbordo_two);
-        this.btn_transbordo.setEnabled(false);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo_two);
-        this.btn_cambio_vehiculo.setEnabled(false);*/
 
     }
 
@@ -550,9 +480,6 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
-        /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
-        this.btn_compaction.setEnabled(false);*/
-
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
 
@@ -562,17 +489,8 @@ public class E_MenuCiclo extends Activity {
         this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base);
         this.btn_come_back_to_base.setEnabled(true);
 
-       /* this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
         this.btn_inoperability.setImageDrawable(this.d_inoperability);
         this.btn_inoperability.setEnabled(true);
-
-        /*this.btn_transbordo.setImageDrawable(this.d_transbordo_two);
-        this.btn_transbordo.setEnabled(false);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo_two);
-        this.btn_cambio_vehiculo.setEnabled(false);*/
     }
 
 
@@ -594,32 +512,17 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
-        /*this.btn_compaction.setImageDrawable(this.d_compactation_two);
-        this.btn_compaction.setEnabled(false);*/
-
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
 
         this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base_two);
         this.btn_come_back_to_base.setEnabled(false);
 
-        /*this.btn_special_service.setImageDrawable(this.d_special_service_two);
-        this.btn_special_service.setEnabled(false);*/
-
-
         this.btn_inoperability.setImageDrawable(this.d_inoperability);
         this.btn_inoperability.setEnabled(true);
 
         this.btn_arrive_final_disposition.setImageDrawable(this.d_arrive_final_disposition_two);
         this.btn_arrive_final_disposition.setEnabled(false);
-
-        /*this.btn_transbordo.setImageDrawable(this.d_transbordo_two);
-        this.btn_transbordo.setEnabled(false);
-
-        this.btn_cambio_vehiculo.setImageDrawable(this.d_cambio_vehiculo_two);
-        this.btn_cambio_vehiculo.setEnabled(false);*/
-
-
     }
 
 
@@ -748,39 +651,6 @@ public class E_MenuCiclo extends Activity {
             buttonsInBase();
         }
 
-    }
-
-    /**
-     * Method to visualize the number of compaction and sheet route in the interface
-     */
-    public void setCompactationsAndSheet(){
-
-        int position = sharedpreferences.getInt("POS_CURRENT_ROUTE", -1);
-        if(position!=-1){
-            try {
-                JSONArray auxRoutes = new JSONArray(sharedpreferences.getString("PLANNED_ROUTES", null));
-                JSONObject auxRoute = auxRoutes.getJSONObject(position);
-                int compactions = sharedpreferences.getInt("COMPACTIONS",0);
-                this.numberOfCompactions.setText(String.valueOf(compactions));
-                this.nameRoute.setText(auxRoute.getString("hoja"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    /**
-     * Method to clear the number of compaction and sheet route in the interface
-     */
-    public void clearSheet(){
-        this.nameRoute.setText("");
-    }
-    /**
-     * Method to clear the number of compaction and sheet route in the interface
-     */
-    public void clearCompactions(){
-        this.numberOfCompactions.setText("0");
     }
 
 }

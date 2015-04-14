@@ -124,7 +124,11 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         for(int i=0; i<this.clientesPlaneados.length(); i++){
             try {
                 if(this.clientesPlaneados.getJSONObject(i).getString("nombre_cliente").toUpperCase().contains((newText.toString().toUpperCase()))){
-                    this.clientesVisualizados.put(this.clientesPlaneados.getJSONObject(i));
+
+                    if(this.clientesPlaneados.getJSONObject(i).getString("estado").equals("terminada"))
+                        this.clientesVisualizados.put(this.clientesPlaneados.getJSONObject(i)+"----Atendido");
+                    else
+                        this.clientesVisualizados.put(this.clientesPlaneados.getJSONObject(i));
                 }
             } catch (JSONException e) {
             }

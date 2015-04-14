@@ -31,7 +31,8 @@ public class H_FormularioDisposicionFInal extends Activity {
     private SharedPreferences sharedpreferences;
     private AlertDialog.Builder adb;
     private TextView date;
-    private JSONArray send_data_json;
+    private JSONArray send_data_json,clientesPlaneados;
+    private JSONObject clienteSeleccionado;
     private String method;
     private String methodInt;
 
@@ -74,6 +75,14 @@ public class H_FormularioDisposicionFInal extends Activity {
 
     public void outFiller(View v) {
 
+
+        try {
+            clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+            clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setTitle("Alerta!");
         adb.setMessage("Desea finalizar el tiempo de disposicion final?");
@@ -93,6 +102,8 @@ public class H_FormularioDisposicionFInal extends Activity {
             auxobject.put("usuario",sharedpreferences.getString("USER_ID", "mavalencia"));
             auxobject.put("hora_inicio_disposicion_final",sharedpreferences.getString("TIME_START_IN_FILLER", Utilities.getDate()));
             auxobject.put("hora_fin_disposicion_final",Utilities.getDate());
+            auxobject.put("hoja",clienteSeleccionado.getString("hoja"));
+
             send_data_json.put(auxobject);
             send_data_json.put(auxjson.get(0));
             methodInt="49";

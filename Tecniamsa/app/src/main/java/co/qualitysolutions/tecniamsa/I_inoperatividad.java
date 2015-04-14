@@ -123,6 +123,7 @@ public class I_inoperatividad extends Activity {
                             infoInoperability.put("motivo", inoperabilityCase);
                             infoInoperability.put("observacion",privatePreferences.getString("DETAIL", ""));
                             infoInoperability.put("hora_fin_inoperatividad",Utilities.getDate().toString());
+                            infoInoperability.put("metodo","json_tecni_inoperatividad");
 
                             send_data_json = new JSONArray();
                             send_data_json.put(infoInoperability);//Information of user and inoperability

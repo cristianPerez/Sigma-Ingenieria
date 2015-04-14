@@ -6,21 +6,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import utilidades.SaveInformation;
 import utilidades.Utilities;
 
@@ -74,7 +68,6 @@ public class F_Datos_cliente extends Activity {
             this.hoja_cliente.setText(this.clienteSeleccionado.getString("hoja"));
             this.entrega_cliente.setText("No definida");
             this.cargo_cliente.setText("No definida");
-            //this.spinner_estado.setSelection(Integer.parseInt(this.clienteSeleccionado.getString("estado")));
             String observacion = this.clienteSeleccionado.getString("observacion");
             if (!observacion.equals(""))
                 this.observacion_cliente.setText(observacion);
@@ -87,25 +80,24 @@ public class F_Datos_cliente extends Activity {
 
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        if (this.clienteSeleccionado != null) {
+        if (clienteSeleccionado != null) {
             try {
                 SharedPreferences.Editor editor = this.sharedpreferences.edit();
-                if (this.clienteSeleccionado.getString("estado").equals("inactiva")) {
-                    this.clienteSeleccionado.put("estado", "iniciada");
-                    this.clienteSeleccionado.put("fecha_inicio", Utilities.getDate());
-                    this.clienteSeleccionado.put("estado", String.valueOf(this.spinner_estado.getSelectedItemPosition()));
-                    this.clienteSeleccionado.put("observacion", this.observacion_cliente.getText());
-                    this.clientesPlaneados.put(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0), this.clienteSeleccionado);
+                if (clienteSeleccionado.getString("estado").equals("inactiva")) {
+                    clienteSeleccionado.put("estado", "iniciada");
+                    clienteSeleccionado.put("fecha_inicio", Utilities.getDate());
+                    clienteSeleccionado.put("estado", String.valueOf(this.spinner_estado.getSelectedItemPosition()));
+                    clienteSeleccionado.put("observacion", this.observacion_cliente.getText());
+                    clientesPlaneados.put(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0), this.clienteSeleccionado);
 
                     editor.putString("PLANNED_CLIENTS", this.clientesPlaneados.toString());
                     editor.commit();
                     adb.setTitle("DESEA INICIAR LA RUTA  " + this.clienteSeleccionado.getString("hoja"));
-                    this.method = "iniciar_porte";
-                    this.methodInt = "1";
-                } else {
-                    adb.setTitle("DESEA CONTINUAR LA RUTA " + this.clienteSeleccionado.getString("hoja"));
-                    this.method = "continuar_porte";
-                    this.methodInt = "3";
+                    this.method = "json_tecni_inicioporte";
+                    this.methodInt = "46";
+
+                } else if(clienteSeleccionado.getString("estado").equals("terminada")) {
+                    adb.setTitle("EL CLINETE YA FUE ATENDIDO");
                 }
                 //editor.putInt("POS_CURRENT_ROUTE", this.routePosition);
                 editor.putInt("CURRENT_STATE", 2);
@@ -117,29 +109,34 @@ public class F_Datos_cliente extends Activity {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
-
-                                send_data_json = new JSONArray();
-                                JSONArray auxjson = new JSONArray();
-                                JSONArray auxjson2 = new JSONArray();
-                                JSONObject auxobject = new JSONObject();
-
                                 try {
-                                    auxjson2 = new JSONArray(sharedpreferences.getString("TRUCK_INFO", null));
-                                    auxobject = new JSONObject();
-                                    auxobject.put("fecha_hora_evento", Utilities.getDate());
-                                    auxobject.put("metodo", method);
+                                    if (clienteSeleccionado.getString("estado").equals("inactiva")) {
+                                    send_data_json = new JSONArray();
+                                    JSONArray auxjson = new JSONArray();
+                                    JSONArray auxjson2 = new JSONArray();
+                                    JSONObject auxobject = new JSONObject();
 
-                                    send_data_json.put(auxobject);
-                                    send_data_json.put(clienteSeleccionado);
-                                    if (method.equals("iniciar_porte")) {
-                                        auxjson = new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", null));
+                                    try {
+                                        auxjson2 = new JSONArray(sharedpreferences.getString("TRUCK_INFO", null));
                                         auxobject = new JSONObject();
-                                        auxobject.put("operators_select", auxjson);
-                                        send_data_json.put(auxobject);
-                                    }
-                                    send_data_json.put(auxjson2.get(0));
-                                } catch (JSONException e) {
+                                        auxobject.put("fecha_hora_evento", Utilities.getDate());
+                                        auxobject.put("metodo", method);
 
+                                        send_data_json.put(auxobject);
+                                        send_data_json.put(clienteSeleccionado);
+                                        if (method.equals("json_tecni_inicioporte")) {
+                                            auxjson = new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", null));
+                                            auxobject = new JSONObject();
+                                            auxobject.put("operators_select", auxjson);
+                                            send_data_json.put(auxobject);
+                                        }
+                                        send_data_json.put(auxjson2.get(0));
+                                    } catch (JSONException e) {
+
+                                    }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
                                 sendInformation();
                                 Intent intent = new Intent();
