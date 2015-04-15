@@ -142,7 +142,7 @@ public class E_MenuCiclo extends Activity {
                             send_data_json = new JSONArray();
                             JSONObject auxobject = new JSONObject();
                             auxobject.put("fecha_hora_evento",Utilities.getDate());
-                            auxobject.put("metodo","json_tecni_finportejson");
+                            auxobject.put("metodo","json_tecni_finporte");
                             //auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putInt("CURRENT_STATE", 4);
@@ -154,7 +154,7 @@ public class E_MenuCiclo extends Activity {
                             send_data_json.put(clienteSeleccionado);
                             send_data_json.put(auxobject);
                             send_data_json.put(auxjson.get(0));
-                            method="json_tecni_finportejson";
+                            method="json_tecni_finporte";
                             methodInt="47";
                             sendInformation();
                         } catch (JSONException e) {
@@ -203,7 +203,7 @@ public class E_MenuCiclo extends Activity {
                             send_data_json = new JSONArray();
 
                             auxobject.put("fecha_hora_evento",Utilities.getDate());
-                            auxobject.put("metodo","regreso_base");
+                            auxobject.put("metodo","json_tecni_regresobase");
 
                             clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
                             clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
@@ -547,12 +547,12 @@ public class E_MenuCiclo extends Activity {
                             send_data_json = new JSONArray();
 
                             auxobject.put("fecha_hora_evento",Utilities.getDate());
-                            auxobject.put("metodo","cerrar_sesion");
+                            auxobject.put("metodo","json_tecni_cerrarsesion");
                             auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
                             send_data_json.put(auxobject);
                             send_data_json.put(auxjson.get(0));
-                            methodInt="14";
-                            method="cerrar_sesion";
+                            methodInt="51";
+                            method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
                             sendInformation();
                         } catch (JSONException e) {

@@ -182,12 +182,12 @@ public class B_MenuPrincipal extends Activity {
                             send_data_json = new JSONArray();
 
                             auxobject.put("fecha_hora_evento",Utilities.getDate());
-                            auxobject.put("metodo","cerrar_sesion");
+                            auxobject.put("metodo","json_tecni_cerrarsesion");
                             auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
                             send_data_json.put(auxobject);
                             send_data_json.put(auxjson.get(0));
-                            methodInt="14";
-                            method="cerrar_sesion";
+                            methodInt="51";
+                            method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
                             sendInformation();
                         } catch (JSONException e) {
@@ -246,8 +246,8 @@ public class B_MenuPrincipal extends Activity {
                                     send_data_json.put(aux);
                                     send_data_json.put(truckInfo.get(0));
 
-                                    methodInt="11";
-                                    method="cerrar_dia";
+                                    methodInt="50";
+                                    method="json_tecni_cerrardia";
 
                                     bloquearMenu();
                                     sendInformation();

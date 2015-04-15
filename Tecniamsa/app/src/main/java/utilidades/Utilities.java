@@ -59,7 +59,7 @@ public class Utilities {
 	public static boolean compareDates(String dateServer , String hourServer){
 		
 		Calendar c = Calendar.getInstance();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
 		String currentTime = dateFormat.format(c.getTime());
 		String[] vecInitilize = currentTime.split(" ");
 		String[] dateIntern = vecInitilize[0].split("-");
