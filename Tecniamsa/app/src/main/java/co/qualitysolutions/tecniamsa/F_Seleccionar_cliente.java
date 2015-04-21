@@ -78,7 +78,11 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         ArrayList<String> listRouteNames = new ArrayList<String>();
         for(int i=0; i<this.clientesVisualizados.length(); i++){
             try {
-                listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente"));
+                if(this.clientesVisualizados.getJSONObject(i).getString("estado").equals("terminada"))
+                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+" ----Atendido");
+                else
+                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente"));
+
 
             } catch (JSONException e) {
             }
@@ -94,8 +98,25 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putInt("CLIENTE_SELECCIONADO",position);
         editor.commit();
-        Intent intent = new Intent(this, F_Datos_cliente.class);
-        startActivityForResult(intent, 10);
+
+        try {
+            if(this.clientesPlaneados.getJSONObject(position).getString("estado").equals("terminada")){
+
+                Toast.makeText(this,"El cliente ya fue atendido",Toast.LENGTH_LONG).show();
+
+            }
+            else{
+
+                Intent intent = new Intent(this, F_Datos_cliente.class);
+                startActivityForResult(intent, 10);
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -125,9 +146,6 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
             try {
                 if(this.clientesPlaneados.getJSONObject(i).getString("nombre_cliente").toUpperCase().contains((newText.toString().toUpperCase()))){
 
-                    if(this.clientesPlaneados.getJSONObject(i).getString("estado").equals("terminada"))
-                        this.clientesVisualizados.put(this.clientesPlaneados.getJSONObject(i)+"----Atendido");
-                    else
                         this.clientesVisualizados.put(this.clientesPlaneados.getJSONObject(i));
                 }
             } catch (JSONException e) {
@@ -159,12 +177,12 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                             send_data_json = new JSONArray();
 
                             auxobject.put("fecha_hora_evento", Utilities.getDate());
-                            auxobject.put("metodo","cerrar_sesion");
+                            auxobject.put("metodo","json_tecni_cerrarsesion");
                             auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
                             send_data_json.put(auxobject);
                             send_data_json.put(auxjson.get(0));
-                            methodInt="14";
-                            method="cerrar_sesion";
+                            methodInt="51";
+                            method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
                             sendInformation();
                         } catch (JSONException e) {

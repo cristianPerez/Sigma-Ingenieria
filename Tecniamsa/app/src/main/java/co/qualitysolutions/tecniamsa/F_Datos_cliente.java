@@ -76,28 +76,30 @@ public class F_Datos_cliente extends Activity {
         }
     }
 
-    public void startRoute(View view) {
+
+    /*public void startRoute(View view) {
 
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        if (clienteSeleccionado != null) {
+        if (this.clienteSeleccionado != null) {
             try {
                 SharedPreferences.Editor editor = this.sharedpreferences.edit();
-                if (clienteSeleccionado.getString("estado").equals("inactiva")) {
-                    clienteSeleccionado.put("estado", "iniciada");
-                    clienteSeleccionado.put("fecha_inicio", Utilities.getDate());
-                    clienteSeleccionado.put("estado", String.valueOf(this.spinner_estado.getSelectedItemPosition()));
-                    clienteSeleccionado.put("observacion", this.observacion_cliente.getText());
-                    clientesPlaneados.put(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0), this.clienteSeleccionado);
+                if (this.clienteSeleccionado.getString("estado").equals("inactiva")) {
+                    this.clienteSeleccionado.put("estado", "iniciada");
+                    this.clienteSeleccionado.put("fecha_inicio", Utilities.getDate());
+                    this.clienteSeleccionado.put("estado", String.valueOf(this.spinner_estado.getSelectedItemPosition()));
+                    this.clienteSeleccionado.put("observacion", this.observacion_cliente.getText());
+                    this.clientesPlaneados.put(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0), this.clienteSeleccionado);
 
                     editor.putString("PLANNED_CLIENTS", this.clientesPlaneados.toString());
                     editor.commit();
                     adb.setTitle("DESEA INICIAR LA RUTA  " + this.clienteSeleccionado.getString("hoja"));
-                    this.method = "json_tecni_inicioporte";
-                    this.methodInt = "46";
-
-                } else if(clienteSeleccionado.getString("estado").equals("terminada")) {
-                    adb.setTitle("EL CLINETE YA FUE ATENDIDO");
+                    this.method = "iniciar_porte";
+                    this.methodInt = "1";
+                } else {
+                    adb.setTitle("DESEA CONTINUAR LA RUTA " + this.clienteSeleccionado.getString("hoja"));
+                    this.method = "continuar_porte";
+                    this.methodInt = "3";
                 }
                 //editor.putInt("POS_CURRENT_ROUTE", this.routePosition);
                 editor.putInt("CURRENT_STATE", 2);
@@ -109,34 +111,29 @@ public class F_Datos_cliente extends Activity {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
+
+                                send_data_json = new JSONArray();
+                                JSONArray auxjson = new JSONArray();
+                                JSONArray auxjson2 = new JSONArray();
+                                JSONObject auxobject = new JSONObject();
+
                                 try {
-                                    if (clienteSeleccionado.getString("estado").equals("inactiva")) {
-                                    send_data_json = new JSONArray();
-                                    JSONArray auxjson = new JSONArray();
-                                    JSONArray auxjson2 = new JSONArray();
-                                    JSONObject auxobject = new JSONObject();
+                                    auxjson2 = new JSONArray(sharedpreferences.getString("TRUCK_INFO", null));
+                                    auxobject = new JSONObject();
+                                    auxobject.put("fecha_hora_evento", Utilities.getDate());
+                                    auxobject.put("metodo", method);
 
-                                    try {
-                                        auxjson2 = new JSONArray(sharedpreferences.getString("TRUCK_INFO", null));
+                                    send_data_json.put(auxobject);
+                                    send_data_json.put(clienteSeleccionado);
+                                    if (method.equals("iniciar_porte")) {
+                                        auxjson = new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", null));
                                         auxobject = new JSONObject();
-                                        auxobject.put("fecha_hora_evento", Utilities.getDate());
-                                        auxobject.put("metodo", method);
-
+                                        auxobject.put("operators_select", auxjson);
                                         send_data_json.put(auxobject);
-                                        send_data_json.put(clienteSeleccionado);
-                                        if (method.equals("json_tecni_inicioporte")) {
-                                            auxjson = new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", null));
-                                            auxobject = new JSONObject();
-                                            auxobject.put("operators_select", auxjson);
-                                            send_data_json.put(auxobject);
-                                        }
-                                        send_data_json.put(auxjson2.get(0));
-                                    } catch (JSONException e) {
-
                                     }
-                                    }
+                                    send_data_json.put(auxjson2.get(0));
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+
                                 }
                                 sendInformation();
                                 Intent intent = new Intent();
@@ -158,7 +155,79 @@ public class F_Datos_cliente extends Activity {
         } else {
             Utilities.showAlert(this, "Seleccione un cliente por favor en la lista anterior");
         }
+    }*/
+
+    public void startRoute(View view) {
+
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setTitle("Alert!");
+            try {
+                SharedPreferences.Editor editor = this.sharedpreferences.edit();
+
+                clienteSeleccionado.put("estado", "iniciada");
+                clienteSeleccionado.put("fecha_inicio", Utilities.getDate());
+                clienteSeleccionado.put("estado", String.valueOf(this.spinner_estado.getSelectedItemPosition()));
+                clienteSeleccionado.put("observacion", this.observacion_cliente.getText());
+                clientesPlaneados.put(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0), this.clienteSeleccionado);
+                this.method = "json_tecni_inicioporte";
+                this.methodInt = "46";
+
+                editor.putString("PLANNED_CLIENTS", this.clientesPlaneados.toString());
+                editor.commit();
+                adb.setTitle("DESEA INICIAR LA RUTA  " + this.clienteSeleccionado.getString("hoja"));
+                editor.putInt("CURRENT_STATE", 2);
+                editor.commit();
+                adb.setPositiveButton(
+                        getResources().getString(R.string.confirm_button_1),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                    send_data_json = new JSONArray();
+                                    JSONArray auxjson = new JSONArray();
+                                    JSONArray auxjson2 = new JSONArray();
+                                    JSONObject auxobject = new JSONObject();
+
+                                    try {
+                                        auxjson2 = new JSONArray(sharedpreferences.getString("TRUCK_INFO", null));
+                                        auxobject = new JSONObject();
+                                        auxobject.put("fecha_hora_evento", Utilities.getDate());
+                                        auxobject.put("metodo", method);
+
+                                        send_data_json.put(auxobject);
+                                        send_data_json.put(clienteSeleccionado);
+
+                                            auxjson = new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", null));
+                                            auxobject = new JSONObject();
+                                            auxobject.put("operators_select", auxjson);
+                                            send_data_json.put(auxobject);
+
+                                        send_data_json.put(auxjson2.get(0));
+                                    } catch (JSONException e) {
+
+                                    }
+
+                                sendInformation();
+                                Intent intent = new Intent();
+                                setResult(2, intent);
+                                finish();
+                                dialog.dismiss();
+                            }
+                        });
+                adb.setNegativeButton(
+                        getResources().getString(R.string.confirm_button_2),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                adb.show();
+            } catch (JSONException e) {
+            }
     }
+
 
     /**
      * Method to close the session
@@ -181,12 +250,12 @@ public class F_Datos_cliente extends Activity {
                             send_data_json = new JSONArray();
 
                             auxobject.put("fecha_hora_evento",Utilities.getDate());
-                            auxobject.put("metodo","cerrar_sesion");
+                            auxobject.put("metodo","json_tecni_cerrarsesion");
                             auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
                             send_data_json.put(auxobject);
                             send_data_json.put(auxjson.get(0));
-                            methodInt="14";
-                            method="cerrar_sesion";
+                            methodInt="51";
+                            method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
                             sendInformation();
                         } catch (JSONException e) {
