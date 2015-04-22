@@ -60,6 +60,7 @@
     <string name="alertMensaje">Alerta!</string>
     <string name="alertSinClientes">No tiene clientes planeados para atender</string>
     <string name="alertInvalidos">Datos invalidos!</string>
+    <string name="btnAtras">Atras</string>
 
     <string-array name="systemV">
         <item>Ninguno</item>
