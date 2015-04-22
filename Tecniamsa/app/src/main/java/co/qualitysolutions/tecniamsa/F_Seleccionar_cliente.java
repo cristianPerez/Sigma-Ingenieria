@@ -208,7 +208,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
      * Method to create a new json to save the information and send it to server
      */
     public void sendInformation(){
-        new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
+        new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
                 this.methodInt,
                 this.method,
                 this.send_data_json.toString());

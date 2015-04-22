@@ -283,7 +283,7 @@ public class F_Datos_cliente extends Activity {
      * Method to create a new json to save the information and send it to server
      */
     public void sendInformation(){
-        new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
+        new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
                 this.methodInt,
                 this.method,
                 this.send_data_json.toString());

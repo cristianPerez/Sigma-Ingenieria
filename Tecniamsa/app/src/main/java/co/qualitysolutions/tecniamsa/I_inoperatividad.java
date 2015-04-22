@@ -162,7 +162,7 @@ public class I_inoperatividad extends Activity {
      * Method to send information
      */
     public void sendInformation() {
-        new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
+        new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
                 methodInt,
                 method,
                 send_data_json.toString());

@@ -192,7 +192,7 @@ public class H_FormularioDisposicionFInal extends Activity {
     public void sendInformation(){
 
         try {
-            new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
+            new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
                     this.methodInt,
                     this.method,
                     this.send_data_json.toString());
