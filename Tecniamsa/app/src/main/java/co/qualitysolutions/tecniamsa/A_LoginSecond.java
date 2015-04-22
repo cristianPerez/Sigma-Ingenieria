@@ -318,6 +318,17 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
         return super.onKeyDown(keyCode, event);
     }
 
+    public void atras(View view){
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.clear();
+        editor.commit();
+        Intent intent = new Intent(getApplicationContext(),A_Login.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+    }
+
 
 
 }

@@ -52,12 +52,10 @@ public class Utilities {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
         String currentTime = dateFormat.format(c.getTime());
-
         return currentTime;
     }
 	
 	public static boolean compareDates(String dateServer , String hourServer){
-		
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
 		String currentTime = dateFormat.format(c.getTime());
