@@ -79,9 +79,9 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         for(int i=0; i<this.clientesVisualizados.length(); i++){
             try {
                 if(this.clientesVisualizados.getJSONObject(i).getString("estado").equals("terminada"))
-                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+" ----Atendido");
+                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("hoja") +"--" +" ----Atendido");
                 else
-                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente"));
+                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("hoja"));
 
 
             } catch (JSONException e) {
@@ -208,7 +208,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
      * Method to create a new json to save the information and send it to server
      */
     public void sendInformation(){
-        new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
+        new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
                 this.methodInt,
                 this.method,
                 this.send_data_json.toString());

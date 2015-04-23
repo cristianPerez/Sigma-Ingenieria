@@ -121,7 +121,7 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
         final int posicion = position;
 
         adb.setTitle("Alerta");
-        adb.setMessage("Seguro que desea agragar este operario?");
+        adb.setMessage("Seguro que desea agregar este operario?");
         adb.setPositiveButton(
                 getResources().getString(R.string.confirm_button_1),
                 new DialogInterface.OnClickListener(){
@@ -225,7 +225,7 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
     public void sendInformation(){
 
         try {
-            new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
+            new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
                     this.methodInt,
                     this.method,
                     this.send_data_json.toString());
