@@ -97,7 +97,10 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                 }
 
             }
-
+        this.clienteSeleccionado.put("CodigosTotalLeidos",cont);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
+        editor.commit();
         this.barras_total_traza.setText(String.valueOf(cont));
     }
 
@@ -129,6 +132,10 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
             }
 
+        this.clienteSeleccionado.put("PesoTotalRecogido",cont);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
+        editor.commit();
         this.peso_total_traza.setText(String.valueOf(cont) + "KG");
     }
 
