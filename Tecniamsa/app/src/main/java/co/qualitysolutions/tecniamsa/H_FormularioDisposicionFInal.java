@@ -103,7 +103,6 @@ public class H_FormularioDisposicionFInal extends Activity {
             auxobject.put("hora_inicio_disposicion_final",sharedpreferences.getString("TIME_START_IN_FILLER", Utilities.getDate()));
             auxobject.put("hora_fin_disposicion_final",Utilities.getDate());
             auxobject.put("hoja",clienteSeleccionado.getString("hoja"));
-
             send_data_json.put(auxobject);
             send_data_json.put(auxjson.get(0));
             methodInt="49";

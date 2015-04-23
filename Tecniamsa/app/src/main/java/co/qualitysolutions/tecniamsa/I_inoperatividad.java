@@ -34,9 +34,11 @@ public class I_inoperatividad extends Activity {
     private String inoperabilityCase;
     private TextView date;
     private Drawable btn_start_inoperability,btn_start_inoperability_two,btn_finish_inoperability,btn_finish_inoperability_two;
-    private JSONArray send_data_json;
+    private JSONArray send_data_json,clientesPlaneados;
+    private JSONObject clienteSeleccionado;
     private String method;
     private String methodInt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,12 @@ public class I_inoperatividad extends Activity {
         }
         this.date = (TextView)findViewById(R.id.dateNow);
         this.date.setText(this.sharedpreferences.getString("DATE", Utilities.getDate().split(" ")[0]));
+        try {
+            this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+            this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -124,17 +132,11 @@ public class I_inoperatividad extends Activity {
                             infoInoperability.put("observacion",privatePreferences.getString("DETAIL", ""));
                             infoInoperability.put("hora_fin_inoperatividad",Utilities.getDate().toString());
                             infoInoperability.put("metodo","json_tecni_inoperatividad");
+                            infoInoperability.put("hoja",clienteSeleccionado.getString("hoja"));
 
                             send_data_json = new JSONArray();
                             send_data_json.put(infoInoperability);//Information of user and inoperability
-                            int posCurrentRout = sharedpreferences.getInt("POS_CURRENT_ROUTE", -1);
-                            if(posCurrentRout>=0){//Information current rout
-                                JSONArray plannedRoutes = new JSONArray(sharedpreferences.getString("PLANNED_ROUTES", null));
-                                send_data_json.put(plannedRoutes.getJSONObject(posCurrentRout));
-                            }
-                            else{
-                                send_data_json.put(new String("Sin ruta"));
-                            }
+
                             send_data_json.put(auxjson.get(0));
                         } catch (JSONException e) {
                         }

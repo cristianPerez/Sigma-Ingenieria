@@ -79,9 +79,9 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         for(int i=0; i<this.clientesVisualizados.length(); i++){
             try {
                 if(this.clientesVisualizados.getJSONObject(i).getString("estado").equals("terminada"))
-                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+" ----Atendido");
+                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("hoja") +"--" +" ----Atendido");
                 else
-                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente"));
+                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("hoja"));
 
 
             } catch (JSONException e) {

@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import co.qualitysolutions.tecniamsa.A_Login;
+import co.qualitysolutions.tecniamsa.R;
 
 public class SaveInformation extends AsyncTask<String, Void, Void> {
 	
@@ -26,7 +27,8 @@ public class SaveInformation extends AsyncTask<String, Void, Void> {
 		this.sharedpreferences = activity.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
 		this.dataBase = new BackUpDataSource(activity);
 		this.dataBase.open();
-	}
+
+    }
 
 	@Override
 	protected void onPreExecute() {
@@ -53,7 +55,14 @@ public class SaveInformation extends AsyncTask<String, Void, Void> {
 			}
 			//Send current event
 			this.connection.setUrl(params[0]);
-			String[] parameters = {params[1], token, Utilities.getDate(), params[2], params[3]};
+            JSONArray aux=null;
+            try {
+                aux = new JSONArray(params[3]);
+                aux.getJSONObject(0).put("version",R.string.version);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+			String[] parameters = {params[1], token, Utilities.getDate(), params[2], aux.toString()};
 			answer = this.connection.conectar(parameters);
 			try {
 				if(!answer.getJSONObject(0).getString("mensaje").equals("1")){
@@ -73,7 +82,6 @@ public class SaveInformation extends AsyncTask<String, Void, Void> {
 		else{
 			this.saveInDataBase(token, Utilities.getDate(), params[2], params[3]);
             if(params[2].equals("json_tecni_cerrarsesion")){
-
                 closeSession();
             }
 		}

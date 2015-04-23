@@ -121,7 +121,7 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
         final int posicion = position;
 
         adb.setTitle("Alerta");
-        adb.setMessage("Seguro que desea agragar este operario?");
+        adb.setMessage("Seguro que desea agregar este operario?");
         adb.setPositiveButton(
                 getResources().getString(R.string.confirm_button_1),
                 new DialogInterface.OnClickListener(){
