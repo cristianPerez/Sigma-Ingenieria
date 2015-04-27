@@ -38,12 +38,14 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
     private String methodInt;
     private TextView date;
     private Button empezarJornada,agregarOperario;
+    private Activity myself;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_grupo_trabajo);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        this.myself=this;
         identifyElements();
         configurarLista();
 
@@ -331,27 +333,15 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        sendInformation();
+        //sendInformation();
+        Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+
     }
 
     public void showALert(String mensaje){
 
         Toast.makeText(this,mensaje,Toast.LENGTH_LONG).show();
 
-    }
-
-    /**
-     *Method that send the information to server, from whatever method
-     */
-    public void sendInformation(){
-
-        try {
-            new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
-                    this.methodInt,
-                    this.method,
-                    this.send_data_json.toString());
-        } catch (Exception e) {
-        }
     }
 
     /**
@@ -382,7 +372,8 @@ public class C_GrupoTrabajo extends Activity implements AdapterView.OnItemLongCl
                             methodInt="51";
                             method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

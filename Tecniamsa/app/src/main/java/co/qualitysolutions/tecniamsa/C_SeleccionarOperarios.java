@@ -39,6 +39,9 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
     private TextView date;
     private boolean flagCollection;
     private JSONObject operadorSeleccionado;
+    private Activity myself;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
         setContentView(R.layout.c_seleccionar_operarios);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         this.flagCollection = this.sharedpreferences.getBoolean("FLAG_COLLECTION",false);
+        this.myself=this;
         identifyElements();
         diaplayListAllOperators();
     }
@@ -200,7 +204,8 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
                             methodInt="51";
                             method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
