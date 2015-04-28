@@ -108,6 +108,11 @@ public class Utilities {
 		adb.show();
 	}
 
-
+    public static void sendInformation(Activity activity, String methodInt, String method,String send_data_json){
+        new SaveInformation(activity).execute(activity.getResources().getString(R.string.urlPruebas),
+                methodInt,
+                method,
+                send_data_json.toString());
+    }
 
 }
