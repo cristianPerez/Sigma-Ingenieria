@@ -37,7 +37,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
     private JSONObject clienteSeleccionado;
     private SharedPreferences sharedpreferences;
     private TextView codigoCliente,nombreCliente,peso_total_traza,barras_total_traza;
-
+    private Activity myself;
     private JSONArray send_data_json;
     private String method;
     private String methodInt;
@@ -48,6 +48,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         super.onCreate(savedInstanceState);
         setContentView(R.layout.g_trazas_embalaje);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        this.myself=this;
         inicializarComponentes();
     }
 
@@ -309,7 +310,8 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                             methodInt="51";
                             method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -327,20 +329,6 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                     }
                 });
         adb.show();
-    }
-
-    /**
-     *Method that send the information to server, from whatever method
-     */
-    public void sendInformation(){
-
-        try {
-            new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
-                    this.methodInt,
-                    this.method,
-                    this.send_data_json.toString());
-        } catch (Exception e) {
-        }
     }
 
 }

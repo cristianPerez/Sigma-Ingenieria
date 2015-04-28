@@ -43,7 +43,7 @@ public class E_MenuCiclo extends Activity {
     private TextView numberOfCompactions,nameRoute;
     private String methodInt;
     private TextView date;
-
+    private Activity myself;
 
 
     @Override
@@ -52,6 +52,7 @@ public class E_MenuCiclo extends Activity {
         setContentView(R.layout.e_menu_ciclo);
         this.methodInt= "0";
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        this.myself=this;
         this.initializeComponents();
         currentState();
     }
@@ -156,7 +157,8 @@ public class E_MenuCiclo extends Activity {
                             send_data_json.put(auxjson.get(0));
                             method="json_tecni_finporte";
                             methodInt="47";
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -216,7 +218,8 @@ public class E_MenuCiclo extends Activity {
                             send_data_json.put(auxjson.get(0));
                             methodInt="48";
                             method="json_tecni_regresobase";
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -283,19 +286,6 @@ public class E_MenuCiclo extends Activity {
         super.onResume();
     }
 
-    /**
-     *Method that send the information to server, from whatever method
-     */
-    public void sendInformation(){
-
-        try {
-            new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
-                    this.methodInt,
-                    this.method,
-                    this.send_data_json.toString());
-        } catch (Exception e) {
-        }
-    }
 
     /**
      *Method to configure the buttons logic, when the truck go out the base
@@ -554,7 +544,8 @@ public class E_MenuCiclo extends Activity {
                             methodInt="51";
                             method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

@@ -45,18 +45,16 @@ public class K_Peaje extends Activity {
     private JSONArray send_data_json;
     private String method;
     private String methodInt;
-
+    private Activity myself;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.k_peaje);
-
-        this.sharedpreferences = getSharedPreferences("MyPreferences",
-                Context.MODE_PRIVATE);
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        this.sharedpreferences = getSharedPreferences("MyPreferences",Context.MODE_PRIVATE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        this.myself=this;
         inicializeObjects();
         llenarCasetas();
     }
@@ -99,9 +97,7 @@ public class K_Peaje extends Activity {
     public void pay_toll (View v){
 
         if(!this.ticket.getText().toString().equals("")){
-
             try {
-
                 JSONObject auxobject = new JSONObject();
                 JSONArray auxjson;
                 send_data_json = new JSONArray();
@@ -116,7 +112,9 @@ public class K_Peaje extends Activity {
                 send_data_json.put(auxJsonTicket);
                 methodInt="45";
                 method="json_tecni_peaje";
-                sendInformation();
+                Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                //sendInformation();
+
                 Toast.makeText(this, "Peaje enviado con exito", Toast.LENGTH_LONG).show();
                 finish();
 
@@ -128,17 +126,6 @@ public class K_Peaje extends Activity {
         else{
             Toast.makeText(this, "Complete el campo # Ticket para continuar", Toast.LENGTH_LONG).show();
         }
-
-    }
-
-    /**
-     * Method to send information
-     */
-    public void sendInformation() {
-        new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
-                methodInt,
-                method,
-                send_data_json.toString());
     }
 
     /**
@@ -169,7 +156,8 @@ public class K_Peaje extends Activity {
                             methodInt = "51";
                             method = "json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

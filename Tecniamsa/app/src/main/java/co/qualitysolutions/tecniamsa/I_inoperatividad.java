@@ -38,6 +38,7 @@ public class I_inoperatividad extends Activity {
     private JSONObject clienteSeleccionado;
     private String method;
     private String methodInt;
+    private Activity myself;
 
 
     @Override
@@ -47,7 +48,7 @@ public class I_inoperatividad extends Activity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         this.privatePreferences = getSharedPreferences("InoperabilityPreferences", Context.MODE_PRIVATE);
-
+        this.myself=this;
         this.identifyElements();
         this.inoperabilityCase="";
         if(this.sharedpreferences.getBoolean("INOPERABILITY", false)){
@@ -140,11 +141,10 @@ public class I_inoperatividad extends Activity {
                             send_data_json.put(auxjson.get(0));
                         } catch (JSONException e) {
                         }
-
                         methodInt="43";
                         method="json_tecni_inoperatividad";
-
-                        sendInformation();
+                        //sendInformation();
+                        Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
                         deleteInformation();
                         finish();
                     }
@@ -159,16 +159,6 @@ public class I_inoperatividad extends Activity {
         adb.show();
     }
 
-
-    /**
-     * Method to send information
-     */
-    public void sendInformation() {
-        new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
-                methodInt,
-                method,
-                send_data_json.toString());
-    }
 
     /**
      * Method to recover the activity view state when the inoperability start.
@@ -250,7 +240,8 @@ public class I_inoperatividad extends Activity {
                             methodInt="51";
                             method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

@@ -34,14 +34,14 @@ public class J_Combustible extends Activity {
     private JSONArray send_data_json;
     private String method;
     private String methodInt;
+    private Activity myself;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.j_combustible);
-
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
+        this.myself=this;
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         this.identifyElements();
     }
@@ -94,8 +94,8 @@ public class J_Combustible extends Activity {
                                     clearFields();
                                 } catch (JSONException e) {
                                 }
-
-                                sendInformation();
+                                Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                                //sendInformation();
                                 finish();
                             }
                         });
@@ -115,16 +115,6 @@ public class J_Combustible extends Activity {
 
             }
         }
-    }
-
-    /**
-     * Method to send information
-     */
-    public void sendInformation() {
-        new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
-                methodInt,
-                method,
-                send_data_json.toString());
     }
 
     /**
@@ -188,7 +178,8 @@ public class J_Combustible extends Activity {
                             methodInt="51";
                             method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
