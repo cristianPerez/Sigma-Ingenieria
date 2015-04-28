@@ -33,7 +33,7 @@ public class RegistrarBarras extends Activity{
     private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes,listaBarrasPorEmbalaje;
     private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
     private SharedPreferences sharedpreferences;
-
+    private Activity myself;
     private JSONArray send_data_json;
     private String method;
     private String methodInt;
@@ -45,6 +45,7 @@ public class RegistrarBarras extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registrar_barras);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        this.myself=this;
         this.inicializarComponentes();
     }
 
@@ -180,7 +181,8 @@ public class RegistrarBarras extends Activity{
                             methodInt="51";
                             method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -198,20 +200,6 @@ public class RegistrarBarras extends Activity{
                     }
                 });
         adb.show();
-    }
-
-    /**
-     *Method that send the information to server, from whatever method
-     */
-    public void sendInformation(){
-
-        try {
-            new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
-                    this.methodInt,
-                    this.method,
-                    this.send_data_json.toString());
-        } catch (Exception e) {
-        }
     }
 
 

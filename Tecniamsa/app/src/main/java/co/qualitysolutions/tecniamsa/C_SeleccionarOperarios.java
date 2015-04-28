@@ -224,17 +224,4 @@ public class C_SeleccionarOperarios extends Activity implements SearchView.OnQue
         adb.show();
     }
 
-    /**
-     *Method that send the information to server, from whatever method
-     */
-    public void sendInformation(){
-
-        try {
-            new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
-                    this.methodInt,
-                    this.method,
-                    this.send_data_json.toString());
-        } catch (Exception e) {
-        }
-    }
 }

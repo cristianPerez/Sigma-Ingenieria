@@ -49,14 +49,13 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     public static ArrayList<BluetoothDevice> listdisp;
     private static final int REQUEST_ENABLE_BT = 2;
     private boolean bandera = true;
-
+    private Activity myself;
     private BluetoothDevice device;
     private BluetoothChatService mBlueService = null;
     private String mConnectedDeviceName = null;
     private static final String TAG = "Tecniamsa";
     private static final boolean D = true;
     private String Address;
-
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final String DEVICE_NAME = "Divice_Name";
@@ -78,10 +77,9 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dispositivos);
+        this.myself=this;
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         inicializarComponenetes();
-
-
     }
 
     public void inicializarComponenetes(){
@@ -102,7 +100,6 @@ public class Dispositivos extends Activity implements View.OnClickListener {
                 mBluetoothAdapter.cancelDiscovery();
                 Item model = (Item) (parent.getItemAtPosition(position));
                 leerPeso(model.getAddress());
-
             }
         });
 
@@ -130,8 +127,7 @@ public class Dispositivos extends Activity implements View.OnClickListener {
                 actionAdapter();
             }
 
-            Toast alert = Toast.makeText(getApplicationContext(),
-                    "Buscando, por favor espere...", Toast.LENGTH_LONG);
+            Toast alert = Toast.makeText(getApplicationContext(),"Buscando, por favor espere...", Toast.LENGTH_LONG);
             alert.show();
             startLookingForDevices();
         } else {
@@ -409,7 +405,8 @@ public class Dispositivos extends Activity implements View.OnClickListener {
                             methodInt="51";
                             method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -426,20 +423,6 @@ public class Dispositivos extends Activity implements View.OnClickListener {
                     }
                 });
         adb.show();
-    }
-
-    /**
-     *Method that send the information to server, from whatever method
-     */
-    public void sendInformation(){
-
-        try {
-            new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
-                    this.methodInt,
-                    this.method,
-                    this.send_data_json.toString());
-        } catch (Exception e) {
-        }
     }
 
 }

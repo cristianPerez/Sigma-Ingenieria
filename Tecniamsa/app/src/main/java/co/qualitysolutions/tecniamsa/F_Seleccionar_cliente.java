@@ -39,11 +39,13 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
     private String methodInt;
     private TextView date;
     private JSONArray send_data_json;
+    private Activity myself;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.f_seleccionar_cliente);
+        this.myself=this;
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         inicializarComponentes();
     }
@@ -184,7 +186,8 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                             methodInt="51";
                             method="json_tecni_cerrarsesion";
                             Toast.makeText(getApplicationContext(), "Cerrando sesión, espera unos segundos", Toast.LENGTH_LONG).show();
-                            sendInformation();
+                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                            //sendInformation();
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -202,16 +205,6 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                     }
                 });
         adb.show();
-    }
-
-    /**
-     * Method to create a new json to save the information and send it to server
-     */
-    public void sendInformation(){
-        new SaveInformation(this).execute(getResources().getString(R.string.urlPruebas),
-                this.methodInt,
-                this.method,
-                this.send_data_json.toString());
     }
 
 }
