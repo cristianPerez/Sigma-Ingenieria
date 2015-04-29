@@ -10,6 +10,7 @@ public class Item {
 
 
 	public Item(long id, String nombre,String tipo ,String peso,String address, String rutaImagen) {
+
 		this.id = id;
 		this.nombre = nombre;
 		this.tipo = tipo;

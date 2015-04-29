@@ -41,6 +41,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
     private JSONArray send_data_json;
     private Activity myself;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

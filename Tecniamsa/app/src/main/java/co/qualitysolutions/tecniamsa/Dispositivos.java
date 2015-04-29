@@ -1,4 +1,4 @@
-package co.qualitysolutions.tecniamsa;
+/*package co.qualitysolutions.tecniamsa;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,7 +35,7 @@ import utilidades.Utilities;
 /**
  * Created by Andres on 27/03/2015.
  */
-public class Dispositivos extends Activity implements View.OnClickListener {
+/*public class Dispositivos extends Activity implements View.OnClickListener {
 
 
 
@@ -210,8 +210,29 @@ public class Dispositivos extends Activity implements View.OnClickListener {
             }
         }
     }*/
+/*
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
-    private void setup() {
+import java.util.ArrayList;
+
+import co.qualitysolutions.tecniamsa.Item;
+import co.qualitysolutions.tecniamsa.R;
+import utilidades.ItemAdapter;
+
+private void setup() {
         Log.d(TAG, "MOSTRAR RESPUESTA");
         ensureDiscoverable();
         mBlueService = new BluetoothChatService(this, mHandler);
@@ -233,7 +254,7 @@ public class Dispositivos extends Activity implements View.OnClickListener {
             Log.e("ATENCION", "-- DETENIDO --");
     }*/
 
-    @Override
+    /*@Override
     public void onDestroy() {
         super.onDestroy();
         try {
@@ -382,7 +403,7 @@ public class Dispositivos extends Activity implements View.OnClickListener {
      * Method to close the session
      *
      * @param v
-     */
+
     public void logOut(View v) {
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setTitle(getResources().getString(R.string.cerrarSesion));
@@ -425,4 +446,215 @@ public class Dispositivos extends Activity implements View.OnClickListener {
         adb.show();
     }
 
+}*/
+
+        package co.qualitysolutions.tecniamsa;
+
+        import android.app.Activity;
+        import android.bluetooth.BluetoothAdapter;
+        import android.bluetooth.BluetoothDevice;
+        import android.content.BroadcastReceiver;
+        import android.content.Context;
+        import android.content.Intent;
+        import android.content.IntentFilter;
+        import android.content.SharedPreferences;
+        import android.os.Bundle;
+        import android.os.Handler;
+        import android.os.Message;
+        import android.util.Log;
+        import android.view.View;
+        import android.widget.AdapterView;
+        import android.widget.Button;
+        import android.widget.ListView;
+        import android.widget.Toast;
+
+        import org.json.JSONArray;
+        import org.json.JSONException;
+        import org.json.JSONObject;
+
+        import java.util.ArrayList;
+
+        import utilidades.BluetoothChatService;
+        import utilidades.ItemAdapter;
+
+/**
+ * Created by Andres on 27/03/2015.
+ */
+public class Dispositivos extends Activity implements View.OnClickListener {
+
+
+
+    public static BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    private ListView listView;
+    private ArrayList<Item> view_devices;
+    private ItemAdapter adapter;
+    private ArrayList<String> mac;
+    private int cont = 1;
+
+    private boolean unregistered;
+    public static ArrayList<BluetoothDevice> listdisp;
+    private static final int REQUEST_ENABLE_BT = 2;
+    private boolean bandera = true;
+
+
+    public static final int MESSAGE_STATE_CHANGE = 1;
+    public static final int MESSAGE_DEVICE_NAME = 4;
+    public static final String DEVICE_NAME = "Divice_Name";
+    public static final String TOAST = "Toast";
+    public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_WRITE = 3;
+    public static final int MESSAGE_READ = 2;
+
+    /*//variables gordo
+    private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes,listaPesosPorEmbalaje;
+    private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
+    private SharedPreferences sharedpreferences;*/
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dispositivos);
+        //this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        inicializarComponenetes();
+
+
+    }
+
+    public void inicializarComponenetes(){
+        Button btn = (Button) findViewById(R.id.buscar);
+        unregistered = false;
+        listView = (ListView) findViewById(R.id.listView);
+        view_devices = new ArrayList<Item>();
+        listdisp = new ArrayList<BluetoothDevice>();
+        mac = new ArrayList<String>();
+        btn.setOnClickListener(this);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                unregisterReceiver(mReceiver);
+                mBluetoothAdapter.cancelDiscovery();
+                Item model = (Item) (parent.getItemAtPosition(position));
+                Intent intent = new Intent();
+                intent.putExtra("address", model.getAddress());
+                setResult(24, intent);
+                finish();
+            }
+        });
+/*
+        try {
+            this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+            this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+            this.listaTrazas = this.clienteSeleccionado.getJSONArray("lsttrazas");
+            this.trazaSeleccionada = listaTrazas.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
+            this.listaEmbalajes = this.trazaSeleccionada.getJSONArray("lstembalaje");
+            this.embalajeSeleccionado = this.listaEmbalajes.getJSONObject(this.sharedpreferences.getInt("SELECT_EMBALAJE", 0));
+            this.listaPesosPorEmbalaje = this.embalajeSeleccionado.getJSONArray("pesos_embalaje");
+        }catch (JSONException e) {
+            this.listaPesosPorEmbalaje = new JSONArray();
+            e.printStackTrace();
+        }*/
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (mBluetoothAdapter.isEnabled()) {
+            if (!view_devices.isEmpty()) {
+                view_devices.clear();
+                listdisp.clear();
+                actionAdapter();
+            }
+
+            Toast alert = Toast.makeText(getApplicationContext(),
+                    "Buscando, por favor espere...", Toast.LENGTH_LONG);
+            alert.show();
+            startLookingForDevices();
+        } else {
+            Intent enableBtIntent = new Intent(
+                    BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
+    }
+
+    public boolean permitir(String mac) {
+        int i = 0;
+        while (i < this.mac.size()) {
+            String aux = this.mac.get(i);
+            if (aux.equals(mac)) {
+                return true;
+            }
+            i++;
+        }
+
+        return false;
+    }
+
+    public void startLookingForDevices() {
+        // Register the BroadcastReceiver
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        this.registerReceiver(mReceiver, filter); // Don't forget to unregister
+        // during onDestroy
+
+        mBluetoothAdapter.startDiscovery();
+    }
+
+    public void actionAdapter() {
+        adapter = new ItemAdapter(this, view_devices);
+        listView.setAdapter(adapter);
+    }
+
+    private void ensureDiscoverable() {
+        if (bandera)
+            Log.d("ATENCION", "Garantizando Visibilidad");
+        if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Intent discoverableIntent = new Intent(
+                    BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(
+                    BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivity(discoverableIntent);
+        }
+    }
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            // When discovery finds a device
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Get the BluetoothDevice object from the Intent
+                BluetoothDevice device = intent
+                        .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                // Add the name and address to an array adapter to show in a
+                // ListView
+                if (device != null && device.getName() != null
+                        && device.getAddress() != null) {
+
+                    // if (permitir(device.getAddress())) {
+                    Item i = new Item(cont, device.getName(),
+                            "Tecniamsa",device.getAddress(),
+                            "mipmap/ic_action_secure");
+                    view_devices.add(i);
+                    listdisp.add(device);
+                    cont++;
+                    //}
+
+                    Log.d("DISPOSITIVO", "[" + device.getName() + "]" + "{" + device.getAddress() + "}");
+                } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
+                        .equals(action)) {
+                    if (!unregistered) {
+                        mBluetoothAdapter.cancelDiscovery();
+                        unregisterReceiver(mReceiver);
+                        // mHandler.sendEmptyMessage(DONE_LOOKING_FOR_DEVICES);
+                        unregistered = true;
+                    }
+                }
+                actionAdapter();
+            }
+
+        }
+    };
+
 }
+

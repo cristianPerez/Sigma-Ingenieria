@@ -50,50 +50,50 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-       android:layout_below="@+id/RelativeLayout1">
+        android:layout_below="@+id/RelativeLayout1">
 
 
 
-            <TextView
-                android:id="@+id/numero"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/tipo_embalaje"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="20sp"
-                android:gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/numero"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/tipo_embalaje"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"/>
 
-            <TextView
-                android:id="@+id/tipoEmbalaje"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Bolsas"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="20sp"
-                android:gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/tipoEmbalaje"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Bolsas"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"/>
 
 
-            <TextView
-                android:id="@+id/tipo_embalaje"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/peso_total"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="20sp"
-                android:gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/tipo_embalaje"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/peso_total"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"/>
 
-            <TextView
-                android:id="@+id/peso_total"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="0kg"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="20sp"
-                android:gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/peso_total"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="0kg"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"/>
 
 
 
@@ -111,11 +111,25 @@
                 android:background="@color/blue1"
                 android:gravity="center_vertical|center_horizontal|center"
                 android:layout_margin="10dp"
-                android:onClick="buscar_dispositivo"
+                android:onClick="optener_peso"
                 android:text="@string/agregar_peso"
                 android:textColor="@android:color/white"
                 android:textColorLink="@android:color/white"
                 android:layout_weight="1"/>
+            <Button
+                android:id="@+id/Cambiar_pesa"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/btn1"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:layout_margin="10dp"
+                android:onClick="cambiar_dispositivo"
+                android:text="Cambiar Pesa"
+                android:textColor="@android:color/white"
+                android:textColorLink="@android:color/white"
+                android:layout_weight="1"
+                />
 
 
             <Button
@@ -133,27 +147,24 @@
                 android:layout_weight="1"
                 />
 
-
-
-
         </LinearLayout>
 
-            <TextView
-                android:id="@+id/text1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Lista de pesos"
-                android:textSize="20sp"
-                android:gravity="center"/>
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Lista de pesos"
+            android:textSize="20sp"
+            android:gravity="center"/>
 
-            <ListView
-                android:id="@+id/list_pesos"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_margin="10dp">
-            </ListView>
+        <ListView
+            android:id="@+id/list_pesos"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp">
+        </ListView>
 
-        </LinearLayout>
+    </LinearLayout>
 
     <!--<Button
         android:id="@+id/btn_save_r"
@@ -169,3 +180,4 @@
         />-->
 
 </RelativeLayout>
+

@@ -45,17 +45,17 @@
             android:src="@mipmap/btn_logout" />
     </RelativeLayout>
 
-        <Button
-            android:id="@+id/buscar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@color/blue2"
-            android:layout_margin="15dp"
-            android:text="Buscar dispositivos"
-            android:textColor="@color/white"
-            android:textSize="25dp"
-            android:layout_below="@+id/RelativeLayout1"/>
+    <Button
+        android:id="@+id/buscar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@color/blue2"
+        android:layout_margin="15dp"
+        android:text="Buscar dispositivos"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:layout_below="@+id/RelativeLayout1"/>
 
     <ListView
         android:id="@+id/listView"
