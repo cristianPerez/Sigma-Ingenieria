@@ -42,7 +42,7 @@ public class SaveInformation extends AsyncTask<String, Void, Void> {
 			//Send old information
 			JSONArray stored = this.dataBase.getAllRoutes();
 			if(stored.length()>0){
-				this.connection.setUrl("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos");
+				this.connection.setUrl("http://www.concesionesdeaseo.com/pruebas/FUNEventosMovil/Eventos");
 				String[] parameters = {"10",token, Utilities.getDate(),"backup",stored.toString()};
 				answer = this.connection.conectar(parameters);
 				try {
