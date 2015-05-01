@@ -74,14 +74,16 @@
                     android:onClick="baseOut"/>
 
                 <ImageButton
-                    android:id="@+id/btn_start_collection"
+                    android:id="@+id/btn_llegada_zona_franca"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:contentDescription="start collection"
+                    android:contentDescription="llegada a zona franca"
                     android:padding="20dp"
-                    android:src="@mipmap/btn_start_collection_two"
-                    android:onClick="startCollection"/>
+                    android:src="@mipmap/btn_llegada_zona_franca"
+                    android:onClick="llegadaZonaFranca"
+                    />
+
 
             </LinearLayout>
 
@@ -92,6 +94,16 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/RelativeLayout1">
+
+                <ImageButton
+                    android:id="@+id/btn_start_collection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="start collection"
+                    android:padding="20dp"
+                    android:src="@mipmap/btn_start_collection_two"
+                    android:onClick="startCollection"/>
 
 
                 <ImageButton
@@ -104,16 +116,6 @@
                     android:src="@mipmap/btn_trazas_two"
                     android:onClick="trazasCliente" />
 
-                <ImageButton
-                    android:id="@+id/btn_collection_finish"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="collection finish"
-                    android:padding="20dp"
-                    android:src="@mipmap/btn_collection_finish_two"
-                    android:onClick="finishCollection" />
-
 
             </LinearLayout>
 
@@ -123,6 +125,16 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/btn_collection_finish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="collection finish"
+                    android:padding="20dp"
+                    android:src="@mipmap/btn_collection_finish_two"
+                    android:onClick="finishCollection" />
 
                 <ImageButton
                     android:id="@+id/btn_arrive_final_disposition"
@@ -134,16 +146,6 @@
                     android:src="@mipmap/btn_arrive_final_disposition_two"
                     android:onClick="arriveFinalDisposition"/>
 
-                <ImageButton
-                    android:id="@+id/btn_come_back_to_base"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="come back to base"
-                    android:padding="20dp"
-                    android:src="@mipmap/btn_come_back_to_base_two"
-                    android:onClick="comeBackToBase"/>
-
 
             </LinearLayout>
 
@@ -154,7 +156,15 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp">
 
-
+                <ImageButton
+                    android:id="@+id/btn_come_back_to_base"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="come back to base"
+                    android:padding="20dp"
+                    android:src="@mipmap/btn_come_back_to_base_two"
+                    android:onClick="comeBackToBase"/>
 
                 <ImageButton
                     android:id="@+id/btn_inoperability"

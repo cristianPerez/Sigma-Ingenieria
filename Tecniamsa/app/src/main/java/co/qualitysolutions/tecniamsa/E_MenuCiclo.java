@@ -27,15 +27,14 @@ public class E_MenuCiclo extends Activity {
     private SharedPreferences sharedpreferences;
     private AlertDialog.Builder adb;
 
-    private ImageButton btn_base_exit, btn_start_collection,
+    private ImageButton btn_base_exit, btn_llegada_zona_franca,btn_start_collection,
             btn_collection_finish, btn_arrive_final_disposition,
             btn_come_back_to_base, btn_inoperability, btn_trazas;
-    private Drawable d_base_exit, d_base_exit_two, d_start_collection,
-            d_start_collection_two,
-            d_collection_finish, d_collection_finish_two,
-            d_arrive_final_disposition, d_arrive_final_disposition_two,
-            d_come_back_to_base, d_come_back_to_base_two,
-            d_inoperability, d_inoperability_two , g_trazas, g_trazas_two;
+
+    private Drawable d_base_exit, d_base_exit_two,d_llegada_zona_franca, d_llegada_zona_franca_two,
+            d_start_collection,d_start_collection_two,d_collection_finish, d_collection_finish_two,
+            d_arrive_final_disposition, d_arrive_final_disposition_two,d_come_back_to_base,
+            d_come_back_to_base_two,d_inoperability, d_inoperability_two , g_trazas, g_trazas_two;
 
     private JSONArray send_data_json,clientesPlaneados;
     private JSONObject clienteSeleccionado;
@@ -237,15 +236,41 @@ public class E_MenuCiclo extends Activity {
     }
 
 
-    /**
-     * Method to display inoperability interface
-     * @param v
-     */
-    public void inoperability(View v){
+    public void llegadaZonaFranca(View v){
 
-        Intent intent = new Intent(this, I_inoperatividad.class);
-        startActivity(intent);
+        this.adb.setTitle("Alerta!");
+        this.adb.setMessage(getResources().getString(R.string.alertaZonaFranca));
+        this.adb.setPositiveButton(getResources().getString(R.string.confirm_button_1),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            JSONArray truckInformation = new JSONArray((String) sharedpreferences.getString("TRUCK_INFO", ""));
+                            truckInformation.getJSONObject(0).put("hora_llegada_zona_franca",Utilities.getDate());
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString("TRUCK_INFO",truckInformation.toString());
+                            editor.commit();
+                            buttonsLlegadaZonaFranca();
+                            dialog.dismiss();
+
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                        }
+                    }
+                });
+        this.adb.setNegativeButton(getResources().getString(R.string.confirm_button_2),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        this.adb.show();
+
+
     }
+
+
 
 
     /**
@@ -303,6 +328,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
         this.btn_base_exit.setEnabled(false);
 
+        this.btn_llegada_zona_franca.setImageDrawable(this.d_llegada_zona_franca);
+        this.btn_llegada_zona_franca.setEnabled(true);
+
         this.btn_start_collection.setImageDrawable(this.d_start_collection);
         this.btn_start_collection.setEnabled(true);
 
@@ -325,6 +353,47 @@ public class E_MenuCiclo extends Activity {
 
     }
 
+    /**
+     *Method to configure the buttons logic, when the truck go out the base
+     */
+    public void buttonsLlegadaZonaFranca() {
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        int current_state = sharedpreferences.getInt("CURRENT_STATE", 0);
+
+        if (current_state == 1) {
+            editor.putInt("CURRENT_STATE", 6);
+            editor.commit();
+        }
+
+        this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
+        this.btn_base_exit.setEnabled(false);
+
+        this.btn_llegada_zona_franca.setImageDrawable(this.d_llegada_zona_franca_two);
+        this.btn_llegada_zona_franca.setEnabled(false);
+
+        this.btn_start_collection.setImageDrawable(this.d_start_collection);
+        this.btn_start_collection.setEnabled(true);
+
+        //boton nuevo
+        this.btn_trazas.setImageDrawable(this.g_trazas_two);
+        this.btn_trazas.setEnabled(false);
+
+
+        this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
+        this.btn_collection_finish.setEnabled(false);
+
+        this.btn_arrive_final_disposition.setImageDrawable(this.d_arrive_final_disposition_two);
+        this.btn_arrive_final_disposition.setEnabled(false);
+
+        this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base_two);
+        this.btn_come_back_to_base.setEnabled(false);
+
+        this.btn_inoperability.setImageDrawable(this.d_inoperability);
+        this.btn_inoperability.setEnabled(true);
+
+    }
+
 
     /**
      * Method to configure the buttons logic, when the truck start to collection
@@ -334,6 +403,9 @@ public class E_MenuCiclo extends Activity {
 
         this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
         this.btn_base_exit.setEnabled(false);
+
+        this.btn_llegada_zona_franca.setImageDrawable(this.d_llegada_zona_franca_two);
+        this.btn_llegada_zona_franca.setEnabled(false);
 
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
         this.btn_start_collection.setEnabled(false);
@@ -368,6 +440,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
         this.btn_base_exit.setEnabled(false);
 
+        this.btn_llegada_zona_franca.setImageDrawable(this.d_llegada_zona_franca);
+        this.btn_llegada_zona_franca.setEnabled(true);
+
         this.btn_start_collection.setImageDrawable(this.d_start_collection);
         this.btn_start_collection.setEnabled(true);
 
@@ -399,6 +474,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_base_exit.setImageDrawable(this.d_base_exit);
         this.btn_base_exit.setEnabled(true);
 
+        this.btn_llegada_zona_franca.setImageDrawable(this.d_llegada_zona_franca_two);
+        this.btn_llegada_zona_franca.setEnabled(false);
+
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
         this.btn_start_collection.setEnabled(false);
 
@@ -428,6 +506,9 @@ public class E_MenuCiclo extends Activity {
 
         this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
         this.btn_base_exit.setEnabled(false);
+
+        this.btn_llegada_zona_franca.setImageDrawable(this.d_llegada_zona_franca_two);
+        this.btn_llegada_zona_franca.setEnabled(false);
 
         this.btn_start_collection.setEnabled(false);
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
@@ -463,6 +544,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
         this.btn_base_exit.setEnabled(false);
 
+        this.btn_llegada_zona_franca.setImageDrawable(this.d_llegada_zona_franca_two);
+        this.btn_llegada_zona_franca.setEnabled(false);
+
         this.btn_start_collection.setImageDrawable(this.d_start_collection);
         this.btn_start_collection.setEnabled(true);
 
@@ -494,6 +578,9 @@ public class E_MenuCiclo extends Activity {
 
         this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
         this.btn_base_exit.setEnabled(false);
+
+        this.btn_llegada_zona_franca.setImageDrawable(this.d_llegada_zona_franca_two);
+        this.btn_llegada_zona_franca.setEnabled(false);
 
         this.btn_start_collection.setEnabled(false);
         this.btn_start_collection.setImageDrawable(this.d_start_collection_two);
@@ -572,6 +659,11 @@ public class E_MenuCiclo extends Activity {
     public void initializeComponents() {
         this.adb = new AlertDialog.Builder(this);
         this.btn_base_exit = (ImageButton) findViewById(R.id.btn_base_exit);
+
+
+        this.btn_llegada_zona_franca = (ImageButton) findViewById(R.id.btn_llegada_zona_franca);
+        this.btn_llegada_zona_franca.setEnabled(false);
+
         this.btn_start_collection = (ImageButton) findViewById(R.id.btn_start_collection);
         this.btn_start_collection.setEnabled(false);
 
@@ -589,8 +681,13 @@ public class E_MenuCiclo extends Activity {
         this.btn_inoperability.setEnabled(false);
         this.btn_inoperability = (ImageButton) findViewById(R.id.btn_inoperability);
         this.btn_inoperability.setEnabled(false);
+
+
         this.d_base_exit = this.getResources().getDrawable(R.mipmap.btn_base_exit);
         this.d_base_exit_two = this.getResources().getDrawable(R.mipmap.btn_base_exit_two);
+
+        this.d_llegada_zona_franca = this.getResources().getDrawable(R.mipmap.btn_llegada_zona_franca);
+        this.d_llegada_zona_franca_two = this.getResources().getDrawable(R.mipmap.btn_llegada_zona_franca_two);
 
         this.d_start_collection = this.getResources().getDrawable(R.mipmap.btn_start_collection);
         this.d_start_collection_two = this.getResources().getDrawable(R.mipmap.btn_start_collection_two);
@@ -633,8 +730,10 @@ public class E_MenuCiclo extends Activity {
                 buttonsStartCollection();
             }else if (current_state == 4) {
                 buttonsFinishCollection();
-            }else if(current_state == 5){
+            }else if(current_state == 5)  {
                 finishFiller();
+            }else if(current_state == 6)  {
+                buttonsLlegadaZonaFranca();
             }
 
         }

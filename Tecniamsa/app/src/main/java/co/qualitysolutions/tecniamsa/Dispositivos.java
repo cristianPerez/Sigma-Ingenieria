@@ -633,7 +633,7 @@ public class Dispositivos extends Activity implements View.OnClickListener {
 
                     // if (permitir(device.getAddress())) {
                     Item i = new Item(cont, device.getName(),
-                            "Tecniamsa",device.getAddress(),
+                            device.getAddress(),device.getAddress(),
                             "mipmap/ic_action_secure");
                     view_devices.add(i);
                     listdisp.add(device);

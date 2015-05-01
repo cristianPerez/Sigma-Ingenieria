@@ -252,5 +252,6 @@
     <string name="title_activity_i_inoperatividad">inoperatividad</string>
     <string name="title_activity_j__combustible">J_Combustible</string>
     <string name="title_activity_k__peaje">Peaje</string>
+    <string name="alertaZonaFranca"> ¿ Seguro que se encuentra en zona franca ?</string>
 
 </resources>
