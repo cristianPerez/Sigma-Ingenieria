@@ -245,7 +245,7 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
 
 
 
-                JSONArray listaClientes = this.answer.getJSONObject(0).getJSONArray("lstdatos_cliente");
+                JSONArray listaClientes = inicializarClientesPlaneados(this.answer.getJSONObject(0).getJSONArray("lstdatos_cliente"));
                 JSONArray operators = this.answer.getJSONObject(0).getJSONArray("lstoperarios");
                 JSONArray truckInformation = this.answer.getJSONObject(0).getJSONArray("lstvehiculos");
                 truckInformation.getJSONObject(0).put("cedula_conductor",user);
@@ -327,6 +327,57 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
+    }
+
+    public JSONArray inicializarClientesPlaneados(JSONArray clientes){
+
+        JSONArray trazasCliente = new JSONArray();
+        JSONArray embalajesTraza = new JSONArray();
+
+
+        for (int i=0;i<clientes.length();i++){
+
+            try {
+                trazasCliente = clientes.getJSONObject(i).getJSONArray("lsttrazas");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (int j=0;j<trazasCliente.length();j++){
+
+                try {
+                    embalajesTraza = trazasCliente.getJSONObject(j).getJSONArray("lstembalaje");
+                    trazasCliente.getJSONObject(j).put("pesoTotal",0.0);
+                    trazasCliente.getJSONObject(j).put("cantTotal",0);
+                    trazasCliente.getJSONObject(j).put("punto_pesaje",0);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                for (int k=0;k<embalajesTraza.length();k++){
+
+
+                    try {
+
+                        embalajesTraza.getJSONObject(k).put("barras_embalaje",new JSONArray());
+                        embalajesTraza.getJSONObject(k).put("pesos_embalaje",new JSONArray());
+                        embalajesTraza.getJSONObject(k).put("pesoTotal",0.0);
+                        embalajesTraza.getJSONObject(k).put("cantTotal",0);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+            }
+
+        }
+
+        return clientes;
     }
 
 

@@ -99,26 +99,37 @@
                 android:layout_margin="10dp"/>
         </LinearLayout>
 
+
         <TextView
+            android:id="@+id/textView12"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Trazas"
-            android:id="@+id/textView12"
             android:layout_marginLeft="10dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
 
-            <Spinner
+        <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinnerTrazas"
-                android:layout_margin="10dp" />
+                android:layout_margin="10dp"
+                android:entries="@array/arrayVacio"/>
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Punto pesaje"
+            android:id="@+id/txtPuntoPesaje"
+            android:layout_marginLeft="10dp" />
+
+
+        <Spinner
+            android:id="@+id/spinnerPuntoPesaje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
 
         <TextView
             android:layout_width="fill_parent"
@@ -135,6 +146,7 @@
             android:id="@+id/spinnerEmbalajes"
             android:layout_weight="1"
             android:layout_margin="10dp" />
+
 
         <LinearLayout
             android:orientation="horizontal"

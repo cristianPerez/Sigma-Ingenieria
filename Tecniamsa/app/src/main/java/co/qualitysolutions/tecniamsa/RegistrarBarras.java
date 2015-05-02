@@ -29,7 +29,7 @@ public class RegistrarBarras extends Activity{
     private ListView listView;
     private ItemAdapterJsonCodigos adapterJson;
 
-    private TextView tipoEmbalaje,cantTotal;
+    private TextView tipoEmbalaje,txtTotalCantidadLeida,txtTotalCantidadEstimada;
     private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes,listaBarrasPorEmbalaje;
     private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
     private SharedPreferences sharedpreferences;
@@ -56,7 +56,8 @@ public class RegistrarBarras extends Activity{
         listView = (ListView) findViewById(R.id.list_barras);
 
         this.tipoEmbalaje = (TextView) findViewById(R.id.tipoEmbalaje);
-        this.cantTotal = (TextView)findViewById(R.id.cant_total);
+        this.txtTotalCantidadLeida = (TextView)findViewById(R.id.txtTotalCantidadLeida);
+        this.txtTotalCantidadEstimada = (TextView)findViewById(R.id.txtTotalCantidadEstimada);
         try {
             this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
             this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
@@ -66,12 +67,10 @@ public class RegistrarBarras extends Activity{
             this.embalajeSeleccionado = this.listaEmbalajes.getJSONObject(this.sharedpreferences.getInt("SELECT_EMBALAJE", 0));
             this.tipoEmbalaje.setText(this.embalajeSeleccionado.getString("nombre"));
             this.listaBarrasPorEmbalaje = this.embalajeSeleccionado.getJSONArray("barras_embalaje");
+            this.txtTotalCantidadEstimada.setText(this.embalajeSeleccionado.getString("cantidad"));
             this.actionAdapter();
-            this.cantTotal.setText(String.valueOf(this.embalajeSeleccionado.getInt("cantTotal")));
-
+            this.txtTotalCantidadLeida.setText(String.valueOf(this.embalajeSeleccionado.getInt("cantTotal")));
         }catch (JSONException e) {
-            this.cantTotal.setText("0");
-            this.listaBarrasPorEmbalaje = new JSONArray();
             e.printStackTrace();
         }
     }
@@ -86,7 +85,7 @@ public class RegistrarBarras extends Activity{
         try {
             actualizarEmbalaje();
             this.view_barras_json = this.embalajeSeleccionado.getJSONArray("barras_embalaje");
-            this.cantTotal.setText(String.valueOf(this.embalajeSeleccionado.getInt("cantTotal")));
+            this.txtTotalCantidadLeida.setText(String.valueOf(this.embalajeSeleccionado.getInt("cantTotal")));
         } catch (JSONException e) {
             this.view_barras_json = new JSONArray();
             e.printStackTrace();
@@ -120,7 +119,7 @@ public class RegistrarBarras extends Activity{
 
     public void restarBarras(String barras)
     {
-        this.cantTotal.setText(barras);
+        this.txtTotalCantidadLeida.setText(barras);
     }
 
     @Override
@@ -131,7 +130,7 @@ public class RegistrarBarras extends Activity{
                 String contents = data.getStringExtra("SCAN_RESULT");
                 String format = data.getStringExtra("SCAN_RESULT_FORMAT");
                 Log.d("SCAN->", contents + "|" + format);
-                int cont=Integer.parseInt(cantTotal.getText().toString());
+                int cont=Integer.parseInt(txtTotalCantidadLeida.getText().toString());
                 cont++;
                 JSONObject nuevaBarra= new JSONObject();
                 try {

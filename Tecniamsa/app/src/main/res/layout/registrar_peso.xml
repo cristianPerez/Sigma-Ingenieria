@@ -74,26 +74,96 @@
             android:textSize="20sp"
             android:gravity="center_horizontal"/>
 
-
         <TextView
-            android:id="@+id/tipo_embalaje"
+            android:id="@+id/txtCantidades"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/peso_total"
+            android:text="Pesos"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="20sp"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:background="@color/btn11"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
 
-        <TextView
-            android:id="@+id/peso_total"
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="0kg"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="20sp"
-            android:gravity="center_horizontal"/>
+            android:orientation="horizontal"
+            android:background="@color/btn11"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/txtCantidadEstimada"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Estimado"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/txtTotalPesoEstimado"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/txtCantidadLeida"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Leido"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/txtTotalPesoLeido"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    />
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
 
 
 

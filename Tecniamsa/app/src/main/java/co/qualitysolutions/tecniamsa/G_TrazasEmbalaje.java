@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,9 +33,9 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
     private ArrayList<String> lstItemsCategoria1,lstItemsCategoria2;
     private ArrayAdapter<String> adapterItemsCategoria1,adapterItemsCategoria2;
-    private Spinner spinner_trazas,spinnerEmbalajes;
-    private JSONArray clientesPlaneados,trazasSelect,embalajeSelect,listaEmbalajes;
-    private JSONObject clienteSeleccionado;
+    private Spinner spinnerTrazas,spinnerEmbalajes,spinnerPuntoPesaje;
+    private JSONArray clientesPlaneados,lstTrazasCliente,lstEmbalajesTraza;
+    private JSONObject clienteSeleccionado,trazaSeleccionada;
     private SharedPreferences sharedpreferences;
     private TextView codigoCliente,nombreCliente,peso_total_traza,barras_total_traza;
     private Activity myself;
@@ -52,106 +53,23 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         inicializarComponentes();
     }
 
-    public void regitrarCodigoDeBarras(View view){
-
-        Intent intent = new Intent(this, RegistrarBarras.class);
-        startActivity(intent);
-
-    }
-
-    @Override
-    protected void onResume() {
-    super.onResume();
-        try {
-            cantidadTotalBarrasTraza();
-            cantidadTotalPesosTraza();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void cantidadTotalBarrasTraza() throws JSONException {
-        int cont=0;
-
-        this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
-        this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
-        trazasSelect = this.clienteSeleccionado.getJSONArray("lsttrazas");
-
-        if(trazasSelect.length()>0)
-            {
-
-                this.listaEmbalajes = trazasSelect.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0)).getJSONArray("lstembalaje");
-                for (int i=0; i<listaEmbalajes.length();i++)
-                {
-                    JSONObject aux= listaEmbalajes.getJSONObject(i);
-                    try {
-                        JSONArray lis = aux.getJSONArray("barras_embalaje");
-                        cont+=lis.length();
-                    }
-                    catch (JSONException e)
-                    {
-                        e.printStackTrace();
-                    }
-
-
-                }
-
-            }
-        this.clienteSeleccionado.put("CodigosTotalLeidos",cont);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
-        editor.commit();
-        this.barras_total_traza.setText(String.valueOf(cont));
-    }
-
-    public void cantidadTotalPesosTraza() throws JSONException {
-        float cont=0;
-
-        this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
-        this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
-        trazasSelect = this.clienteSeleccionado.getJSONArray("lsttrazas");
-
-        if(trazasSelect.length()>0)
-            {
-
-                this.listaEmbalajes = trazasSelect.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0)).getJSONArray("lstembalaje");
-                for (int i=0; i<listaEmbalajes.length();i++)
-                {
-                    JSONObject aux= listaEmbalajes.getJSONObject(i);
-                    try {
-
-                        cont+=aux.getDouble("pesoTotal");
-                    }
-                    catch (JSONException e)
-                    {
-                        e.printStackTrace();
-                    }
-
-
-                }
-
-            }
-
-        this.clienteSeleccionado.put("PesoTotalRecogido",cont);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
-        editor.commit();
-        this.peso_total_traza.setText(String.valueOf(cont) + "KG");
-    }
-
     public void inicializarComponentes() {
 
         this.date = (TextView)findViewById(R.id.dateNow);
         this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
-        barras_total_traza=(TextView) findViewById(R.id.cantidad_total_traza);
+        this.barras_total_traza=(TextView) findViewById(R.id.cantidad_total_traza);
         this.codigoCliente = (TextView) findViewById(R.id.codigoCliente);
         this.nombreCliente = (TextView) findViewById(R.id.nombreCliente);
         this.peso_total_traza = (TextView) findViewById(R.id.peso_total_traza);
-        this.spinner_trazas = (Spinner) findViewById(R.id.spinnerTrazas);
-        this.spinner_trazas.setOnItemSelectedListener(this);
+
+        this.spinnerPuntoPesaje = (Spinner) findViewById(R.id.spinnerPuntoPesaje);
+        this.spinnerPuntoPesaje.setOnItemSelectedListener(this);
+        this.spinnerTrazas = (Spinner) findViewById(R.id.spinnerTrazas);
+        this.spinnerTrazas.setOnItemSelectedListener(this);
         this.spinnerEmbalajes = (Spinner) findViewById(R.id.spinnerEmbalajes);
         this.spinnerEmbalajes.setOnItemSelectedListener(this);
+
+
 
         try {
             this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
@@ -160,50 +78,153 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             this.nombreCliente.setText(this.clienteSeleccionado.getString("nombre_cliente"));
             llenarSpinnerTrazas();
             llenarSpinnerEmbalaje();
-            //cantidadTotalBarrasTraza();
-
+            llenarSpinnerPuntoPesaje();
+            cantidadTotalBarrasTraza();
+            cantidadTotalPesosTraza();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    public void regitrarCodigoDeBarras(View view){
+
+        Intent intent = new Intent(this, RegistrarBarras.class);
+        startActivity(intent);
+
+    }
+
+
+    @Override
+    protected void onResume() {
+    super.onResume();
+     cantidadTotalBarrasTraza();
+     cantidadTotalPesosTraza();
+    }
+
+
+    public void cantidadTotalBarrasTraza() {
+        int cont=0;
+        try {
+        this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+        this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+        this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+
+        if(this.lstTrazasCliente.length()>0)
+            {
+
+                this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0));
+                this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
+
+                for (int i=0; i<this.lstEmbalajesTraza.length();i++)
+                {
+                    JSONObject aux= this.lstEmbalajesTraza.getJSONObject(i);
+                    try {
+                        JSONArray lis = aux.getJSONArray("barras_embalaje");
+                        cont+=lis.length();
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                this.trazaSeleccionada.put("cantTotal",cont);
+            }
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
+        editor.commit();
+        this.barras_total_traza.setText(String.valueOf(cont));
+            int positionDos = this.trazaSeleccionada.getInt("punto_pesaje");
+            this.spinnerPuntoPesaje.setSelection(positionDos);
+        //Log.e("cantidad total barras", String.valueOf(cont));
+
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void cantidadTotalPesosTraza(){
+        float cont=0;
+        try {
+
+        this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+        this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+        this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+
+            if(this.lstTrazasCliente.length()>0)
+            {
+                this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0));
+                this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
+
+                for (int i=0; i<lstEmbalajesTraza.length();i++)
+                {
+                    JSONObject aux= lstEmbalajesTraza.getJSONObject(i);
+
+                        cont+=aux.getDouble("pesoTotal");
+
+                }
+                this.trazaSeleccionada.put("pesoTotal",cont);
+            }
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
+        editor.commit();
+        this.peso_total_traza.setText(String.valueOf(cont) + "KG");
+            int positionDos = this.trazaSeleccionada.getInt("punto_pesaje");
+        this.spinnerPuntoPesaje.setSelection(positionDos);
+            //Log.e("cantidad total peso", String.valueOf(cont) + "KG");
+
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+
     public void llenarSpinnerTrazas(){
 
         try {
-            trazasSelect = this.clienteSeleccionado.getJSONArray("lsttrazas");
-            if(trazasSelect.length()>0){
-                String lstItemStringCategoria1 = getStringArrayList(trazasSelect);
+            this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+            if(this.lstTrazasCliente.length()>0){
+                String lstItemStringCategoria1 = getStringArrayList(this.lstTrazasCliente,1);
                 lstItemsCategoria1 = new ArrayList<String>(Arrays.asList(lstItemStringCategoria1.substring(1, lstItemStringCategoria1.length() - 1).split(",")));
                 lstItemsCategoria1 = cleanEmptyCharacter(lstItemsCategoria1);
                 adapterItemsCategoria1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lstItemsCategoria1);
                 adapterItemsCategoria1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                this.spinner_trazas.setAdapter(adapterItemsCategoria1);
-            }
-            else {
-
-
+                this.spinnerTrazas.setAdapter(adapterItemsCategoria1);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+
+    }
+
+    public void llenarSpinnerPuntoPesaje(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.puntoPesaje, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerPuntoPesaje.setAdapter(adapter);
 
     }
 
     public void llenarSpinnerEmbalaje(){
 
         try {
-            embalajeSelect = trazasSelect.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0)).getJSONArray("lstembalaje");
-            if(embalajeSelect.length()>0) {
-                String lstItemStringCategoria1 = getStringArrayList(embalajeSelect);
+            this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+            this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0));
+            this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
+
+            if(this.lstEmbalajesTraza.length()>0) {
+                String lstItemStringCategoria1 = getStringArrayList(this.lstEmbalajesTraza,2);
                 lstItemsCategoria2 = new ArrayList<String>(Arrays.asList(lstItemStringCategoria1.substring(1, lstItemStringCategoria1.length() - 1).split(",")));
                 lstItemsCategoria2 = cleanEmptyCharacter(lstItemsCategoria2);
                 adapterItemsCategoria2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lstItemsCategoria2);
                 adapterItemsCategoria2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 this.spinnerEmbalajes.setAdapter(adapterItemsCategoria2);
-            }
-            else{
-
             }
 
         } catch (JSONException e) {
@@ -217,11 +238,16 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         return list;
     }
 
-    public String getStringArrayList(JSONArray json){
+    public String getStringArrayList(JSONArray json, int tipo){
         ArrayList<String> aux = new ArrayList<String>();
         for(int i=0;i<json.length();i++){
             try {
-                aux.add(json.getJSONObject(i).getString("nombre"));
+
+                if(tipo==1)
+                    aux.add(json.getJSONObject(i).getString("nombre")+"--"+json.getJSONObject(i).getString("traza"));
+                else if(tipo==2)
+                    aux.add(json.getJSONObject(i).getString("nombre"));
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -231,34 +257,48 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(parent.getId()==this.spinner_trazas.getId()){
+
+
+        if(parent.getId()==this.spinnerTrazas.getId()){
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt("SELECT_TRAZA",position);
             editor.commit();
             llenarSpinnerEmbalaje();
-            try {
-                cantidadTotalBarrasTraza();
-                cantidadTotalPesosTraza();
-                //this.peso_total_traza.setText(String.valueOf(this.trazasSelect.getJSONObject(position).getDouble("pesoTotal"))+" KG");
-            } catch (JSONException e) {
+            cantidadTotalBarrasTraza();
+            cantidadTotalPesosTraza();
+        }
+
+        else if(parent.getId()==this.spinnerPuntoPesaje.getId()){
+
+            try{
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+
+                this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+                this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+                this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0));
+                int positionDos = this.spinnerPuntoPesaje.getSelectedItemPosition();
+                this.trazaSeleccionada.put("punto_pesaje",positionDos);
+
+                editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
+                editor.commit();
+
+            }catch (JSONException e){
                 e.printStackTrace();
-                //this.peso_total_traza.setText("0 KG");
+
             }
+
         }
 
         else if(parent.getId()==this.spinnerEmbalajes.getId()){
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt("SELECT_EMBALAJE",position);
             editor.commit();
-            try {
-                cantidadTotalBarrasTraza();
-                cantidadTotalPesosTraza();
-                //this.peso_total_traza.setText(String.valueOf(this.trazasSelect.getJSONObject(position).getDouble("pesoTotal"))+" KG");
-            } catch (JSONException e) {
-                e.printStackTrace();
-                //this.peso_total_traza.setText("0 KG");
-            }
+            cantidadTotalBarrasTraza();
+            cantidadTotalPesosTraza();
         }
+
+
 
     }
 

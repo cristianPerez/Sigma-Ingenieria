@@ -92,6 +92,17 @@
         <item>Emas Pasto</item>
     </string-array>
 
+    <string-array name="arrayVacio">
+        <item>Ninguno</item>
+    </string-array>
+
+    <string-array name="puntoPesaje">
+        <item> Ninguno </item>
+        <item> Bascula propia con interface </item>
+        <item> Bascula propia sin conexión </item>
+        <item> Bascula del cliente </item>
+        <item> No pesado </item>
+    </string-array>
 
 
     <!-- B Menu Principal -->

@@ -217,7 +217,7 @@ public class RegistrarPeso extends Activity{
 
     public static JSONArray view_pesos_json;
     private ItemAdapterJsonPesos adapterJson;
-    private TextView tipoEmbalaje,pesoTotal;
+    private TextView tipoEmbalaje,txtTotalPesoLeido,txtTotalPesoEstimado;
     private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes,listaPesosPorEmbalaje;
     private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
     private SharedPreferences sharedpreferences;
@@ -241,7 +241,8 @@ public class RegistrarPeso extends Activity{
         mBluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
         listView = (ListView) findViewById(R.id.list_pesos);
         this.tipoEmbalaje = (TextView) findViewById(R.id.tipoEmbalaje);
-        this.pesoTotal = (TextView)findViewById(R.id.peso_total);
+        this.txtTotalPesoLeido = (TextView)findViewById(R.id.txtTotalPesoLeido);
+        this.txtTotalPesoEstimado = (TextView)findViewById(R.id.txtTotalPesoEstimado);
         try {
             this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
             this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
@@ -251,11 +252,10 @@ public class RegistrarPeso extends Activity{
             this.embalajeSeleccionado = this.listaEmbalajes.getJSONObject(this.sharedpreferences.getInt("SELECT_EMBALAJE", 0));
             this.tipoEmbalaje.setText(this.embalajeSeleccionado.getString("nombre"));
             this.listaPesosPorEmbalaje = this.embalajeSeleccionado.getJSONArray("pesos_embalaje");
-            this.pesoTotal.setText(this.embalajeSeleccionado.getDouble("pesoTotal")+" KG");
+            this.txtTotalPesoLeido.setText(this.embalajeSeleccionado.getDouble("pesoTotal")+" KG");
+            this.txtTotalPesoEstimado.setText(this.embalajeSeleccionado.getDouble("peso")+" KG");
             this.actionAdapter();
         }catch (JSONException e) {
-            this.listaPesosPorEmbalaje = new JSONArray();
-            this.pesoTotal.setText("0.0 KG");
             e.printStackTrace();
         }
     }
@@ -334,7 +334,7 @@ public class RegistrarPeso extends Activity{
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
             editor.commit();
-            pesoTotal.setText(String.valueOf(cont)+ "KG");
+            this.txtTotalPesoLeido.setText(String.valueOf(cont)+ "KG");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -350,7 +350,7 @@ public class RegistrarPeso extends Activity{
 
     public void restarPeso(String peso)
     {
-        this.pesoTotal.setText(peso);
+        this.txtTotalPesoLeido.setText(peso);
     }
 
 
