@@ -194,6 +194,16 @@
         <item>No se atendió</item>
     </string-array>
 
+    <string-array name="arraySiNo">
+        <item>Si</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="arraySalesforce">
+        <item>Salesforce</item>
+        <item>Salesforce</item>
+    </string-array>
+
 
     <string name="alertTicketEmpty"> DEBE COMPLETAR LOS CAMPOS NUMERO Y PESO DEL TIKET</string>
     <string name="weight">Peso inicial en relleno</string>

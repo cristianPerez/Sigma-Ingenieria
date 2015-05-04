@@ -70,6 +70,8 @@
                 android:id="@+id/textView4"
                 android:layout_margin="10dp" />
 
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,6 +79,10 @@
                 android:id="@+id/codigoCliente"
                 android:layout_margin="10dp" />
         </LinearLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -98,7 +104,10 @@
                 android:id="@+id/nombreCliente"
                 android:layout_margin="10dp"/>
         </LinearLayout>
-
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
 
         <TextView
             android:id="@+id/textView12"
@@ -116,6 +125,11 @@
                 android:layout_margin="10dp"
                 android:entries="@array/arrayVacio"/>
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -130,6 +144,70 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Peso en recolección"
+                    android:id="@+id/textView6"
+                    android:gravity="center_horizontal"/>
+
+                <Spinner
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinnerPesoRecoleccion"
+                    android:gravity="center_horizontal"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Cantidad en recolección"
+                    android:id="@+id/textView11"
+                    android:gravity="center_horizontal"/>
+
+                <Spinner
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinnerCantidadRecoleccion"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+
+            </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
 
         <TextView
             android:layout_width="fill_parent"
@@ -147,13 +225,26 @@
             android:layout_weight="1"
             android:layout_margin="10dp" />
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Total por traza"
+            android:id="@+id/txtTotales"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"/>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
-            <LinearLayout
+        <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -175,7 +266,7 @@
                     android:text="0"
                     android:id="@+id/cantidad_total_traza" />
 
-            </LinearLayout>
+        </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -185,14 +276,14 @@
                 android:layout_margin="10dp"
                 android:gravity="center_horizontal">
 
-                <TextView
+            <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Peso"
                     android:id="@+id/textView15" />
 
-                <TextView
+            <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -200,7 +291,84 @@
                     android:id="@+id/peso_total_traza" />
 
             </LinearLayout>
+
         </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Revision de recolección"
+            android:id="@+id/txtTitleRevision"
+            android:gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Apto para cargue"
+            android:id="@+id/txtResiduoAptoParaCargue"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerAptoCargue"
+            android:layout_weight="1"
+            android:layout_margin="10dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Recolección"
+                android:id="@+id/checkBoxRecoleccion"
+                android:layout_weight="1"
+                />
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Presenta tirillas"
+                android:id="@+id/checkBoxTirillas"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/causalesDeNoCargue">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Causales de no cargue"
+                android:id="@+id/txtCausalesResiduoAptoParaCargue"
+                android:layout_marginTop="10dp"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerCausalesAptoCargue"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:entries="@array/arraySalesforce"/>
+
+
+            </LinearLayout>
+
 
         <LinearLayout
             android:orientation="horizontal"
@@ -230,7 +398,13 @@
                 android:background="@color/blue2"
                 android:textColor="@android:color/white"
                 android:onClick="agregarPesos"/>
+
         </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
 
         <Button
             android:layout_width="fill_parent"
@@ -244,6 +418,7 @@
             />
 
     </LinearLayout>
+
     </ScrollView>
 
 </RelativeLayout>
