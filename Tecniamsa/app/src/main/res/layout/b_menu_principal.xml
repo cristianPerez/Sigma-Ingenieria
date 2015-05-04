@@ -125,13 +125,39 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:text="Almacenar residuos"
+            android:layout_margin="10sp"
+            android:id="@+id/btn_almacen"
+            android:background="@color/btn7"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:layout_below="@+id/btn_peaje"
+            android:onClick="almacenar"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Traslado entre almacenes"
+            android:layout_margin="10sp"
+            android:id="@+id/btn_traslado"
+            android:background="@color/btn10"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:layout_below="@+id/btn_almacen"
+            android:onClick="trasladar"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="Mapa"
             android:layout_margin="10sp"
             android:id="@+id/btn_mapa"
             android:background="@color/gray"
             android:textColor="@color/white"
             android:textSize="25dp"
-            android:layout_below="@+id/btn_peaje"
+            android:layout_below="@+id/btn_traslado"
             />
 
 

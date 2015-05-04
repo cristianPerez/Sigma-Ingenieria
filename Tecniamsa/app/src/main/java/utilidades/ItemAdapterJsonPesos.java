@@ -13,7 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import co.qualitysolutions.tecniamsa.RegistrarPeso;
+
+import co.qualitysolutions.tecniamsa.L_RegistrarPeso;
 import co.qualitysolutions.tecniamsa.R;
 
 import org.json.JSONArray;
@@ -120,8 +121,8 @@ public class ItemAdapterJsonPesos extends BaseAdapter {
                                                     editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
                                                     editor.commit();
 
-                                                ((RegistrarPeso)activity).actionAdapter();
-                                                ((RegistrarPeso)activity).restarPeso(String.valueOf(pesoNuevo)+" KG");
+                                                ((L_RegistrarPeso)activity).actionAdapter();
+                                                ((L_RegistrarPeso)activity).restarPeso(String.valueOf(pesoNuevo)+" KG");
                                                 Toast.makeText(activity, "Eliminado satisfactoriamente", Toast.LENGTH_LONG).show();
 
 											}

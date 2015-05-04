@@ -127,6 +127,16 @@
                 android:layout_marginTop="10dp">
 
                 <ImageButton
+                    android:id="@+id/btn_cancelacion_visita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="collection finish"
+                    android:padding="20dp"
+                    android:src="@mipmap/btn_cancelar_visita"
+                    android:onClick="cancelarVisita" />
+
+                <ImageButton
                     android:id="@+id/btn_collection_finish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -136,15 +146,7 @@
                     android:src="@mipmap/btn_collection_finish_two"
                     android:onClick="finishCollection" />
 
-                <ImageButton
-                    android:id="@+id/btn_arrive_final_disposition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="arrive final disposition"
-                    android:padding="20dp"
-                    android:src="@mipmap/btn_arrive_final_disposition_two"
-                    android:onClick="arriveFinalDisposition"/>
+
 
 
             </LinearLayout>
@@ -157,6 +159,16 @@
                 android:layout_marginTop="10dp">
 
                 <ImageButton
+                    android:id="@+id/btn_arrive_final_disposition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="arrive final disposition"
+                    android:padding="20dp"
+                    android:src="@mipmap/btn_arrive_final_disposition_two"
+                    android:onClick="arriveFinalDisposition"/>
+
+                <ImageButton
                     android:id="@+id/btn_come_back_to_base"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -165,6 +177,17 @@
                     android:padding="20dp"
                     android:src="@mipmap/btn_come_back_to_base_two"
                     android:onClick="comeBackToBase"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <ImageButton
                     android:id="@+id/btn_inoperability"
@@ -175,6 +198,8 @@
                     android:padding="20dp"
                     android:src="@mipmap/btn_inoperability"
                     android:onClick="inoperability" />
+
+
 
             </LinearLayout>
 

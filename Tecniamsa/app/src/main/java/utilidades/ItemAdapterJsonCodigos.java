@@ -17,9 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import co.qualitysolutions.tecniamsa.L_RegistrarBarras;
 import co.qualitysolutions.tecniamsa.R;
-import co.qualitysolutions.tecniamsa.RegistrarBarras;
-import co.qualitysolutions.tecniamsa.RegistrarPeso;
 
 /**
  * Created by Andres on 05/04/2015.
@@ -122,8 +121,8 @@ public class ItemAdapterJsonCodigos extends BaseAdapter{
                                         editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
                                         editor.commit();
 
-                                        ((RegistrarBarras)activity).actionAdapter();
-                                        ((RegistrarBarras)activity).restarBarras(String.valueOf(barrasNuevo));
+                                        ((L_RegistrarBarras)activity).actionAdapter();
+                                        ((L_RegistrarBarras)activity).restarBarras(String.valueOf(barrasNuevo));
                                         Toast.makeText(activity, "Eliminado satisfactoriamente", Toast.LENGTH_LONG).show();
 
                                     }
