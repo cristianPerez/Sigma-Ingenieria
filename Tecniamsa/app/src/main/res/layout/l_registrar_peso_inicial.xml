@@ -240,7 +240,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Lista de pesos"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:gravity="center"/>
 
         <ListView
@@ -252,18 +252,6 @@
 
     </LinearLayout>
 
-    <!--<Button
-        android:id="@+id/btn_save_r"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@color/blue1"
-        android:gravity="center_vertical|center_horizontal|center"
-        android:layout_margin="10dp"
-        android:text="@string/Button_save"
-        android:textColor="@android:color/white"
-        android:layout_alignParentBottom="true"
-        />-->
 
 </RelativeLayout>
 
