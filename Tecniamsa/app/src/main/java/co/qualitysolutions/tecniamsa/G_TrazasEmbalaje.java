@@ -6,11 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,7 +24,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import utilidades.SaveInformation;
 import utilidades.Utilities;
 
 
@@ -111,7 +106,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
     public void regitrarCodigoDeBarras(View view){
 
-        Intent intent = new Intent(this, RegistrarBarras.class);
+        Intent intent = new Intent(this, L_RegistrarBarras.class);
         startActivity(intent);
 
     }
@@ -417,7 +412,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
     }
 
     public void agregarPesos(View view){
-        Intent intent = new Intent(this, RegistrarPeso.class);
+        Intent intent = new Intent(this, L_RegistrarPeso.class);
         startActivity(intent);
     }
 
@@ -480,7 +475,43 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+           if(buttonView.getId()==R.id.checkBoxRecoleccion){
 
+               SharedPreferences.Editor editor = sharedpreferences.edit();
+               try {
+                   this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                   this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+                   this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+                   this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
+                   this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
+                   this.embalajeSeleccionado = this.lstEmbalajesTraza.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE",0));
+                   this.embalajeSeleccionado.put("check_recoleccion", isChecked);
+                   editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
+                   editor.commit();
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
+
+
+           }
+
+        else if(buttonView.getId()==R.id.checkBoxTirillas){
+
+               SharedPreferences.Editor editor = sharedpreferences.edit();
+               try {
+               this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+               this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+               this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+               this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
+               this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
+               this.embalajeSeleccionado = this.lstEmbalajesTraza.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE",0));
+               this.embalajeSeleccionado.put("check_tirillas", isChecked);
+               editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
+               editor.commit();
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
+           }
 
     }
 }

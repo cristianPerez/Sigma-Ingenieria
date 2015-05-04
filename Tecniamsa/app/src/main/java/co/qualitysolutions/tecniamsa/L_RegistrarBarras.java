@@ -18,13 +18,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import utilidades.ItemAdapterJsonCodigos;
-import utilidades.SaveInformation;
 import utilidades.Utilities;
 
 /**
  * Created by teresa on 31/03/15.
  */
-public class RegistrarBarras extends Activity{
+public class L_RegistrarBarras extends Activity{
     public static JSONArray view_barras_json;
     private ListView listView;
     private ItemAdapterJsonCodigos adapterJson;
@@ -43,7 +42,7 @@ public class RegistrarBarras extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registrar_barras);
+        setContentView(R.layout.l_registrar_barras);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         this.myself=this;
         this.inicializarComponentes();

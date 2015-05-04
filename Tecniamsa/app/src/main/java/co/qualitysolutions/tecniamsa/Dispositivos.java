@@ -1,5 +1,4 @@
 /*package co.qualitysolutions.tecniamsa;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -20,25 +19,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import utilidades.BluetoothChatService;
 import utilidades.ItemAdapter;
 import utilidades.SaveInformation;
 import utilidades.Utilities;
-
 /**
  * Created by Andres on 27/03/2015.
  */
 /*public class Dispositivos extends Activity implements View.OnClickListener {
-
-
-
     public static BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private ListView listView;
     private ArrayList<Item> view_devices;
@@ -63,7 +55,6 @@ import utilidades.Utilities;
     public static final int MESSAGE_TOAST = 5;
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_READ = 2;
-
     //variables gordo
     private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes,listaPesosPorEmbalaje,send_data_json;
     private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
@@ -71,8 +62,6 @@ import utilidades.Utilities;
     private String method;
     private String methodInt;
     private TextView date;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,9 +70,7 @@ import utilidades.Utilities;
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         inicializarComponenetes();
     }
-
     public void inicializarComponenetes(){
-
         Button btn = (Button) findViewById(R.id.buscar);
         unregistered = false;
         listView = (ListView) findViewById(R.id.listView);
@@ -93,7 +80,6 @@ import utilidades.Utilities;
         listdisp = new ArrayList<BluetoothDevice>();
         mac = new ArrayList<String>();
         btn.setOnClickListener(this);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -102,7 +88,6 @@ import utilidades.Utilities;
                 leerPeso(model.getAddress());
             }
         });
-
         try {
             this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
             this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
@@ -116,8 +101,6 @@ import utilidades.Utilities;
             e.printStackTrace();
         }
     }
-
-
     @Override
     public void onClick(View view) {
         if (mBluetoothAdapter.isEnabled()) {
@@ -126,7 +109,6 @@ import utilidades.Utilities;
                 listdisp.clear();
                 actionAdapter();
             }
-
             Toast alert = Toast.makeText(getApplicationContext(),"Buscando, por favor espere...", Toast.LENGTH_LONG);
             alert.show();
             startLookingForDevices();
@@ -135,9 +117,7 @@ import utilidades.Utilities;
                     BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
-
     }
-
     public boolean permitir(String mac) {
         int i = 0;
         while (i < this.mac.size()) {
@@ -147,27 +127,21 @@ import utilidades.Utilities;
             }
             i++;
         }
-
         return false;
     }
-
     public void startLookingForDevices() {
         // Register the BroadcastReceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         this.registerReceiver(mReceiver, filter); // Don't forget to unregister
         // during onDestroy
-
         mBluetoothAdapter.startDiscovery();
     }
-
     public void actionAdapter() {
         adapter = new ItemAdapter(this, view_devices);
         listView.setAdapter(adapter);
     }
-
     public void leerPeso(String address) {
-
         if (mBluetoothAdapter == null) {
             Toast.makeText(this, "Bluetooth no esta activo", Toast.LENGTH_LONG)
                     .show();
@@ -175,15 +149,11 @@ import utilidades.Utilities;
         else {
             Address=address;
             setup();
-
         }
     }
-
     public void conectar() {
-
         device = mBluetoothAdapter.getRemoteDevice(Address);
         mBlueService.connect(device);
-
     }
 /*
     @Override
@@ -225,28 +195,22 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-
 import co.qualitysolutions.tecniamsa.Item;
 import co.qualitysolutions.tecniamsa.R;
 import utilidades.ItemAdapter;
-
 private void setup() {
         Log.d(TAG, "MOSTRAR RESPUESTA");
         ensureDiscoverable();
         mBlueService = new BluetoothChatService(this, mHandler);
         conectar();
-
     }
-
    /* @Override
     public synchronized void onPause() {
         super.onPause();
         if (bandera)
             Log.d("ATENCION", "- PAUSADO -");
     }
-
     @Override
     public void onStop() {
         super.onStop();
@@ -270,7 +234,6 @@ private void setup() {
         if (bandera)
             Log.d("ATENCION", "--- DESTRUIDO ---");
     }
-
     private void ensureDiscoverable() {
         if (bandera)
             Log.d("ATENCION", "Garantizando Visibilidad");
@@ -294,7 +257,6 @@ private void setup() {
                  // ListView
                  if (device != null && device.getName() != null
                          && device.getAddress() != null) {
-
                      // if (permitir(device.getAddress())) {
                      Item i = new Item(cont, device.getName(),
                              "Tecniamsa",device.getAddress(),
@@ -303,7 +265,6 @@ private void setup() {
                      listdisp.add(device);
                      cont++;
                      //}
-
                      Log.d("DISPOSITIVO", "[" + device.getName() + "]" + "{" + device.getAddress() + "}");
                  } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
                          .equals(action)) {
@@ -316,11 +277,9 @@ private void setup() {
                  }
                  actionAdapter();
              }
-
          }
      };
     private final Handler mHandler = new Handler() {
-
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -354,7 +313,6 @@ private void setup() {
                     String line = (String) msg.obj;
                     Log.d("RECIBIDO->",line);
                     if(line.substring(0,2).equals("ST")&&line.substring(6,7).equals("+")) {
-
                         JSONObject nuevoPeso= new JSONObject();
                         try {
                             nuevoPeso.put("peso_asignado",Double.parseDouble(line.substring(7,line.length() - 2)));
@@ -380,7 +338,6 @@ private void setup() {
                         setResult(25, intent);
                         finish();
                     }
-
                     break;
                 case MESSAGE_DEVICE_NAME:
                     // save the connected device's name
@@ -398,12 +355,10 @@ private void setup() {
             }
         }
     };
-
     /**
      * Method to close the session
      *
      * @param v
-
     public void logOut(View v) {
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setTitle(getResources().getString(R.string.cerrarSesion));
@@ -417,7 +372,6 @@ private void setup() {
                         try {
                             auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
                             send_data_json = new JSONArray();
-
                             auxobject.put("fecha_hora_evento",Utilities.getDate());
                             auxobject.put("metodo","json_tecni_cerrarsesion");
                             auxobject.put("usuario",sharedpreferences.getString("USER_ID", "14880479"));
@@ -445,37 +399,36 @@ private void setup() {
                 });
         adb.show();
     }
-
 }*/
 
-        package co.qualitysolutions.tecniamsa;
+package co.qualitysolutions.tecniamsa;
 
-        import android.app.Activity;
-        import android.bluetooth.BluetoothAdapter;
-        import android.bluetooth.BluetoothDevice;
-        import android.content.BroadcastReceiver;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.content.IntentFilter;
-        import android.content.SharedPreferences;
-        import android.os.Bundle;
-        import android.os.Handler;
-        import android.os.Message;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.AdapterView;
-        import android.widget.Button;
-        import android.widget.ListView;
-        import android.widget.Toast;
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
-        import org.json.JSONArray;
-        import org.json.JSONException;
-        import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
 
-        import utilidades.BluetoothChatService;
-        import utilidades.ItemAdapter;
+import utilidades.BluetoothChatService;
+import utilidades.ItemAdapter;
 
 /**
  * Created by Andres on 27/03/2015.
@@ -657,4 +610,3 @@ public class Dispositivos extends Activity implements View.OnClickListener {
     };
 
 }
-

@@ -192,7 +192,7 @@ package co.qualitysolutions.tecniamsa;
         import utilidades.SaveInformation;
         import utilidades.Utilities;
 
-public class RegistrarPeso extends Activity{
+public class L_RegistrarPeso extends Activity{
 
     private ListView listView;
     private boolean adicionar;
@@ -230,7 +230,7 @@ public class RegistrarPeso extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registrar_peso);
+        setContentView(R.layout.l_registrar_peso);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         this.inicializarComponentes();
         this.myself=this;
@@ -264,6 +264,7 @@ public class RegistrarPeso extends Activity{
     {
         startActivityForResult(new Intent(getApplicationContext(), Dispositivos.class), 20);
     }
+
     public void optener_peso(View view){
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(
@@ -280,12 +281,19 @@ public class RegistrarPeso extends Activity{
         }
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==24) {
             Address= data.getStringExtra("address");
             setup();
+        }
+        else if(resultCode==20){
+
+            actionAdapter();
+            sumarPeso();
         }
     }
 
@@ -298,10 +306,10 @@ public class RegistrarPeso extends Activity{
             this.listaTrazas = this.clienteSeleccionado.getJSONArray("lsttrazas");
             this.trazaSeleccionada = listaTrazas.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
             this.listaEmbalajes = this.trazaSeleccionada.getJSONArray("lstembalaje");
-            this.embalajeSeleccionado = this.listaEmbalajes.getJSONObject(this.sharedpreferences.getInt("SELECT_EMBALAJE", 0));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+             this.embalajeSeleccionado = this.listaEmbalajes.getJSONObject(this.sharedpreferences.getInt("SELECT_EMBALAJE", 0));
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
 
     }
 
@@ -582,6 +590,31 @@ public class RegistrarPeso extends Activity{
             }
         }
     };
+
+
+    public void pesomanual(View view){
+
+        try {
+            if(this.trazaSeleccionada.getInt("punto_pesaje")==3){
+
+                Intent intent = new Intent(this, L_RegistrarPesoManual.class);
+                startActivityForResult(intent, 10);
+
+            }
+            else{
+
+                Utilities.showAlert(myself,"Debe seleccionar para esta traza en punto de pesaje bascula del cliente para poderlo hacer manual");
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+    }
 
 }
 

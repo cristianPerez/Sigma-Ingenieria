@@ -129,6 +129,19 @@ public class B_MenuPrincipal extends Activity {
 
     }
 
+    public void almacenar(View v) {
+
+        Intent intent = new Intent(this, N_AlmacanarResiduos.class);
+        startActivity(intent);
+
+    }
+
+    public void trasladar(View v) {
+
+        Intent intent = new Intent(this, N_TrasladoEntreAlmacenes.class);
+        startActivity(intent);
+    }
+
     /**
      * Method to display the ticket gasoline register interface
      *

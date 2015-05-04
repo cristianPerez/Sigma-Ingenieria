@@ -29,12 +29,12 @@ public class E_MenuCiclo extends Activity {
 
     private ImageButton btn_base_exit, btn_llegada_zona_franca,btn_start_collection,
             btn_collection_finish, btn_arrive_final_disposition,
-            btn_come_back_to_base, btn_inoperability, btn_trazas;
+            btn_come_back_to_base, btn_inoperability, btn_trazas,btn_cancelacion_visita;
 
     private Drawable d_base_exit, d_base_exit_two,d_llegada_zona_franca, d_llegada_zona_franca_two,
             d_start_collection,d_start_collection_two,d_collection_finish, d_collection_finish_two,
             d_arrive_final_disposition, d_arrive_final_disposition_two,d_come_back_to_base,
-            d_come_back_to_base_two,d_inoperability, d_inoperability_two , g_trazas, g_trazas_two;
+            d_come_back_to_base_two,d_inoperability, d_inoperability_two , g_trazas, g_trazas_two , d_cancelacion_visita,d_cancelacion_visita_two;
 
     private JSONArray send_data_json,clientesPlaneados;
     private JSONObject clienteSeleccionado;
@@ -270,6 +270,32 @@ public class E_MenuCiclo extends Activity {
 
     }
 
+    public void cancelarVisita(View v){
+
+        this.adb.setTitle("Alerta!");
+        this.adb.setMessage("Realmente desea cancelar la visita");
+        this.adb.setPositiveButton(getResources().getString(R.string.confirm_button_1),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                            Intent intent = new Intent(myself, M_CancelacionVisita.class);
+                            startActivityForResult(intent, 10);
+
+                    }
+                });
+        this.adb.setNegativeButton(getResources().getString(R.string.confirm_button_2),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        this.adb.show();
+
+
+    }
+
 
 
 
@@ -338,6 +364,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
+        this.btn_cancelacion_visita.setImageDrawable(this.d_cancelacion_visita);
+        this.btn_cancelacion_visita.setEnabled(true);
+
 
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
@@ -379,6 +408,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
+        this.btn_cancelacion_visita.setImageDrawable(this.d_cancelacion_visita);
+        this.btn_cancelacion_visita.setEnabled(true);
+
 
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
@@ -413,6 +445,9 @@ public class E_MenuCiclo extends Activity {
         //boton nuevo
         this.btn_trazas.setImageDrawable(this.g_trazas);
         this.btn_trazas.setEnabled(true);
+
+        this.btn_cancelacion_visita.setImageDrawable(this.d_cancelacion_visita);
+        this.btn_cancelacion_visita.setEnabled(true);
 
 
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish);
@@ -450,6 +485,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
+        this.btn_cancelacion_visita.setImageDrawable(this.d_cancelacion_visita);
+        this.btn_cancelacion_visita.setEnabled(true);
+
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
 
@@ -484,6 +522,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
+        this.btn_cancelacion_visita.setImageDrawable(this.d_cancelacion_visita);
+        this.btn_cancelacion_visita.setEnabled(true);
+
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
 
@@ -516,6 +557,9 @@ public class E_MenuCiclo extends Activity {
         //boton nuevo
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
+
+        this.btn_cancelacion_visita.setImageDrawable(this.d_cancelacion_visita_two);
+        this.btn_cancelacion_visita.setEnabled(false);
 
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
@@ -554,6 +598,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
 
+        this.btn_cancelacion_visita.setImageDrawable(this.d_cancelacion_visita_two);
+        this.btn_cancelacion_visita.setEnabled(false);
+
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
 
@@ -588,6 +635,9 @@ public class E_MenuCiclo extends Activity {
         //boton nuevo
         this.btn_trazas.setImageDrawable(this.g_trazas_two);
         this.btn_trazas.setEnabled(false);
+
+        this.btn_cancelacion_visita.setImageDrawable(this.d_cancelacion_visita_two);
+        this.btn_cancelacion_visita.setEnabled(false);
 
         this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
         this.btn_collection_finish.setEnabled(false);
@@ -664,6 +714,9 @@ public class E_MenuCiclo extends Activity {
         this.btn_llegada_zona_franca = (ImageButton) findViewById(R.id.btn_llegada_zona_franca);
         this.btn_llegada_zona_franca.setEnabled(false);
 
+        this.btn_cancelacion_visita = (ImageButton) findViewById(R.id.btn_cancelacion_visita);
+        this.btn_cancelacion_visita.setEnabled(false);
+
         this.btn_start_collection = (ImageButton) findViewById(R.id.btn_start_collection);
         this.btn_start_collection.setEnabled(false);
 
@@ -689,6 +742,9 @@ public class E_MenuCiclo extends Activity {
         this.d_llegada_zona_franca = this.getResources().getDrawable(R.mipmap.btn_llegada_zona_franca);
         this.d_llegada_zona_franca_two = this.getResources().getDrawable(R.mipmap.btn_llegada_zona_franca_two);
 
+        this.d_cancelacion_visita = this.getResources().getDrawable(R.mipmap.btn_cancelar_visita);
+        this.d_cancelacion_visita_two = this.getResources().getDrawable(R.mipmap.btn_cancelar_visita_two);
+
         this.d_start_collection = this.getResources().getDrawable(R.mipmap.btn_start_collection);
         this.d_start_collection_two = this.getResources().getDrawable(R.mipmap.btn_start_collection_two);
 
@@ -706,6 +762,7 @@ public class E_MenuCiclo extends Activity {
 
         this.g_trazas = this.getResources().getDrawable(R.mipmap.btn_trazas);
         this.g_trazas_two = this.getResources().getDrawable(R.mipmap.btn_trazas_two);
+
 
         this.send_data_json= new JSONArray();
         this.date = (TextView)findViewById(R.id.dateNow);
