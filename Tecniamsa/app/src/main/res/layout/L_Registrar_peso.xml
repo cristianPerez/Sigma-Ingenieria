@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context="co.qualitysolutions.tecniamsa.RegistrarPeso"
+    tools:context="co.qualitysolutions.tecniamsa.L_RegistrarPeso"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -186,6 +186,8 @@
                 android:textColor="@android:color/white"
                 android:textColorLink="@android:color/white"
                 android:layout_weight="1"/>
+
+
             <Button
                 android:id="@+id/Cambiar_pesa"
                 android:layout_width="fill_parent"
@@ -211,13 +213,27 @@
                 android:gravity="center_vertical|center_horizontal|center"
                 android:layout_margin="10dp"
                 android:onClick="back"
-                android:text="Listo"
+                android:text=" Listo "
                 android:textColor="@android:color/white"
                 android:textColorLink="@android:color/white"
                 android:layout_weight="1"
                 />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnPesoManual"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/btn9"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:layout_margin="11dp"
+            android:onClick="pesomanual"
+            android:text="Agregar peso manual"
+            android:textColor="@android:color/white"
+            android:textColorLink="@android:color/white"
+            />
 
         <TextView
             android:id="@+id/text1"
