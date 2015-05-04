@@ -230,7 +230,7 @@ public class L_RegistrarPeso extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.l_registrar_peso);
+        setContentView(R.layout.L_Registrar_peso);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         this.inicializarComponentes();
         this.myself=this;
