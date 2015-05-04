@@ -106,7 +106,7 @@
 
 
     <!-- B Menu Principal -->
-    <string name="date_example">31/03/2015</string>
+    <string name="date_example">04/05/2015</string>
     <string name="logout">X</string>
     <string name="logout_confirm">¿Deseas cerrar sesión?</string>
     <string name="logout_conten_description">Boton para cerrar sesión</string>
@@ -204,6 +204,20 @@
         <item>Salesforce</item>
     </string-array>
 
+    <string-array name="arrayAlmacenes">
+        <item>Almacen 1</item>
+        <item>Almacen 2</item>
+        <item>Almacen 3</item>
+        <item>Almacen 4</item>
+    </string-array>
+
+    <string-array name="arrayLineasDisposicion">
+        <item>linea de disposicion 1</item>
+        <item>linea de disposicion 2</item>
+        <item>linea de disposicion 3</item>
+        <item>linea de disposicion 4</item>
+    </string-array>
+
 
     <string name="alertTicketEmpty"> DEBE COMPLETAR LOS CAMPOS NUMERO Y PESO DEL TIKET</string>
     <string name="weight">Peso inicial en relleno</string>
@@ -274,5 +288,9 @@
     <string name="title_activity_j__combustible">J_Combustible</string>
     <string name="title_activity_k__peaje">Peaje</string>
     <string name="alertaZonaFranca"> ¿ Seguro que se encuentra en zona franca ?</string>
+    <string name="title_activity_l__registrar_peso_manual">Registrar Peso Manual</string>
+    <string name="title_activity_m__cancelacion_visita">Cancelacion Visita</string>
+    <string name="title_activity_n__almacanar_residuos">Almacanar Residuos</string>
+    <string name="title_activity_n__traslado_entre_almacenes">N_TrasladoEntreAlmacenes</string>
 
 </resources>

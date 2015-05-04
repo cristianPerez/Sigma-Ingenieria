@@ -27,11 +27,11 @@
             android:label="Seleccion de Dispositivo" >
         </activity>
         <activity
-            android:name=".RegistrarPeso"
+            android:name=".L_RegistrarPeso"
             android:label="Registrar Pesos" >
         </activity>
         <activity
-            android:name=".RegistrarBarras"
+            android:name=".L_RegistrarBarras"
             android:label="Registrar Barras" >
         </activity>
         <activity
@@ -100,6 +100,25 @@
         <activity
             android:name=".K_Peaje"
             android:label="@string/title_activity_k__peaje" >
+        </activity>
+        <activity
+            android:name=".L_RegistrarPesoManual"
+            android:label="@string/title_activity_l__registrar_peso_manual"
+            android:theme="@android:style/Theme.Holo.Dialog" >
+        </activity>
+        <activity
+            android:name=".M_CancelacionVisita"
+            android:label="@string/title_activity_m__cancelacion_visita">
+        </activity>
+        <activity
+            android:name=".N_AlmacanarResiduos"
+            android:label="@string/title_activity_n__almacanar_residuos"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".N_TrasladoEntreAlmacenes"
+            android:label="@string/title_activity_n__traslado_entre_almacenes"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
