@@ -245,7 +245,7 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
 
 
 
-                JSONArray listaClientes = inicializarClientesPlaneados(this.answer.getJSONObject(0).getJSONArray("lstdatos_cliente"));
+                JSONArray listaClientes = Utilities.inicializarClientesPlaneados(this.answer.getJSONObject(0).getJSONArray("lstdatos_cliente"));
                 JSONArray operators = this.answer.getJSONObject(0).getJSONArray("lstoperarios");
                 JSONArray truckInformation = this.answer.getJSONObject(0).getJSONArray("lstvehiculos");
                 truckInformation.getJSONObject(0).put("cedula_conductor",user);
@@ -329,54 +329,6 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
 
     }
 
-    public JSONArray inicializarClientesPlaneados(JSONArray clientes){
-
-        JSONArray trazasCliente = new JSONArray();
-        JSONArray embalajesTraza = new JSONArray();
-
-
-        for (int i=0;i<clientes.length();i++){
-
-            try {
-                trazasCliente = clientes.getJSONObject(i).getJSONArray("lsttrazas");
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            for (int j=0;j<trazasCliente.length();j++){
-
-                try {
-                    embalajesTraza = trazasCliente.getJSONObject(j).getJSONArray("lstembalaje");
-                    trazasCliente.getJSONObject(j).put("pesoTotal",0.0);
-                    trazasCliente.getJSONObject(j).put("cantTotal",0);
-                    trazasCliente.getJSONObject(j).put("punto_pesaje",0);
-                    trazasCliente.getJSONObject(j).put("peso_en_recoleccion",0);
-                    trazasCliente.getJSONObject(j).put("cantidad_en_recoleccion",0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                for (int k=0;k<embalajesTraza.length();k++){
-
-                    try {
-                        embalajesTraza.getJSONObject(k).put("barras_embalaje",new JSONArray());
-                        embalajesTraza.getJSONObject(k).put("pesos_embalaje",new JSONArray());
-                        embalajesTraza.getJSONObject(k).put("pesoTotal",0.0);
-                        embalajesTraza.getJSONObject(k).put("cantTotal",0);
-                        embalajesTraza.getJSONObject(k).put("apto_cargue",0);
-                        embalajesTraza.getJSONObject(k).put("check_recoleccion",false);
-                        embalajesTraza.getJSONObject(k).put("check_tirillas",false);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-        return clientes;
-    }
 
 
 

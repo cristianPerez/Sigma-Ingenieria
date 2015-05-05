@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import co.qualitysolutions.tecniamsa.R;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -112,6 +113,104 @@ public class Utilities {
                 methodInt,
                 method,
                 send_data_json.toString());
+    }
+
+    public static JSONArray inicializarClientesPlaneados(JSONArray clientes){
+
+        JSONArray trazasCliente = new JSONArray();
+        JSONArray embalajesTraza = new JSONArray();
+
+
+        for (int i=0;i<clientes.length();i++){
+
+            try {
+                trazasCliente = clientes.getJSONObject(i).getJSONArray("lsttrazas");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (int j=0;j<trazasCliente.length();j++){
+
+                try {
+                    embalajesTraza = trazasCliente.getJSONObject(j).getJSONArray("lstembalaje");
+                    trazasCliente.getJSONObject(j).put("pesoTotal",0.0);
+                    trazasCliente.getJSONObject(j).put("cantTotal",0);
+                    trazasCliente.getJSONObject(j).put("punto_pesaje",0);
+                    trazasCliente.getJSONObject(j).put("peso_en_recoleccion",0);
+                    trazasCliente.getJSONObject(j).put("cantidad_en_recoleccion",0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                for (int k=0;k<embalajesTraza.length();k++){
+
+                    try {
+                        embalajesTraza.getJSONObject(k).put("barras_embalaje",new JSONArray());
+                        embalajesTraza.getJSONObject(k).put("pesos_embalaje",new JSONArray());
+                        embalajesTraza.getJSONObject(k).put("pesoTotal",0.0);
+                        embalajesTraza.getJSONObject(k).put("cantTotal",0);
+                        embalajesTraza.getJSONObject(k).put("apto_cargue",0);
+                        embalajesTraza.getJSONObject(k).put("check_recoleccion",false);
+                        embalajesTraza.getJSONObject(k).put("check_tirillas",false);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        return clientes;
+    }
+
+
+
+    public static JSONObject inicializarCliente(JSONObject cliente){
+
+        JSONArray trazasCliente = new JSONArray();
+        JSONArray embalajesTraza = new JSONArray();
+
+
+        try {
+            trazasCliente = cliente.getJSONArray("lsttrazas");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        for (int j=0;j<trazasCliente.length();j++){
+
+            try {
+                embalajesTraza = trazasCliente.getJSONObject(j).getJSONArray("lstembalaje");
+                trazasCliente.getJSONObject(j).put("pesoTotal",0.0);
+                trazasCliente.getJSONObject(j).put("cantTotal",0);
+                trazasCliente.getJSONObject(j).put("punto_pesaje",0);
+                trazasCliente.getJSONObject(j).put("peso_en_recoleccion",0);
+                trazasCliente.getJSONObject(j).put("cantidad_en_recoleccion",0);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (int k=0;k<embalajesTraza.length();k++){
+
+                try {
+                    embalajesTraza.getJSONObject(k).put("barras_embalaje",new JSONArray());
+                    embalajesTraza.getJSONObject(k).put("pesos_embalaje",new JSONArray());
+                    embalajesTraza.getJSONObject(k).put("pesoTotal",0.0);
+                    embalajesTraza.getJSONObject(k).put("cantTotal",0);
+                    embalajesTraza.getJSONObject(k).put("apto_cargue",0);
+                    embalajesTraza.getJSONObject(k).put("check_recoleccion",false);
+                    embalajesTraza.getJSONObject(k).put("check_tirillas",false);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return cliente;
     }
 
 }
