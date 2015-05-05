@@ -33,7 +33,7 @@ import java.io.OutputStream;
 import java.net.SocketException;
 import java.util.UUID;
 
-import co.qualitysolutions.tecniamsa.Dispositivos;
+import co.qualitysolutions.tecniamsa.D_Dispositivos;
 
 
 /**
@@ -113,7 +113,7 @@ public class BluetoothService {
         mState = state;
 
         // Give the new state to the Handler so the UI Activity can update
-        mHandler.obtainMessage(Dispositivos.MESSAGE_STATE_CHANGE, state, -1)
+        mHandler.obtainMessage(D_Dispositivos.MESSAGE_STATE_CHANGE, state, -1)
                 .sendToTarget();
     }
 
@@ -208,9 +208,9 @@ public class BluetoothService {
         mConnectedThread.start();
 
         // Send the name of the connected device back to the UI Activity
-        Message msg = mHandler.obtainMessage(Dispositivos.MESSAGE_DEVICE_NAME);
+        Message msg = mHandler.obtainMessage(D_Dispositivos.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
-        bundle.putString(Dispositivos.DEVICE_NAME, device.getName());
+        bundle.putString(D_Dispositivos.DEVICE_NAME, device.getName());
         msg.setData(bundle);
         mHandler.sendMessage(msg);
 
@@ -262,9 +262,9 @@ public class BluetoothService {
         setState(STATE_LISTEN);
 
         // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(Dispositivos.MESSAGE_TOAST);
+        Message msg = mHandler.obtainMessage(D_Dispositivos.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(Dispositivos.TOAST,
+        bundle.putString(D_Dispositivos.TOAST,
                 "No se puede conectar con dispositivo");
         msg.setData(bundle);
         mHandler.sendMessage(msg);
@@ -277,9 +277,9 @@ public class BluetoothService {
         setState(STATE_LISTEN);
 
         // Send a failure message back to the Activity
-		/*Message msg = mHandler.obtainMessage(Dispositivos.MESSAGE_TOAST);
+		/*Message msg = mHandler.obtainMessage(D_Dispositivos.MESSAGE_TOAST);
 		Bundle bundle = new Bundle();
-		bundle.putString(Dispositivos.TOAST, "Conexion perdida con dispositivo");
+		bundle.putString(D_Dispositivos.TOAST, "Conexion perdida con dispositivo");
 		msg.setData(bundle);
 		mHandler.sendMessage(msg);*/
         Log.d("Service->","Conexión perdida con dispositivo");
@@ -396,7 +396,7 @@ public class BluetoothService {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(mmInStream));
                     String line = reader.readLine();
                     if (line != null && line.length() >= 15) {
-                        mHandler.obtainMessage(Dispositivos.MESSAGE_READ, -1, -1, line).sendToTarget();
+                        mHandler.obtainMessage(D_Dispositivos.MESSAGE_READ, -1, -1, line).sendToTarget();
                         sleep(1500);
                     }
 //                    mmInStream.close();
@@ -422,7 +422,7 @@ public class BluetoothService {
                 mmOutStream.write(buffer);
 
                 // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(Dispositivos.MESSAGE_WRITE, -1, -1, buffer)
+                mHandler.obtainMessage(D_Dispositivos.MESSAGE_WRITE, -1, -1, buffer)
                         .sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);

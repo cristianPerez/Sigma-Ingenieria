@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Dispositivos"
+            android:name=".D_Dispositivos"
             android:label="Seleccion de Dispositivo" >
         </activity>
         <activity

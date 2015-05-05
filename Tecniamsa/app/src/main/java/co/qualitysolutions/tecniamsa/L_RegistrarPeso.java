@@ -130,7 +130,7 @@ public class L_RegistrarPeso extends Activity{
 
     public void cambiar_dispositivo(View view)
     {
-        startActivityForResult(new Intent(getApplicationContext(), Dispositivos.class), 20);
+        startActivityForResult(new Intent(getApplicationContext(), D_Dispositivos.class), 20);
     }
 
     public void optener_peso(View view){
@@ -141,7 +141,7 @@ public class L_RegistrarPeso extends Activity{
         }
         if(Address ==null)
         {
-            startActivityForResult(new Intent(getApplicationContext(), Dispositivos.class), 20);
+            startActivityForResult(new Intent(getApplicationContext(), D_Dispositivos.class), 20);
         }
         else {
             adicionar = true;

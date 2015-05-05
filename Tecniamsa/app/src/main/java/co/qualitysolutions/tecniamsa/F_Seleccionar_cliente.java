@@ -168,6 +168,15 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        try {
+                            JSONArray truck = new JSONArray(sharedpreferences.getString("TRUCK_INFO","[]"));
+                            new ConsultarInformacion(myself).execute("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login2?ciudad="+sharedpreferences.getString("CITY","")+"&vehiculo="+truck.getJSONObject(0).getString("placa"),
+                                    sharedpreferences.getString("USER_ID",""),
+                                    sharedpreferences.getString("PASSWORD",""));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
 
                     }
@@ -263,18 +272,18 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         if (thereIsInternet()) {
             //Send current event
             this.connection.setUrl(params[0]);
-            String[] parameters = {params[1], token, Utilities.getDate(), params[2], params[3]};
+            String[] parameters = { "login",params[1], params[2]};
             answer = this.connection.conectar(parameters);
             try {
-                if (!answer.getJSONObject(0).getString("mensaje").equals("")) {
+                if (answer.getJSONObject(0).getJSONArray("lstdatos_cliente").length()>0) {
 
-                    aux = new JSONObject(answer.getJSONObject(0).getString("mensaje"));
+                   /* aux = new JSONObject(answer.getJSONObject(0).getString("mensaje"));
                     JSONArray newArray = aux.getJSONArray("operarios");
                     //actualizarOperariosSelect(newArray);
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString("SELECTED_OPERATORS", newArray.toString());
 
-                    editor.commit();
+                    editor.commit();*/
 
                 } /*else {
                         //aux_grupo_trabajo=null;

@@ -25,7 +25,7 @@ import Adaptadores.ItemAdapter;
 /**
  * Created by Andres on 27/03/2015.
  */
-public class Dispositivos extends Activity {
+public class D_Dispositivos extends Activity {
 
 
 
@@ -55,7 +55,7 @@ public class Dispositivos extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dispositivos);
+        setContentView(R.layout.d_dispositivos);
         inicializarComponenetes();
 
 
