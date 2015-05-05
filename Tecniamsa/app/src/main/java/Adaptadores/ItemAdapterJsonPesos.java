@@ -1,4 +1,4 @@
-package utilidades;
+package Adaptadores;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import co.qualitysolutions.tecniamsa.L_RegistrarPeso;
 import co.qualitysolutions.tecniamsa.R;
+import utilidades.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,7 +94,7 @@ public class ItemAdapterJsonPesos extends BaseAdapter {
 											public void onClick(DialogInterface dialog,int which) {
 
 
-											  jsonSelected = Utilities.delete(jsonSelected,pos);
+											  jsonSelected = Utilities.delete(jsonSelected, pos);
 
                                                 JSONArray clientesPlaneados = null;
                                                 JSONObject clienteSeleccionado = null;

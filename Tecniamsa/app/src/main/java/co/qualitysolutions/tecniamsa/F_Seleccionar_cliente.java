@@ -2,15 +2,20 @@ package co.qualitysolutions.tecniamsa;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -27,6 +32,7 @@ import java.util.ArrayList;
 
 import utilidades.SaveInformation;
 import utilidades.Utilities;
+import utilidades.WebService;
 
 
 public class F_Seleccionar_cliente extends Activity implements OnQueryTextListener,OnItemClickListener {
@@ -40,6 +46,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
     private TextView date;
     private JSONArray send_data_json;
     private Activity myself;
+    private ProgressDialog progress;
 
 
     @Override
@@ -82,11 +89,9 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         for(int i=0; i<this.clientesVisualizados.length(); i++){
             try {
                 if(this.clientesVisualizados.getJSONObject(i).getString("estado").equals("terminada"))
-                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("hoja") +"--\n" +"Atendido");
+                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("solicitud") +"--\n" +"Atendido");
                 else
-                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("hoja"));
-
-
+                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("solicitud"));
             } catch (JSONException e) {
             }
         }
@@ -104,18 +109,12 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
 
         try {
             if(this.clientesPlaneados.getJSONObject(position).getString("estado").equals("terminada")){
-
                 Toast.makeText(this,"El cliente ya fue atendido",Toast.LENGTH_LONG).show();
-
             }
             else{
-
                 Intent intent = new Intent(this, F_Datos_cliente.class);
                 startActivityForResult(intent, 10);
-
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -148,14 +147,42 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         for(int i=0; i<this.clientesPlaneados.length(); i++){
             try {
                 if(this.clientesPlaneados.getJSONObject(i).getString("nombre_cliente").toUpperCase().contains((newText.toString().toUpperCase()))){
-
                         this.clientesVisualizados.put(this.clientesPlaneados.getJSONObject(i));
                 }
             } catch (JSONException e) {
-            }
+          }
         }
         this.mostrarCLientes();
         return false;
+    }
+
+    public void actualizarClientes(){
+
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setTitle("Alerta");
+        adb.setMessage("Desea actualizar las ordenes?");
+        adb.setPositiveButton(
+                getResources().getString(R.string.confirm_button_1),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+
+                    }
+                });
+        adb.setNegativeButton(
+                getResources().getString(R.string.confirm_button_2),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                    }
+                });
+        adb.show();
+
 
     }
 
@@ -206,6 +233,79 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                     }
                 });
         adb.show();
+    }
+    public class ConsultarInformacion extends AsyncTask<String, Void, Void> {
+
+        private WebService connection;
+        private Activity activity;
+        private SharedPreferences sharedpreferences;
+
+    public ConsultarInformacion(Activity activity) {
+        this.connection = new WebService();
+        this.activity = activity;
+        this.sharedpreferences = activity.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        progress.setTitle("Descargando");
+        progress.setMessage("Obteniendo nuevas solicitudes");
+        progress.setCancelable(true);
+        progress.show();
+        super.onPreExecute();
+    }
+
+    @Override
+    protected Void doInBackground(String... params) {
+        JSONArray answer;
+        JSONObject aux;
+        String token = this.sharedpreferences.getString("TOKEN", null);
+        if (thereIsInternet()) {
+            //Send current event
+            this.connection.setUrl(params[0]);
+            String[] parameters = {params[1], token, Utilities.getDate(), params[2], params[3]};
+            answer = this.connection.conectar(parameters);
+            try {
+                if (!answer.getJSONObject(0).getString("mensaje").equals("")) {
+
+                    aux = new JSONObject(answer.getJSONObject(0).getString("mensaje"));
+                    JSONArray newArray = aux.getJSONArray("operarios");
+                    //actualizarOperariosSelect(newArray);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("SELECTED_OPERATORS", newArray.toString());
+
+                    editor.commit();
+
+                } /*else {
+                        //aux_grupo_trabajo=null;
+                    }*/
+            } catch (JSONException e) {
+            }
+        } else {
+            Toast.makeText(activity, "No tienes coneccion a internet!", Toast.LENGTH_LONG).show();
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void result) {
+        progress.dismiss();
+        Intent intent = new Intent();
+        setResult(1, intent);
+        finish();
+    }
+
+}
+
+    private boolean thereIsInternet() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

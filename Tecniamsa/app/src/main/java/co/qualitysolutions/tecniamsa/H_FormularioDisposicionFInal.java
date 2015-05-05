@@ -75,6 +75,30 @@ public class H_FormularioDisposicionFInal extends Activity {
         this.adb.show();
     }
 
+    public void ActualizarTrazas(View v) {
+
+
+        this.adb.setTitle("Esta seguro que desea actualizar las trazas?");
+        this.adb.setPositiveButton(getResources().getString(R.string.confirm_button_1),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(myself,F_Seleccionar_cliente.class);
+                        startActivity(intent);
+
+                    }
+                });
+        this.adb.setNegativeButton(getResources().getString(R.string.confirm_button_2),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        this.adb.show();
+    }
+
     public void outFiller(View v) {
 
 

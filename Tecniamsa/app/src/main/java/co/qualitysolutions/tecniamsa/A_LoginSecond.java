@@ -353,16 +353,13 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
                     trazasCliente.getJSONObject(j).put("punto_pesaje",0);
                     trazasCliente.getJSONObject(j).put("peso_en_recoleccion",0);
                     trazasCliente.getJSONObject(j).put("cantidad_en_recoleccion",0);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 for (int k=0;k<embalajesTraza.length();k++){
 
-
                     try {
-
                         embalajesTraza.getJSONObject(k).put("barras_embalaje",new JSONArray());
                         embalajesTraza.getJSONObject(k).put("pesos_embalaje",new JSONArray());
                         embalajesTraza.getJSONObject(k).put("pesoTotal",0.0);
@@ -374,12 +371,8 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 }
-
             }
-
         }
 
         return clientes;

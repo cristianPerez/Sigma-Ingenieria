@@ -67,6 +67,17 @@
         <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/actualizar_trazas"
+            android:src="@mipmap/btn_actualizar_traza"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:onClick="ActualizarTrazas"
+            android:background="@color/transparent"
+            />
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/out_filler"
             android:src="@mipmap/btn_out_filler_two"
             android:gravity="center_horizontal"

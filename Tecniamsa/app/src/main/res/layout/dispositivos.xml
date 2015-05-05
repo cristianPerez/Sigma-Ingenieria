@@ -55,7 +55,8 @@
         android:text="Buscar dispositivos"
         android:textColor="@color/white"
         android:textSize="25dp"
-        android:layout_below="@+id/RelativeLayout1"/>
+        android:layout_below="@+id/RelativeLayout1"
+        android:onClick="buscar_dispositivo"/>
 
     <ListView
         android:id="@+id/listView"

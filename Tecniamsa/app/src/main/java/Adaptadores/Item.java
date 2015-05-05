@@ -1,4 +1,4 @@
-package co.qualitysolutions.tecniamsa;
+package Adaptadores;
 
 public class Item {
 	private long id;

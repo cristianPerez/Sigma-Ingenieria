@@ -128,17 +128,12 @@ public class E_MenuCiclo extends Activity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-
-
                         JSONArray auxjson;
                         try {
                             auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
-
                             clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
                             clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
                             clienteSeleccionado.put("estado","terminada");
-
                             send_data_json = new JSONArray();
                             JSONObject auxobject = new JSONObject();
                             auxobject.put("fecha_hora_evento",Utilities.getDate());

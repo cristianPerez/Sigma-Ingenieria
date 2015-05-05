@@ -1,4 +1,4 @@
-package utilidades;
+package Adaptadores;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import co.qualitysolutions.tecniamsa.L_RegistrarBarras;
 import co.qualitysolutions.tecniamsa.R;
+import utilidades.Utilities;
 
 /**
  * Created by Andres on 05/04/2015.
@@ -93,7 +94,7 @@ public class ItemAdapterJsonCodigos extends BaseAdapter{
                                     @Override
                                     public void onClick(DialogInterface dialog,int which) {
 
-                                        jsonSelected = Utilities.delete(jsonSelected,pos);
+                                        jsonSelected = Utilities.delete(jsonSelected, pos);
 
                                         JSONArray clientesPlaneados = null;
                                         JSONObject clienteSeleccionado = null;

@@ -13,7 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import utilidades.ItemAdapterJsonCodigos;
+import Adaptadores.ItemAdapterJsonCodigos;
 
 
 public class N_AlmacanarResiduos extends Activity {

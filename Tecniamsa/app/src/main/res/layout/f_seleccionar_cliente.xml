@@ -59,7 +59,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listViewCLientes"
-        android:layout_below="@+id/searchView3"/>
+        android:layout_below="@+id/searchView3"
+        android:layout_above="@+id/btnActualizar"
+        />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Actualizar Solicitudes"
+        android:id="@+id/btnActualizar"
+        android:layout_alignParentBottom="true"
+        android:background="@color/btn6"
+        android:textColor="@color/white"
+        android:onClick="actualizarClientes"/>
+
 
 </RelativeLayout>
 

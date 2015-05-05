@@ -1,4 +1,4 @@
-package utilidades;
+package Adaptadores;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import co.qualitysolutions.tecniamsa.Item;
 import co.qualitysolutions.tecniamsa.R;
 
 public class ItemAdapter extends BaseAdapter {

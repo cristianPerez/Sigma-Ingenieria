@@ -1,169 +1,3 @@
-/*package co.qualitysolutions.tecniamsa;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import utilidades.BluetoothChatService;
-import utilidades.ItemAdapterJsonPesos;
-import utilidades.SaveInformation;
-import utilidades.Utilities;
-
-public class RegistrarPeso extends Activity{
-
-    private ListView listView;
-
-    //public static ArrayList<Item> view_pesos;
-    public static JSONArray view_pesos_json;
-
-    //private ItemAdapter adapter;
-    private ItemAdapterJsonPesos adapterJson;
-    private TextView tipoEmbalaje,pesoTotal;
-    private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes;
-    private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
-    private SharedPreferences sharedpreferences;
-    private JSONArray send_data_json;
-    private String method;
-    private String methodInt;
-    private TextView date;
-    private Activity myself;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.registrar_peso);
-        this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        this.myself=this;
-        this.inicializarComponentes();
-    }
-
-    public void inicializarComponentes(){
-        this.date = (TextView)findViewById(R.id.dateNow);
-        this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
-
-        listView = (ListView) findViewById(R.id.list_pesos);
-        this.tipoEmbalaje = (TextView) findViewById(R.id.tipoEmbalaje);
-        this.pesoTotal = (TextView)findViewById(R.id.peso_total);
-        try {
-            this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
-            this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
-            this.listaTrazas = this.clienteSeleccionado.getJSONArray("lsttrazas");
-            this.trazaSeleccionada = listaTrazas.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
-            this.listaEmbalajes = this.trazaSeleccionada.getJSONArray("lstembalaje");
-            this.embalajeSeleccionado = this.listaEmbalajes.getJSONObject(this.sharedpreferences.getInt("SELECT_EMBALAJE", 0));
-            this.tipoEmbalaje.setText(this.embalajeSeleccionado.getString("nombre"));
-            this.pesoTotal.setText(this.embalajeSeleccionado.getDouble("pesoTotal")+" KG");
-            this.actionAdapter();
-        }catch (JSONException e) {
-            this.pesoTotal.setText("0.0 KG");
-            e.printStackTrace();
-        }
-    }
-
-
-    public void buscar_dispositivo(View view){
-        startActivityForResult(new Intent(getApplicationContext(), Dispositivos.class), 20);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==24) {
-            actionAdapter();
-            sumarPeso();
-        }
-        else if(resultCode==25)
-        {
-            Utilities.showAlert(this,"Verifique el peso");
-        }
-    }
-
-
-    public void actualizarEmbalaje(){
-
-        try {
-            this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
-            this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
-            this.listaTrazas = this.clienteSeleccionado.getJSONArray("lsttrazas");
-            this.trazaSeleccionada = listaTrazas.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
-            this.listaEmbalajes = this.trazaSeleccionada.getJSONArray("lstembalaje");
-            this.embalajeSeleccionado = this.listaEmbalajes.getJSONObject(this.sharedpreferences.getInt("SELECT_EMBALAJE", 0));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public void actionAdapter(){
-        try {
-            actualizarEmbalaje();
-            this.view_pesos_json = this.embalajeSeleccionado.getJSONArray("pesos_embalaje");
-        } catch (JSONException e) {
-            this.view_pesos_json = new JSONArray();
-            e.printStackTrace();
-        }
-        adapterJson = new ItemAdapterJsonPesos(this, view_pesos_json);
-        listView.setAdapter(adapterJson);
-    }
-
-    public  void sumarPeso()
-    {
-        double cont=0;
-        try {
-        for(int i=0;i<view_pesos_json.length();i++)
-        {
-            double peso;
-
-                peso = view_pesos_json.getJSONObject(i).getDouble("peso_asignado");
-                cont += peso;
-
-        }
-            this.embalajeSeleccionado.put("pesoTotal",cont);
-            SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
-            editor.commit();
-            pesoTotal.setText(String.valueOf(cont)+ "KG");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void back(View view){
-
-        finish();
-
-    }
-
-
-    public void restarPeso(String peso)
-    {
-        this.pesoTotal.setText(peso);
-    }
-
-
-
-
-}*/
-
 package co.qualitysolutions.tecniamsa;
 
         import android.app.Activity;
@@ -187,8 +21,8 @@ package co.qualitysolutions.tecniamsa;
         import org.json.JSONException;
         import org.json.JSONObject;
 
-        import utilidades.BluetoothChatService;
-        import utilidades.ItemAdapterJsonPesos;
+        import utilidades.BluetoothService;
+        import Adaptadores.ItemAdapterJsonPesos;
         import utilidades.SaveInformation;
         import utilidades.Utilities;
 
@@ -207,12 +41,46 @@ public class L_RegistrarPeso extends Activity{
 
     private boolean bandera = true;
     private String mConnectedDeviceName = null;
-    private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothChatService mBluetoothService = null;
+    public static BluetoothAdapter mBluetoothAdapter;
+    private BluetoothService mBluetoothService = null;
     private String Address;
     private BluetoothDevice device;
     private static final String TAG = "Tecniamsa";
     private static final boolean D = true;
+
+
+    /*public static JSONArray view_pesos_json;
+    private ItemAdapterJsonPesos adapterJson;
+    private TextView tipoEmbalaje,pesoTotal;
+    private JSONArray clientesPlaneados,listaTrazas,listaEmbalajes,listaPesosPorEmbalaje;
+    private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
+    private SharedPreferences sharedpreferences;
+    private JSONArray send_data_json;
+    private String method;
+    private String methodInt;
+    private TextView date;*/
+
+
+
+    /*private ListView listView;
+    private boolean adicionar;
+    public static final int MESSAGE_STATE_CHANGE = 1;
+    public static final int MESSAGE_DEVICE_NAME = 4;
+    public static final String DEVICE_NAME = "Divice_Name";
+    public static final String TOAST = "Toast";
+    public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_WRITE = 3;
+    public static final int MESSAGE_READ = 2;
+    private static final int REQUEST_ENABLE_BT = 2;
+
+    private boolean bandera = true;
+    private String mConnectedDeviceName = null;
+    private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothService mBluetoothService = null;
+    private String Address;
+    private BluetoothDevice device;
+    private static final String TAG = "Tecniamsa";
+    private static final boolean D = true;*/
 
 
     public static JSONArray view_pesos_json;
@@ -271,12 +139,11 @@ public class L_RegistrarPeso extends Activity{
                     BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
-        if(mBluetoothService ==null)
+        if(Address ==null)
         {
             startActivityForResult(new Intent(getApplicationContext(), Dispositivos.class), 20);
         }
         else {
-            conectar();
             adicionar = true;
         }
     }
@@ -287,6 +154,7 @@ public class L_RegistrarPeso extends Activity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==24) {
+            mBluetoothService.finalizarServicio();
             Address= data.getStringExtra("address");
             setup();
         }
@@ -435,7 +303,6 @@ public class L_RegistrarPeso extends Activity{
 
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -449,7 +316,7 @@ public class L_RegistrarPeso extends Activity{
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
             // Otherwise, setup the chat session
         } else {
-            if (mBluetoothService == null && adicionar)
+            if (mBluetoothService== null)
                 setup();
         }
     }
@@ -460,14 +327,8 @@ public class L_RegistrarPeso extends Activity{
         if (D)
             Log.e(TAG, "+ REANUDAR +");
 
-        // Performing this check in onResume() covers the case in which BT was
-        // not enabled during onStart(), so we were paused to enable it...
-        // onResume() will be called when ACTION_REQUEST_ENABLE activity
-        // returns.
-        if (mBluetoothService != null) {
-            // Only if the state is STATE_NONE, do we know that we haven't
-            // started already
-            if (mBluetoothService.getState() == BluetoothChatService.STATE_NONE) {
+        if (mBluetoothService!= null) {
+            if (mBluetoothService.getState() == BluetoothService.STATE_NONE) {
                 mBluetoothService.start();
             }
         }
@@ -475,8 +336,9 @@ public class L_RegistrarPeso extends Activity{
 
     private void setup() {
         Log.d(TAG, "MOSTRAR RESPUESTA");
-        ensureDiscoverable();
-        mBluetoothService = new BluetoothChatService(this, mHandler);
+        // Initialize the BluetoothService to perform bluetooth connections
+        mBluetoothService= new BluetoothService(this, mHandler);
+        // Initialize the buffer for outgoing messages
         conectar();
 
     }
@@ -498,23 +360,13 @@ public class L_RegistrarPeso extends Activity{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mBluetoothService != null)
-            mBluetoothService.stop();
+        if(mBluetoothService != null)
+            mBluetoothService.finalizarServicio();
         if (bandera)
             Log.d("ATENCION", "--- DESTRUIDO ---");
     }
 
-    private void ensureDiscoverable() {
-        if (bandera)
-            Log.d("ATENCION", "Garantizando Visibilidad");
-        if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            Intent discoverableIntent = new Intent(
-                    BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(
-                    BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-            startActivity(discoverableIntent);
-        }
-    }
+
 
     private final Handler mHandler = new Handler() {
 
@@ -525,18 +377,21 @@ public class L_RegistrarPeso extends Activity{
                     if (D)
                         Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
                     switch (msg.arg1) {
-                        case BluetoothChatService.STATE_CONNECTED:
+                        case BluetoothService.STATE_CONNECTED:
                             Log.d("Handler->","conectado");
+                            Toast.makeText(getApplicationContext(),
+                                    "CONECTADO A: " + device.getName(),
+                                    Toast.LENGTH_SHORT).show();
                             break;
-                        case BluetoothChatService.STATE_CONNECTING:
+                        case BluetoothService.STATE_CONNECTING:
                             Toast.makeText(getApplicationContext(),
                                     "Conectando a dispositivo: " + device.getName(),
                                     Toast.LENGTH_SHORT).show();
                             break;
-                        case BluetoothChatService.STATE_LISTEN:
+                        case BluetoothService.STATE_LISTEN:
                             Log.d("Handler->","Escuchando");
                             break;
-                        case BluetoothChatService.STATE_NONE:
+                        case BluetoothService.STATE_NONE:
                             Log.d("Handler->","No conectado");
                             break;
                     }
@@ -566,6 +421,7 @@ public class L_RegistrarPeso extends Activity{
                             editor.commit();
                             actionAdapter();
                             sumarPeso();
+                            //mBluetoothService.finalizarServicio();
                         } else {
                             Toast.makeText(getApplicationContext(),
                                     "Verifique el peso",
