@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -37,13 +38,14 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
     private JSONArray clientesPlaneados,lstTrazasCliente,lstEmbalajesTraza;
     private JSONObject clienteSeleccionado,trazaSeleccionada,embalajeSeleccionado;
     private SharedPreferences sharedpreferences;
-    private TextView codigoCliente,nombreCliente,peso_total_traza,barras_total_traza;
+    private TextView codigoCliente,nombreCliente,peso_total_traza,barras_total_traza,codigoSolicitud;
     private Activity myself;
     private JSONArray send_data_json;
     private String method;
     private String methodInt;
     private TextView date;
     private LinearLayout causalesDeNoCargue;
+    private Button btnPregunta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         inicializarComponentes();
     }
 
+
+
     public void inicializarComponentes() {
 
         this.date = (TextView)findViewById(R.id.dateNow);
@@ -62,6 +66,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         this.codigoCliente = (TextView) findViewById(R.id.codigoCliente);
         this.nombreCliente = (TextView) findViewById(R.id.nombreCliente);
         this.peso_total_traza = (TextView) findViewById(R.id.peso_total_traza);
+        this.codigoSolicitud = (TextView) findViewById(R.id.codigoSolicitud);
 
         this.spinnerPuntoPesaje = (Spinner) findViewById(R.id.spinnerPuntoPesaje);
         this.spinnerPuntoPesaje.setOnItemSelectedListener(this);
@@ -89,9 +94,23 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         this.checkBoxTirillas = (CheckBox)findViewById(R.id.checkBoxTirillas);
         this.checkBoxTirillas.setOnCheckedChangeListener(this);
 
+        this.btnPregunta = (Button) findViewById(R.id.btnPregunta);
+
         try {
             this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
             this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+
+            if(clienteSeleccionado.getString("hora_llegada_sitio_entrega").equals("0")) {
+                btnPregunta.setEnabled(true);
+                btnPregunta.setBackgroundColor(getResources().getColor(R.color.btn4));
+            }
+            else{
+                btnPregunta.setEnabled(false);
+                btnPregunta.setBackgroundColor(getResources().getColor(R.color.gray));
+            }
+
+
+            this.codigoSolicitud.setText(this.clienteSeleccionado.getString("solicitud"));
             this.codigoCliente.setText(this.clienteSeleccionado.getString("codigo_cliente"));
             this.nombreCliente.setText(this.clienteSeleccionado.getString("nombre_cliente"));
             llenarSpinnerTrazas();
@@ -111,12 +130,63 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
     }
 
+    public void llegoSitioEntrega(View view){
+
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setTitle("!ALerta");
+        adb.setMessage("¿ Esta seguro de que esta en en sitio de entrega ?");
+        adb.setPositiveButton(
+                getResources().getString(R.string.confirm_button_1),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                            clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+                            if(clienteSeleccionado.getString("hora_llegada_sitio_entrega").equals("0")){
+                                clienteSeleccionado.put("hora_llegada_sitio_entrega",Utilities.getDate());
+                                btnPregunta.setEnabled(false);
+                                btnPregunta.setBackgroundColor(getResources().getColor(R.color.gray));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+        adb.setNegativeButton(
+                getResources().getString(R.string.confirm_button_2),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                    }
+                });
+        adb.show();
+
+
+    }
+
 
     @Override
     protected void onResume() {
     super.onResume();
      cantidadTotalBarrasTraza();
      cantidadTotalPesosTraza();
+        try {
+            if(clienteSeleccionado.getString("hora_llegada_sitio_entrega").equals("0")) {
+                btnPregunta.setEnabled(true);
+                btnPregunta.setBackgroundColor(getResources().getColor(R.color.btn4));
+            }
+            else{
+                btnPregunta.setEnabled(false);
+                btnPregunta.setBackgroundColor(getResources().getColor(R.color.gray));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -156,11 +226,11 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         this.spinnerPuntoPesaje.setSelection(this.trazaSeleccionada.getInt("punto_pesaje"));
         this.spinnerCantidadRecoleccion.setSelection(this.trazaSeleccionada.getInt("cantidad_en_recoleccion"));
         this.spinnerPesoRecoleccion.setSelection(this.trazaSeleccionada.getInt("peso_en_recoleccion"));
-        this.embalajeSeleccionado = this.lstEmbalajesTraza.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE",0));
-        this.spinnerAptoCargue.setSelection(this.embalajeSeleccionado.getInt("apto_cargue"));
-        this.checkBoxTirillas.setChecked(this.embalajeSeleccionado.getBoolean("check_tirillas"));
-        this.checkBoxRecoleccion.setChecked(this.embalajeSeleccionado.getBoolean("check_recoleccion"));
-
+        /*this.embalajeSeleccionado = this.lstEmbalajesTraza.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE",0));
+        */
+        this.spinnerAptoCargue.setSelection(this.trazaSeleccionada.getInt("apto_cargue"));
+        this.checkBoxTirillas.setChecked(this.trazaSeleccionada.getBoolean("check_tirillas"));
+        this.checkBoxRecoleccion.setChecked(this.trazaSeleccionada.getBoolean("check_recoleccion"));
         }
         catch (JSONException e)
         {
@@ -197,10 +267,11 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         this.spinnerPuntoPesaje.setSelection(this.trazaSeleccionada.getInt("punto_pesaje"));
         this.spinnerCantidadRecoleccion.setSelection(this.trazaSeleccionada.getInt("cantidad_en_recoleccion"));
         this.spinnerPesoRecoleccion.setSelection(this.trazaSeleccionada.getInt("peso_en_recoleccion"));
-        this.embalajeSeleccionado = this.lstEmbalajesTraza.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE",0));
-        this.spinnerAptoCargue.setSelection(this.embalajeSeleccionado.getInt("apto_cargue"));
-        this.checkBoxTirillas.setChecked(this.embalajeSeleccionado.getBoolean("check_tirillas"));
-        this.checkBoxRecoleccion.setChecked(this.embalajeSeleccionado.getBoolean("check_recoleccion"));
+        /*this.embalajeSeleccionado = this.lstEmbalajesTraza.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE",0));
+        */
+        this.spinnerAptoCargue.setSelection(this.trazaSeleccionada.getInt("apto_cargue"));
+        this.checkBoxTirillas.setChecked(this.trazaSeleccionada.getBoolean("check_tirillas"));
+        this.checkBoxRecoleccion.setChecked(this.trazaSeleccionada.getBoolean("check_recoleccion"));
 
         }
         catch (JSONException e)
@@ -368,7 +439,8 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             }
 
         }
-        else if(parent.getId()==this.spinnerAptoCargue.getId()){
+
+        else if(parent.getId()==this.spinnerCausalesAptoCargue.getId()){
 
             try{
 
@@ -376,26 +448,38 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                 this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
                 this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
                 this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+                this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA",0));
+                this.trazaSeleccionada.put("causales_no_cargue",this.spinnerCausalesAptoCargue.getSelectedItem().toString());
+                editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
+                editor.commit();
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        else if(parent.getId()==this.spinnerAptoCargue.getId()){
+            try{
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+                this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
                 this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
-                this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
+                this.trazaSeleccionada.put("apto_cargue", this.spinnerAptoCargue.getSelectedItemPosition());
+
+                /* this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
                 this.embalajeSeleccionado = this.lstEmbalajesTraza.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE",0));
                 this.embalajeSeleccionado.put("apto_cargue", this.spinnerAptoCargue.getSelectedItemPosition());
+                ;*/
+
                 editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
                 editor.commit();
 
                 if(this.spinnerAptoCargue.getSelectedItemPosition()==0){
-
                     this.causalesDeNoCargue.setVisibility(View.GONE);
-
                 }
-
                 else if(this.spinnerAptoCargue.getSelectedItemPosition()==1){
-
                     this.causalesDeNoCargue.setVisibility(View.VISIBLE);
-
                 }
-
-
             }catch (JSONException e){
                 e.printStackTrace();
             }
@@ -483,9 +567,10 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                    this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
                    this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
                    this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
-                   this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
+                   /*this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
                    this.embalajeSeleccionado = this.lstEmbalajesTraza.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE",0));
-                   this.embalajeSeleccionado.put("check_recoleccion", isChecked);
+                   */
+                   this.trazaSeleccionada.put("check_recoleccion", isChecked);
                    editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
                    editor.commit();
                } catch (JSONException e) {
@@ -503,9 +588,10 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
                this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
                this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
-               this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
+               /*this.lstEmbalajesTraza =this.trazaSeleccionada.getJSONArray("lstembalaje");
                this.embalajeSeleccionado = this.lstEmbalajesTraza.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE",0));
-               this.embalajeSeleccionado.put("check_tirillas", isChecked);
+               */
+               this.trazaSeleccionada.put("check_tirillas", isChecked);
                editor.putString("PLANNED_CLIENTS",this.clientesPlaneados.toString());
                editor.commit();
                } catch (JSONException e) {

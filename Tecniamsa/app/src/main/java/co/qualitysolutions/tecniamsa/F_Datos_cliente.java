@@ -97,7 +97,7 @@ public class F_Datos_cliente extends Activity {
 
                 editor.putString("PLANNED_CLIENTS", this.clientesPlaneados.toString());
                 editor.commit();
-                adb.setTitle("DESEA INICIAR LA RUTA  " + this.clienteSeleccionado.getString("hoja"));
+                adb.setMessage("Desea atender la solicitud numero: " + this.clienteSeleccionado.getString("solicitud"));
                 editor.putInt("CURRENT_STATE", 2);
                 editor.commit();
                 adb.setPositiveButton(

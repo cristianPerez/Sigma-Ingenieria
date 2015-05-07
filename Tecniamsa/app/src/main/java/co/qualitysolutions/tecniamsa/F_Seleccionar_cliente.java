@@ -68,6 +68,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         this.busqueda.setOnQueryTextListener(this);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         this.clientesVisualizados = new JSONArray();
+        this.progress = new ProgressDialog(this);
         try {
             this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]").toString());
             this.mostrarCLientes();
@@ -156,7 +157,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         return false;
     }
 
-    public void actualizarClientes(){
+    public void actualizarClientes(View view){
 
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -170,7 +171,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
 
                         try {
                             JSONArray truck = new JSONArray(sharedpreferences.getString("TRUCK_INFO","[]"));
-                            new ConsultarInformacion(myself).execute("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login2?ciudad="+sharedpreferences.getString("CITY","")+"&vehiculo="+truck.getJSONObject(0).getString("placa"),
+                            new ConsultarInformacion(myself).execute("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login2?ciudad="+sharedpreferences.getString("CITY","")+"&vehiculo="+truck.getJSONObject(0).getString("placa").replace(" ","%20"),
                                     sharedpreferences.getString("USER_ID",""),
                                     sharedpreferences.getString("PASSWORD",""));
                         } catch (JSONException e) {
@@ -248,11 +249,14 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         private WebService connection;
         private Activity activity;
         private SharedPreferences sharedpreferences;
+        private JSONArray nuevasSolicitudes= new JSONArray();
+        private int lengthClientesPlaneados;
 
     public ConsultarInformacion(Activity activity) {
         this.connection = new WebService();
         this.activity = activity;
         this.sharedpreferences = activity.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        this.lengthClientesPlaneados=clientesPlaneados.length();
     }
 
     @Override
@@ -267,8 +271,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
     @Override
     protected Void doInBackground(String... params) {
         JSONArray answer;
-        JSONObject aux;
-        String token = this.sharedpreferences.getString("TOKEN", null);
+
         if (thereIsInternet()) {
             //Send current event
             this.connection.setUrl(params[0]);
@@ -277,17 +280,12 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
             try {
                 if (answer.getJSONObject(0).getJSONArray("lstdatos_cliente").length()>0) {
 
-                   /* aux = new JSONObject(answer.getJSONObject(0).getString("mensaje"));
-                    JSONArray newArray = aux.getJSONArray("operarios");
-                    //actualizarOperariosSelect(newArray);
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString("SELECTED_OPERATORS", newArray.toString());
+                    nuevasSolicitudes = answer.getJSONObject(0).getJSONArray("lstdatos_cliente");
+                    compararSolicitudes(nuevasSolicitudes);
 
-                    editor.commit();*/
-
-                } /*else {
-                        //aux_grupo_trabajo=null;
-                    }*/
+                } else {
+                        Utilities.showAlert(myself,"No hay solicitudes nuevas planeadas");
+                    }
             } catch (JSONException e) {
             }
         } else {
@@ -296,13 +294,55 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         return null;
     }
 
+
     @Override
     protected void onPostExecute(Void result) {
         progress.dismiss();
-        Intent intent = new Intent();
-        setResult(1, intent);
-        finish();
+
+        if(clientesPlaneados.length()==lengthClientesPlaneados)
+            Toast.makeText(activity,"No hay Nuevas solicitudes !",Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(activity,"Se agregaron nuevas solicitudes !",Toast.LENGTH_LONG).show();
+        mostrarCLientes();
+
     }
+
+        public void compararSolicitudes(JSONArray nuevasSolicitudes){
+
+            JSONObject objetoNuevo=new JSONObject();
+            JSONObject objetoViejo=new JSONObject();
+            int bandera=0;
+
+
+            for(int i=0;i<nuevasSolicitudes.length();i++){
+                try {
+                    bandera=0;
+                    objetoNuevo = nuevasSolicitudes.getJSONObject(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for(int j=0;j<clientesPlaneados.length();j++){
+
+                    try {
+                        objetoViejo = clientesPlaneados.getJSONObject(i);
+                        if(objetoNuevo.getString("solicitud").equals(objetoViejo.getString("solicitud")))
+                        bandera=1;
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(bandera==0)
+                    clientesPlaneados.put(Utilities.inicializarCliente(objetoNuevo));
+            }
+
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
+            editor.commit();
+        }
+
+
+
 
 }
 

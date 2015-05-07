@@ -68,7 +68,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/actualizar_trazas"
-            android:src="@mipmap/btn_actualizar_traza"
+            android:src="@mipmap/actualizar_trazas"
             android:gravity="center_horizontal"
             android:layout_weight="1"
             android:onClick="ActualizarTrazas"
