@@ -734,11 +734,11 @@ public class E_MenuCiclo extends Activity {
         this.d_base_exit = this.getResources().getDrawable(R.mipmap.btn_base_exit);
         this.d_base_exit_two = this.getResources().getDrawable(R.mipmap.btn_base_exit_two);
 
-        this.d_llegada_zona_franca = this.getResources().getDrawable(R.mipmap.btn_llegada_zona_franca);
-        this.d_llegada_zona_franca_two = this.getResources().getDrawable(R.mipmap.btn_llegada_zona_franca_two);
+        this.d_llegada_zona_franca = this.getResources().getDrawable(R.mipmap.btn_zona_franca);
+        this.d_llegada_zona_franca_two = this.getResources().getDrawable(R.mipmap.btn_zona_franca);
 
-        this.d_cancelacion_visita = this.getResources().getDrawable(R.mipmap.btn_cancelar_visita);
-        this.d_cancelacion_visita_two = this.getResources().getDrawable(R.mipmap.btn_cancelar_visita_two);
+        this.d_cancelacion_visita = this.getResources().getDrawable(R.mipmap.cancelar_visita);
+        this.d_cancelacion_visita_two = this.getResources().getDrawable(R.mipmap.cancelar_visita);
 
         this.d_start_collection = this.getResources().getDrawable(R.mipmap.btn_start_collection);
         this.d_start_collection_two = this.getResources().getDrawable(R.mipmap.btn_start_collection_two);

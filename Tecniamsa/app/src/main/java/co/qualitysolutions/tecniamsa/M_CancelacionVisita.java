@@ -83,7 +83,7 @@ public class M_CancelacionVisita extends Activity {
         for(int i=0;i<json.length();i++){
             try {
 
-                    aux.add(json.getJSONObject(i).getString("nombre_cliente")+"\n"+json.getJSONObject(i).getString("hoja"));
+                    aux.add(json.getJSONObject(i).getString("nombre_cliente")+"\n"+json.getJSONObject(i).getString("solicitud"));
 
 
             } catch (JSONException e) {

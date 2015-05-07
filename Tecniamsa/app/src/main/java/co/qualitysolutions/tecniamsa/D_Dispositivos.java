@@ -22,11 +22,7 @@ import java.util.Set;
 import Adaptadores.Item;
 import Adaptadores.ItemAdapter;
 
-/**
- * Created by Andres on 27/03/2015.
- */
 public class D_Dispositivos extends Activity {
-
 
 
     private BluetoothAdapter mBluetoothAdapter;

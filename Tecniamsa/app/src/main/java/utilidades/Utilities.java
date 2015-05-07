@@ -65,7 +65,8 @@ public class Utilities {
 		String[] hourIntern = vecInitilize[1].split(":");
 		String[] dateServerVec = dateServer.split("/");
 		String[] hourServerVec = hourServer.split(":");
-		if(Integer.parseInt(dateIntern[0])== Integer.parseInt(dateServerVec[0])&&
+
+        if(Integer.parseInt(dateIntern[0])== Integer.parseInt(dateServerVec[0])&&
 			Integer.parseInt(dateIntern[1])== Integer.parseInt(dateServerVec[1])&&
 			 Integer.parseInt(dateIntern[2])== Integer.parseInt(dateServerVec[2]))
 		{
@@ -125,7 +126,7 @@ public class Utilities {
 
             try {
                 trazasCliente = clientes.getJSONObject(i).getJSONArray("lsttrazas");
-
+                clientes.getJSONObject(i).put("hora_llegada_sitio_entrega","0");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -139,6 +140,12 @@ public class Utilities {
                     trazasCliente.getJSONObject(j).put("punto_pesaje",0);
                     trazasCliente.getJSONObject(j).put("peso_en_recoleccion",0);
                     trazasCliente.getJSONObject(j).put("cantidad_en_recoleccion",0);
+                    trazasCliente.getJSONObject(j).put("apto_cargue",0);
+                    trazasCliente.getJSONObject(j).put("causales_no_cargue","");
+                    trazasCliente.getJSONObject(j).put("check_recoleccion",false);
+                    trazasCliente.getJSONObject(j).put("check_tirillas",false);
+                    trazasCliente.getJSONObject(j).put("causales_no_cargue",0);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -150,9 +157,7 @@ public class Utilities {
                         embalajesTraza.getJSONObject(k).put("pesos_embalaje",new JSONArray());
                         embalajesTraza.getJSONObject(k).put("pesoTotal",0.0);
                         embalajesTraza.getJSONObject(k).put("cantTotal",0);
-                        embalajesTraza.getJSONObject(k).put("apto_cargue",0);
-                        embalajesTraza.getJSONObject(k).put("check_recoleccion",false);
-                        embalajesTraza.getJSONObject(k).put("check_tirillas",false);
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -243,8 +243,6 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
                 //String url = this.answer.getJSONObject(0).getString("url");
                 //JSONArray alternateRoutes = this.answer.getJSONObject(0).getJSONArray("rutas_alternas");
 
-
-
                 JSONArray listaClientes = Utilities.inicializarClientesPlaneados(this.answer.getJSONObject(0).getJSONArray("lstdatos_cliente"));
                 JSONArray operators = this.answer.getJSONObject(0).getJSONArray("lstoperarios");
                 JSONArray truckInformation = this.answer.getJSONObject(0).getJSONArray("lstvehiculos");

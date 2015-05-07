@@ -46,7 +46,7 @@ public class ItemAdapter extends BaseAdapter {
 		View vi = contentView;
 
 		if (contentView == null) {
-            if(activity.getClass().getName().equals("co.qualitysolutions.tecniamsa.Dispositivos")) {
+            if(activity.getClass().getName().equals("co.qualitysolutions.tecniamsa.D_Dispositivos")) {
                 LayoutInflater inflater = (LayoutInflater) activity
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 vi = inflater.inflate(R.layout.list_item_dispositivos, null);

@@ -46,16 +46,49 @@
         android:src="@mipmap/btn_logout" />
 </RelativeLayout>
 
+    <Button
+        android:id="@+id/btnPregunta"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="¿ Llego a sitio de entrega ? "
+        android:onClick="llegoSitioEntrega"
+        android:layout_below="@+id/RelativeLayout1"
+        android:layout_margin="10dp"
+        android:background="@color/btn4"
+        android:textColor="@color/white"
+        />
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/RelativeLayout1">
+        android:layout_below="@+id/btnPregunta">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Solicitud:"
+                android:id="@+id/solicitud"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/codigoSolicitud"
+                android:layout_margin="10dp" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -79,10 +112,6 @@
                 android:id="@+id/codigoCliente"
                 android:layout_margin="10dp" />
         </LinearLayout>
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -144,6 +173,81 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Revision de recolección"
+            android:id="@+id/txtTitleRevision"
+            android:gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Apto para cargue"
+            android:id="@+id/txtResiduoAptoParaCargue"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerAptoCargue"
+            android:layout_weight="1"
+            android:layout_margin="10dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Recolección"
+                android:id="@+id/checkBoxRecoleccion"
+                android:layout_weight="1"
+                />
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Presenta tirillas"
+                android:id="@+id/checkBoxTirillas"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/causalesDeNoCargue">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Causales de no cargue"
+                android:id="@+id/txtCausalesResiduoAptoParaCargue"
+                android:layout_marginTop="10dp"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerCausalesAptoCargue"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:entries="@array/arraySalesforce"/>
+
+
+        </LinearLayout>
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
@@ -299,75 +403,6 @@
             android:layout_height="1dp"
             android:background="@color/gray"/>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Revision de recolección"
-            android:id="@+id/txtTitleRevision"
-            android:gravity="center_horizontal"/>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Apto para cargue"
-            android:id="@+id/txtResiduoAptoParaCargue"/>
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinnerAptoCargue"
-            android:layout_weight="1"
-            android:layout_margin="10dp" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <CheckBox
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Recolección"
-                android:id="@+id/checkBoxRecoleccion"
-                android:layout_weight="1"
-                />
-
-            <CheckBox
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Presenta tirillas"
-                android:id="@+id/checkBoxTirillas"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/causalesDeNoCargue">
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Causales de no cargue"
-                android:id="@+id/txtCausalesResiduoAptoParaCargue"
-                android:layout_marginTop="10dp"/>
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinnerCausalesAptoCargue"
-                android:layout_weight="1"
-                android:layout_margin="10dp"
-                android:entries="@array/arraySalesforce"/>
-
-
-            </LinearLayout>
 
 
         <LinearLayout
