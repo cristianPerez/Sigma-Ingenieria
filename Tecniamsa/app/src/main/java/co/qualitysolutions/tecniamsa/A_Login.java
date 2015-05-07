@@ -150,6 +150,7 @@ public class A_Login extends Activity {
                         editor.putString("CITY", answer.getJSONObject(0).getString("ciudad"));
                         editor.putString("USER_ID", params[0]);
                         editor.putString("PASSWORD", params[1]);
+
                         editor.commit();
                         //changeActivity();
                         return true;

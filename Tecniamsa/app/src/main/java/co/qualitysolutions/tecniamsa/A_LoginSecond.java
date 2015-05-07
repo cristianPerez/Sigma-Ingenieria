@@ -331,6 +331,7 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
 
     public JSONArray inicializarClientesPlaneados(JSONArray clientes){
 
+
         JSONArray trazasCliente = new JSONArray();
         JSONArray embalajesTraza = new JSONArray();
 
