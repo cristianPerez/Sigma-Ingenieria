@@ -76,7 +76,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="No se puede ejecutar la visita"
-                android:id="@+id/checkBox"
+                android:id="@+id/checkBoxNoVisita"
                 android:layout_below="@+id/spinnerClientes"/>
 
 
@@ -151,7 +151,8 @@
                 android:layout_below="@+id/edtObservacionCancelacion"
                 android:layout_centerHorizontal="true"
                 android:background="@color/btn2"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:onClick="sendCancelarVisita"/>
 
 
 

@@ -37,8 +37,8 @@ public class E_MenuCiclo extends Activity {
             d_arrive_final_disposition, d_arrive_final_disposition_two,d_come_back_to_base,
             d_come_back_to_base_two,d_inoperability, d_inoperability_two , g_trazas, g_trazas_two , d_cancelacion_visita,d_cancelacion_visita_two;
 
-    private JSONArray send_data_json,clientesPlaneados;
-    private JSONObject clienteSeleccionado;
+    private JSONArray send_data_json,clientesPlaneados,lstTrazasCliente;
+    private JSONObject clienteSeleccionado,trazaSeleccionada;
     private String method;
     private String methodInt;
     private TextView date;
@@ -134,8 +134,10 @@ public class E_MenuCiclo extends Activity {
                                 auxjson = new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
                                 clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
                                 clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
-                                clienteSeleccionado =
-                                clienteSeleccionado.put("estado","terminada");
+
+
+                                clienteSeleccionado =clienteSeleccionado.put("estado","terminada");
+
                                 send_data_json = new JSONArray();
                                 JSONObject auxobject = new JSONObject();
                                 auxobject.put("fecha_hora_evento",Utilities.getDate());
@@ -170,6 +172,87 @@ public class E_MenuCiclo extends Activity {
                         }
                     });
             this.adb.show();
+
+    }
+
+
+    public String getEstadoSolicitud(){
+
+        String estado;
+        JSONArray lstEstados = new JSONArray();
+
+        boolean bandera1=false;
+        boolean bandera2=false;
+        boolean bandera3=false;
+
+
+        try {
+            this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+            this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+            this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+
+            for(int i=0;i<this.lstTrazasCliente.length();i++){
+
+                this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(i);
+
+                int pesoRecoleccion = this.trazaSeleccionada.getInt("peso_en_recoleccion");
+                int cantidadRecoleccion = this.trazaSeleccionada.getInt("cantidad_en_recoleccion");
+
+                if(pesoRecoleccion==1){
+
+                    if (cantidadRecoleccion ==1){
+
+
+                        //estado "No Peso Ni Cantidad";
+
+
+                    }
+
+                    else if(cantidadRecoleccion ==0){
+
+
+
+
+
+                    }
+
+
+                }
+                else if(pesoRecoleccion==0){
+
+
+                    if (cantidadRecoleccion ==1){
+
+
+
+
+                    }
+
+                    else if(cantidadRecoleccion ==0){
+
+
+
+
+                    }
+
+
+                }
+
+
+
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+        return "holi";
 
     }
 
