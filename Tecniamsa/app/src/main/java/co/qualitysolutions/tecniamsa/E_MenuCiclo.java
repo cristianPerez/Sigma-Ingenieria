@@ -112,6 +112,7 @@ public class E_MenuCiclo extends Activity {
 
         Intent intent = new Intent(this, G_TrazasEmbalaje.class);
         startActivityForResult(intent, 10);
+
     }
 
 
@@ -130,6 +131,7 @@ public class E_MenuCiclo extends Activity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             JSONArray auxjson;
+
                             try {
                                 auxjson = new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
                                 clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
@@ -181,9 +183,13 @@ public class E_MenuCiclo extends Activity {
         String estado;
         JSONArray lstEstados = new JSONArray();
 
-        boolean bandera1=false;
-        boolean bandera2=false;
-        boolean bandera3=false;
+        boolean bandera1=true;
+        boolean bandera2=true;
+        boolean bandera3=true;
+
+        int flag1=0;
+        int flag2=0;
+        int flag3=0;
 
 
         try {
@@ -191,9 +197,9 @@ public class E_MenuCiclo extends Activity {
             this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
             this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
 
-            for(int i=0;i<this.lstTrazasCliente.length();i++){
+            while(bandera1){
 
-                this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(i);
+                this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(flag1);
 
                 int pesoRecoleccion = this.trazaSeleccionada.getInt("peso_en_recoleccion");
                 int cantidadRecoleccion = this.trazaSeleccionada.getInt("cantidad_en_recoleccion");
@@ -255,6 +261,9 @@ public class E_MenuCiclo extends Activity {
         return "holi";
 
     }
+
+
+
 
 
     /**
