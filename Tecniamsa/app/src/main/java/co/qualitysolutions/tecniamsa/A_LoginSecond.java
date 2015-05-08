@@ -256,11 +256,13 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
                 JSONObject causalesReco = new JSONObject(causalesRecoleccion.get(0).toString());
                 JSONArray causalesFull = causalesReco.getJSONArray("causalesnorecoleccion");
 
-                JSONArray causalesNoCargue =new JSONArray(this.answer.getJSONObject(0).getString("causalesrecoleccion"));
-                JSONObject causalesNoCar = new JSONObject(causalesRecoleccion.get(0).toString());
-                JSONArray causalesNoCarFull = causalesReco.getJSONArray("causalesnorecoleccion");
+                JSONArray causalesNoCargue =new JSONArray(this.answer.getJSONObject(0).getString("causalesnocargue"));
+                JSONObject causalesNoCar = new JSONObject(causalesNoCargue.get(0).toString());
+                JSONArray causalesNoCarFull = causalesNoCar.getJSONArray("causalesnoapto");
 
-
+                /*JSONArray puntoPesaje =new JSONArray(this.answer.getJSONObject(0).getString("puntopeaje"));
+                JSONObject puntoPesa = new JSONObject(puntoPesaje.get(0).toString());
+                JSONArray puntoPesajeFull = puntoPesa.getJSONArray("puntopeaje");*/
 
                 if(listaClientes.length()>0){
 
@@ -281,7 +283,12 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
                     editor.putString("PLANNED_CLIENTS", listaClientes.toString());
                     editor.putInt("EMPEZO_JORNADA",0);
                     editor.putString("TRUCK_INFO", truckInformation.toString());
-                    editor.putString("CASETAS", getStringArrayList(casetas2));
+
+                    editor.putString("CASETAS", getStringArrayList(casetas2,1));
+                    editor.putString("CAUSALES_NO_CARGUE", getStringArrayList(causalesNoCarFull,2));
+                    editor.putString("CAUSALES_RECOLECCION", getStringArrayList(causalesFull,2));
+                    //editor.putString("PUNTO_PESAJE", getStringArrayList(puntoPesaje));
+
                     editor.putBoolean("INOPERABILITY", false);
                     editor.putInt("CURRENT_STATE", 0);
                     editor.putInt("LOGIN_OK",1);
@@ -304,11 +311,15 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
             }
         }
 
-        public String getStringArrayList(JSONArray json){
+        public String getStringArrayList(JSONArray json, int tipo){
             ArrayList<String> aux = new ArrayList<String>();
             for(int i=0;i<json.length();i++){
                 try {
-                    aux.add(json.getJSONObject(i).getString("caseta"));
+                    if(tipo==1)
+                        aux.add(json.getJSONObject(i).getString("caseta"));
+                    else
+                        aux.add(json.getJSONObject(i).getString("dato"));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

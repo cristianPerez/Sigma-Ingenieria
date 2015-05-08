@@ -25,29 +25,6 @@ public class Utilities {
 		}
 		return last;
 	}
-	
-	/*public static String getDate(String serverDate , String hourServer){
-
-		Calendar c = Calendar.getInstance();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String currentTime = dateFormat.format(c.getTime());
-        String[] vecInitilize = currentTime.split(" ");
-        int yearSystem= Integer.valueOf(vecInitilize[0].toString().split("-")[0].toString());
-        int yearServer= Integer.valueOf(serverDate.toString().split("/")[0].toString());
-        int monthSystem= Integer.valueOf(vecInitilize[0].toString().split("-")[1].toString());
-        int monthServer= Integer.valueOf(serverDate.toString().split("/")[1].toString());
-        int daySystem= Integer.valueOf(vecInitilize[0].toString().split("-")[2].toString());
-        int dayServer= Integer.valueOf(serverDate.toString().split("/")[2].toString());
-
-        if(yearSystem != yearServer || monthSystem != monthServer || daySystem != dayServer ){
-            return serverDate.toString().split("/")[0].toString()+"-"+serverDate.toString().split("/")[1].toString()+"-"+serverDate.toString().split("/")[2].toString()+" "+hourServer;
-        }
-        else {
-            return currentTime;
-        }
-
-        return currentTime;
-	}*/
 
     public static String getDate(){
         Calendar c = Calendar.getInstance();

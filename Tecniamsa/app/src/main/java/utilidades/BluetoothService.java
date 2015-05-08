@@ -392,21 +392,53 @@ public class BluetoothService {
             Log.i(TAG, "BEGIN mConnectedThread");
             setState(STATE_CONNECTED);
             while(bandera) {
-                try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(mmInStream));
-                    String line = reader.readLine();
-                    if (line != null && line.length() >= 15) {
-                        mHandler.obtainMessage(D_Dispositivos.MESSAGE_READ, -1, -1, line).sendToTarget();
-                        sleep(1500);
-                    }
+                if (mAdapter.isEnabled()) {
+                    try {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(mmInStream));
+                        //int s=reader.read();
+                        boolean aux = false;
+                        String line = "";
+                        while (!aux) {
+                            int s = reader.read();
+                            if (s == 10) {
+                                while (s != 13) {
+                                    s = reader.read();
+                                    char[] c = Character.toChars(s);
+                                    line += String.copyValueOf(c);
+                                }
+                                if (s == 13) {
+                                    aux = true;
+                                }
+                            }
+
+
+                        }
+                        //String line = reader.readLine();
+
+                        if (line != null && line.length() >= 15) {
+                            mHandler.obtainMessage(D_Dispositivos.MESSAGE_READ, -1, -1, line).sendToTarget();
+                            sleep(1000);
+                        }
 //                    mmInStream.close();
-                } catch (SocketException s) {
-                    Log.e(TAG, "Socekt cerrado", s);
-                } catch (IOException e) {
-                    Log.e(TAG, "disconnected", e);
-                    connectionLost();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    } catch (SocketException s) {
+                        Log.e(TAG, "Socekt cerrado", s);
+                    } catch (IOException e) {
+                        Log.e(TAG, "disconnected", e);
+                        connectionLost();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    finalizarServicio();
+                    Message msg = mHandler.obtainMessage(D_Dispositivos.MESSAGE_TOAST);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(D_Dispositivos.TOAST,
+                            "Verifique que el bluetooth este encendido");
+                    msg.setData(bundle);
+                    mHandler.sendMessage(msg);
+
                 }
             }
         }
@@ -436,6 +468,7 @@ public class BluetoothService {
             } catch (IOException e) {
                 Log.e(TAG, "close() of connect socket failed", e);
             }
+
         }
 
 

@@ -23,7 +23,7 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <TextClock
+        <DigitalClock
             android:id="@+id/clock1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                 android:background="@color/blue1"
                 android:gravity="center_vertical|center_horizontal|center"
                 android:layout_margin="10dp"
-                android:onClick="optener_peso"
+
                 android:text="@string/agregar_peso"
                 android:textColor="@android:color/white"
                 android:textColorLink="@android:color/white"
@@ -254,4 +254,3 @@
 
 
 </RelativeLayout>
-

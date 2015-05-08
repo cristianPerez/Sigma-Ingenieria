@@ -98,9 +98,9 @@
 
     <string-array name="puntoPesaje">
         <item> Ninguno </item>
-        <item> Bascula propia con interface </item>
-        <item> Bascula propia sin conexión </item>
-        <item> Bascula del cliente </item>
+        <item> Báscula propia con interfase </item>
+        <item> Báscula propia sin conexión </item>
+        <item> Báscula del Cliente </item>
         <item> No pesado </item>
     </string-array>
 

@@ -46,6 +46,8 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
     private TextView date;
     private LinearLayout causalesDeNoCargue;
     private Button btnPregunta;
+    private ArrayList<String> lstItemsCausalesNoCargue;
+    private ArrayAdapter<String> adapterItemsCausalesNoCargue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +124,20 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             e.printStackTrace();
         }
     }
+
+    public void llenarSpinnerNoCargue (){
+
+        String lstItemStringNoCargue=sharedpreferences.getString("CAUSALES_NO_CARGUE","[]");
+        lstItemsCausalesNoCargue = new ArrayList<String>(Arrays.asList(lstItemStringNoCargue.substring(1, lstItemStringNoCargue.length() - 1).split(",")));
+        lstItemsCausalesNoCargue = cleanEmptyCharacter(lstItemsCausalesNoCargue);
+        adapterItemsCausalesNoCargue = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,lstItemsCausalesNoCargue);
+        adapterItemsCausalesNoCargue.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCausalesAptoCargue.setAdapter(adapterItemsCausalesNoCargue);
+
+    }
+
+
+
 
     public void regitrarCodigoDeBarras(View view){
 
@@ -325,6 +341,8 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                 this, R.array.arraySiNo, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.spinnerAptoCargue.setAdapter(adapter);
+
+        llenarSpinnerNoCargue ();
 
     }
 
