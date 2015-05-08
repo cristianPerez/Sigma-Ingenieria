@@ -131,7 +131,7 @@ public class E_MenuCiclo extends Activity {
                         public void onClick(DialogInterface dialog, int which) {
                             JSONArray auxjson;
                             try {
-                                auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
+                                auxjson = new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
                                 clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
                                 clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
                                 clienteSeleccionado =
