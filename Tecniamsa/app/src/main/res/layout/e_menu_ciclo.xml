@@ -80,7 +80,7 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="llegada a zona franca"
                     android:padding="20dp"
-                    android:src="@mipmap/btn_llegada_zona_franca"
+                    android:src="@mipmap/zona_franca"
                     android:onClick="llegadaZonaFranca"
                     />
 
@@ -133,7 +133,7 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="collection finish"
                     android:padding="20dp"
-                    android:src="@mipmap/btn_cancelar_visita"
+                    android:src="@mipmap/cancelar_visita"
                     android:onClick="cancelarVisita" />
 
                 <ImageButton

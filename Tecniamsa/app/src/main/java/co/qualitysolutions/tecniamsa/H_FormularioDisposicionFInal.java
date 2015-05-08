@@ -26,8 +26,8 @@ import utilidades.Utilities;
 
 public class H_FormularioDisposicionFInal extends Activity {
 
-    private ImageButton in_filler, out_filler;
-    private Drawable d_in_filler, d_in_filler_two, d_out_filler,d_out_filler_two;
+    private ImageButton in_filler, out_filler , actualizar_trazas;
+    private Drawable d_in_filler, d_in_filler_two, d_out_filler,d_out_filler_two , d_actualizar_trazas,d_actualizar_trazas_two;
     private SharedPreferences sharedpreferences;
     private AlertDialog.Builder adb;
     private TextView date;
@@ -47,6 +47,8 @@ public class H_FormularioDisposicionFInal extends Activity {
         if(sharedpreferences.getBoolean("IN_FILLER",false)){
             buttonsInFiller();
         }
+        else
+            noInfillier();
     }
 
 
@@ -219,6 +221,21 @@ public class H_FormularioDisposicionFInal extends Activity {
         this.in_filler.setImageDrawable(this.d_in_filler_two);
         this.out_filler.setEnabled(true);
         this.out_filler.setImageDrawable(this.d_out_filler);
+        this.actualizar_trazas.setEnabled(true);
+        this.actualizar_trazas.setImageDrawable(this.d_actualizar_trazas);
+    }
+
+    public void noInfillier(){
+
+
+            this.in_filler.setEnabled(true);
+            this.in_filler.setImageDrawable(this.d_in_filler);
+            this.out_filler.setEnabled(false);
+            this.out_filler.setImageDrawable(this.d_out_filler_two);
+            this.actualizar_trazas.setEnabled(false);
+            this.actualizar_trazas.setImageDrawable(this.d_actualizar_trazas_two);
+
+
     }
 
     public void initializeComponents() {
@@ -226,14 +243,13 @@ public class H_FormularioDisposicionFInal extends Activity {
         this.adb = new AlertDialog.Builder(this);
         this.in_filler = (ImageButton) findViewById(R.id.in_filler);
         this.out_filler = (ImageButton) findViewById(R.id.out_filler);
-        this.d_in_filler = this.getResources().getDrawable(
-                R.mipmap.btn_in_filler);
-        this.d_in_filler_two = this.getResources().getDrawable(
-                R.mipmap.btn_in_filler_two);
-        this.d_out_filler = this.getResources().getDrawable(
-                R.mipmap.btn_out_filler);
-        this.d_out_filler_two = this.getResources().getDrawable(
-                R.mipmap.btn_out_filler_two);
+        this.actualizar_trazas = (ImageButton) findViewById(R.id.actualizar_trazas);
+        this.d_in_filler = this.getResources().getDrawable(R.mipmap.btn_in_filler);
+        this.d_in_filler_two = this.getResources().getDrawable(R.mipmap.btn_in_filler_two);
+        this.d_out_filler = this.getResources().getDrawable(R.mipmap.btn_out_filler);
+        this.d_out_filler_two = this.getResources().getDrawable(R.mipmap.btn_out_filler_two);
+        this.d_actualizar_trazas = this.getResources().getDrawable(R.mipmap.actualizar_trazas);
+        this.d_actualizar_trazas_two = this.getResources().getDrawable(R.mipmap.actualizar_trazas_two);
         this.out_filler.setEnabled(false);
         this.date = (TextView)findViewById(R.id.dateNow);
         this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));

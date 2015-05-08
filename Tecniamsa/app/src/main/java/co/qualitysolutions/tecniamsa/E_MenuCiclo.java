@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import utilidades.GpsService;
 import utilidades.SaveInformation;
 import utilidades.Utilities;
 
@@ -30,7 +32,6 @@ public class E_MenuCiclo extends Activity {
     private ImageButton btn_base_exit, btn_llegada_zona_franca,btn_start_collection,
             btn_collection_finish, btn_arrive_final_disposition,
             btn_come_back_to_base, btn_inoperability, btn_trazas,btn_cancelacion_visita;
-
     private Drawable d_base_exit, d_base_exit_two,d_llegada_zona_franca, d_llegada_zona_franca_two,
             d_start_collection,d_start_collection_two,d_collection_finish, d_collection_finish_two,
             d_arrive_final_disposition, d_arrive_final_disposition_two,d_come_back_to_base,
@@ -39,7 +40,6 @@ public class E_MenuCiclo extends Activity {
     private JSONArray send_data_json,clientesPlaneados;
     private JSONObject clienteSeleccionado;
     private String method;
-    private TextView numberOfCompactions,nameRoute;
     private String methodInt;
     private TextView date;
     private Activity myself;
@@ -121,54 +121,58 @@ public class E_MenuCiclo extends Activity {
      */
     public void finishCollection(View v) {
 
-        this.adb.setTitle(getResources().getString(R.string.alertMensaje));
-        adb.setMessage(getResources().getString(R.string.confirmFinishCollection));
-        this.adb.setPositiveButton(
-                getResources().getString(R.string.confirm_button_1),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        JSONArray auxjson;
-                        try {
-                            auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
-                            clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
-                            clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
-                            clienteSeleccionado.put("estado","terminada");
-                            send_data_json = new JSONArray();
-                            JSONObject auxobject = new JSONObject();
-                            auxobject.put("fecha_hora_evento",Utilities.getDate());
-                            auxobject.put("metodo","json_tecni_finporte");
-                            //auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
-                            editor.putInt("CURRENT_STATE", 4);
-                            editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
-                            editor.commit();
-                            send_data_json.put(auxobject);
-                            auxobject = new JSONObject();
-                            auxobject.put("operarios", new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", "[]")));
-                            send_data_json.put(clienteSeleccionado);
-                            send_data_json.put(auxobject);
-                            send_data_json.put(auxjson.get(0));
-                            method="json_tecni_finporte";
-                            methodInt="47";
-                            Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
-                            //sendInformation();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+            this.adb.setTitle(getResources().getString(R.string.alertMensaje));
+            adb.setMessage(getResources().getString(R.string.confirmFinishCollection));
+            this.adb.setPositiveButton(
+                    getResources().getString(R.string.confirm_button_1),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            JSONArray auxjson;
+                            try {
+                                auxjson =  new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
+                                clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                                clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+                                clienteSeleccionado =
+                                clienteSeleccionado.put("estado","terminada");
+                                send_data_json = new JSONArray();
+                                JSONObject auxobject = new JSONObject();
+                                auxobject.put("fecha_hora_evento",Utilities.getDate());
+                                auxobject.put("metodo","json_tecni_finporte");
+                                //auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.putInt("CURRENT_STATE", 4);
+                                editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
+                                editor.commit();
+                                send_data_json.put(auxobject);
+                                auxobject = new JSONObject();
+                                auxobject.put("operarios", new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", "[]")));
+                                send_data_json.put(clienteSeleccionado);
+                                send_data_json.put(auxobject);
+                                send_data_json.put(auxjson.get(0));
+                                method="json_tecni_finporte";
+                                methodInt="47";
+                                Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                                //sendInformation();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            buttonsFinishCollection();
                         }
-                        buttonsFinishCollection();
-                    }
-                });
-        this.adb.setNegativeButton(
-                getResources().getString(R.string.confirm_button_2),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        this.adb.show();
+                    });
+            this.adb.setNegativeButton(
+                    getResources().getString(R.string.confirm_button_2),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            this.adb.show();
+
     }
+
 
     /**
      * Method to display the filler interface
@@ -303,14 +307,18 @@ public class E_MenuCiclo extends Activity {
             if (resultCode == 2){
                 buttonsStartCollection();
             }
+
             else if(resultCode == 3){
                 finishFiller();
             }
-            else if(resultCode == 1){
-
-
-            }
         }
+        // Else para ensender el GPS
+        else if(resultCode == 0){
+
+            currentState();
+
+        }
+
     }
 
     /**
@@ -702,6 +710,7 @@ public class E_MenuCiclo extends Activity {
      * Method for load all necessary elements in the view
      */
     public void initializeComponents() {
+
         this.adb = new AlertDialog.Builder(this);
         this.btn_base_exit = (ImageButton) findViewById(R.id.btn_base_exit);
 
@@ -734,11 +743,11 @@ public class E_MenuCiclo extends Activity {
         this.d_base_exit = this.getResources().getDrawable(R.mipmap.btn_base_exit);
         this.d_base_exit_two = this.getResources().getDrawable(R.mipmap.btn_base_exit_two);
 
-        this.d_llegada_zona_franca = this.getResources().getDrawable(R.mipmap.btn_zona_franca);
-        this.d_llegada_zona_franca_two = this.getResources().getDrawable(R.mipmap.btn_zona_franca);
+        this.d_llegada_zona_franca = this.getResources().getDrawable(R.mipmap.zona_franca);
+        this.d_llegada_zona_franca_two = this.getResources().getDrawable(R.mipmap.zona_franca_two);
 
         this.d_cancelacion_visita = this.getResources().getDrawable(R.mipmap.cancelar_visita);
-        this.d_cancelacion_visita_two = this.getResources().getDrawable(R.mipmap.cancelar_visita);
+        this.d_cancelacion_visita_two = this.getResources().getDrawable(R.mipmap.cancelar_visita_two);
 
         this.d_start_collection = this.getResources().getDrawable(R.mipmap.btn_start_collection);
         this.d_start_collection_two = this.getResources().getDrawable(R.mipmap.btn_start_collection_two);

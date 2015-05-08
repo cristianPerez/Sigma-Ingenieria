@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Spinner;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import utilidades.GpsService;
 import utilidades.SaveInformation;
 import utilidades.Utilities;
 
@@ -31,6 +34,8 @@ public class F_Datos_cliente extends Activity {
     private TextView date;
     private JSONArray send_data_json;
     private Activity myself;
+    private GpsService gps;
+    private AlertDialog.Builder adb;
 
 
     @Override
@@ -38,7 +43,6 @@ public class F_Datos_cliente extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.f_datos_cliente);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        this.myself=this;
         inicializarComponentes();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
@@ -46,6 +50,10 @@ public class F_Datos_cliente extends Activity {
 
 
     public void inicializarComponentes() {
+
+        this.myself=this;
+        this.gps= new GpsService(this.getApplicationContext());
+        this.adb = new AlertDialog.Builder(this);
 
         this.date = (TextView)findViewById(R.id.dateNow);
         this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
@@ -81,9 +89,12 @@ public class F_Datos_cliente extends Activity {
 
     public void startRoute(View view) {
 
+        if(gps.gpsIsEnable()){
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setTitle("Alert!");
+
+            gps.getLocation();
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            adb.setTitle("Alert!");
             try {
                 SharedPreferences.Editor editor = this.sharedpreferences.edit();
 
@@ -91,6 +102,8 @@ public class F_Datos_cliente extends Activity {
                 clienteSeleccionado.put("fecha_inicio", Utilities.getDate());
                 clienteSeleccionado.put("estado", String.valueOf(this.spinner_estado.getSelectedItemPosition()));
                 clienteSeleccionado.put("observacion", this.observacion_cliente.getText());
+                clienteSeleccionado.put("latitud", gps.getLatitud());
+                clienteSeleccionado.put("longitud", gps.getLongitud());
                 clientesPlaneados.put(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0), this.clienteSeleccionado);
                 this.method = "json_tecni_inicioporte";
                 this.methodInt = "46";
@@ -106,29 +119,29 @@ public class F_Datos_cliente extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                    send_data_json = new JSONArray();
-                                    JSONArray auxjson = new JSONArray();
-                                    JSONArray auxjson2 = new JSONArray();
-                                    JSONObject auxobject = new JSONObject();
+                                send_data_json = new JSONArray();
+                                JSONArray auxjson = new JSONArray();
+                                JSONArray auxjson2 = new JSONArray();
+                                JSONObject auxobject = new JSONObject();
 
-                                    try {
-                                        auxjson2 = new JSONArray(sharedpreferences.getString("TRUCK_INFO", null));
-                                        auxobject = new JSONObject();
-                                        auxobject.put("fecha_hora_evento", Utilities.getDate());
-                                        auxobject.put("metodo", method);
+                                try {
+                                    auxjson2 = new JSONArray(sharedpreferences.getString("TRUCK_INFO", null));
+                                    auxobject = new JSONObject();
+                                    auxobject.put("fecha_hora_evento", Utilities.getDate());
+                                    auxobject.put("metodo", method);
 
-                                        send_data_json.put(auxobject);
-                                        send_data_json.put(clienteSeleccionado);
+                                    send_data_json.put(auxobject);
+                                    send_data_json.put(clienteSeleccionado);
 
-                                            auxjson = new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", null));
-                                            auxobject = new JSONObject();
-                                            auxobject.put("operators_select", auxjson);
-                                            send_data_json.put(auxobject);
+                                    auxjson = new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", null));
+                                    auxobject = new JSONObject();
+                                    auxobject.put("operators_select", auxjson);
+                                    send_data_json.put(auxobject);
 
-                                        send_data_json.put(auxjson2.get(0));
-                                    } catch (JSONException e) {
+                                    send_data_json.put(auxjson2.get(0));
+                                } catch (JSONException e) {
 
-                                    }
+                                }
                                 Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
                                 //sendInformation();
                                 Intent intent = new Intent();
@@ -148,7 +161,27 @@ public class F_Datos_cliente extends Activity {
                 adb.show();
             } catch (JSONException e) {
             }
+
+
+        }
+        else{
+
+            adb.setTitle("Alerta!");
+            adb.setMessage("Debe encender el gps para poder continuar");
+            adb.setPositiveButton(getResources().getString(R.string.accept_button),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
+                        }
+                    });
+            adb.show();
+
+        }
+
     }
+
+
 
 
     /**

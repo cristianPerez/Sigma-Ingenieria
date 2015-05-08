@@ -135,7 +135,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setTitle("!ALerta");
-        adb.setMessage("¿ Esta seguro de que esta en en sitio de entrega ?");
+        adb.setMessage("¿ Esta seguro de que esta en el sitio de entrega ?");
         adb.setPositiveButton(
                 getResources().getString(R.string.confirm_button_1),
                 new DialogInterface.OnClickListener() {
@@ -148,6 +148,9 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                                 clienteSeleccionado.put("hora_llegada_sitio_entrega",Utilities.getDate());
                                 btnPregunta.setEnabled(false);
                                 btnPregunta.setBackgroundColor(getResources().getColor(R.color.gray));
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
+                                editor.commit();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

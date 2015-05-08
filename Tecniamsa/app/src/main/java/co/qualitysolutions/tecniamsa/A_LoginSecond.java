@@ -247,9 +247,18 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
                 JSONArray operators = this.answer.getJSONObject(0).getJSONArray("lstoperarios");
                 JSONArray truckInformation = this.answer.getJSONObject(0).getJSONArray("lstvehiculos");
                 truckInformation.getJSONObject(0).put("cedula_conductor",user);
+
                 JSONArray casetas1 =new JSONArray(this.answer.getJSONObject(0).getString("lstcanastas_activas"));
                 JSONObject casetas = new JSONObject(casetas1.get(0).toString());
                 JSONArray casetas2 = casetas.getJSONArray("caseta_peaje");
+
+                JSONArray causalesRecoleccion =new JSONArray(this.answer.getJSONObject(0).getString("causalesrecoleccion"));
+                JSONObject causalesReco = new JSONObject(causalesRecoleccion.get(0).toString());
+                JSONArray causalesFull = causalesReco.getJSONArray("causalesnorecoleccion");
+
+                JSONArray causalesNoCargue =new JSONArray(this.answer.getJSONObject(0).getString("causalesrecoleccion"));
+                JSONObject causalesNoCar = new JSONObject(causalesRecoleccion.get(0).toString());
+                JSONArray causalesNoCarFull = causalesReco.getJSONArray("causalesnorecoleccion");
 
 
 
