@@ -119,6 +119,10 @@ public class M_CancelacionVisita extends Activity {
                     clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
                     clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
                     clienteSeleccionado =clienteSeleccionado.put("estado","No Atendida");
+                    clienteSeleccionado =clienteSeleccionado.put("observaciones_logistico",this.edtObservacionLogistico.getText().toString());
+                    clienteSeleccionado =clienteSeleccionado.put("onservaciones_cancelacion",this.edtObservacionCancelacion.getText().toString());
+                    clienteSeleccionado =clienteSeleccionado.put("causales_no_recoleccion",this.spinnerCausalesNoRecoleccion.getSelectedItem().toString());
+
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
                     editor.commit();
@@ -131,7 +135,8 @@ public class M_CancelacionVisita extends Activity {
                     methodInt="52";
                     method="json_tecni_cancelar_visita";
                     Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
-                    //sendInformation();
+                    finish();
+
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

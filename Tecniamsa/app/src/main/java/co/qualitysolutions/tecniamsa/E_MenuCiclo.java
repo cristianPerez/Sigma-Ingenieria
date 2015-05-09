@@ -178,91 +178,119 @@ public class E_MenuCiclo extends Activity {
     }
 
 
-    public String getEstadoSolicitud(){
+    public String getEstadoSolicitud() {
 
-        String estado;
-        JSONArray lstEstados = new JSONArray();
+        boolean bandera = true;
+        int bandera1=0;
 
-        boolean bandera1=true;
-        boolean bandera2=true;
-        boolean bandera3=true;
-
-        int flag1=0;
-        int flag2=0;
-        int flag3=0;
-
-
+        JSONArray lstResultados = new JSONArray();
         try {
             this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
             this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
             this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
 
-            while(bandera1){
+            for (int i = 0; i < lstTrazasCliente.length(); i++) {
 
-                this.trazaSeleccionada =  this.lstTrazasCliente.getJSONObject(flag1);
-
-                int pesoRecoleccion = this.trazaSeleccionada.getInt("peso_en_recoleccion");
-                int cantidadRecoleccion = this.trazaSeleccionada.getInt("cantidad_en_recoleccion");
-
-                if(pesoRecoleccion==1){
-
-                    if (cantidadRecoleccion ==1){
-
-
-                        //estado "No Peso Ni Cantidad";
-
-
-                    }
-
-                    else if(cantidadRecoleccion ==0){
-
-
-
-
-
-                    }
-
-
-                }
-                else if(pesoRecoleccion==0){
-
-
-                    if (cantidadRecoleccion ==1){
-
-
-
-
-                    }
-
-                    else if(cantidadRecoleccion ==0){
-
-
-
-
-                    }
-
-
-                }
-
-
-
-
+                this.trazaSeleccionada = this.lstTrazasCliente.getJSONObject(i);
+                JSONObject aux = new JSONObject();
+                aux.put("traza",this.trazaSeleccionada.getString("traza"));
+                aux.put("peso_en_recoleccion",this.trazaSeleccionada.getInt("peso_en_recoleccion"));
+                aux.put("cantidad_en_recoleccion",this.trazaSeleccionada.getInt("cantidad_en_recoleccion"));
+                aux.put("resultado",revisionEmbalajes(this.trazaSeleccionada.getInt("peso_en_recoleccion"),
+                        this.trazaSeleccionada.getInt("cantidad_en_recoleccion"),
+                        this.trazaSeleccionada.getJSONArray("lstembalaje")));
+                lstResultados.put(aux);
             }
 
+            while(bandera && bandera1<lstResultados.length()){
+                if(lstResultados.getJSONObject(bandera1).getBoolean("resultado"))
+                    bandera1++;
+                else
+                    bandera= false;
+            }
+
+            if(bandera) {
+
+                boolean banderaFinalPeso=true;
+                boolean banderaFinalCantidad=true;
+                int contadorFinal=0;
+
+                while(banderaFinalPeso && contadorFinal<lstResultados.length()){
+
+                      if(lstResultados.getJSONObject(contadorFinal).getInt("peso_en_recoleccion")==0)
+                          contadorFinal++;
+                      else
+                          banderaFinalPeso= false;
+                }
+
+                contadorFinal=0;
+                while(banderaFinalCantidad && contadorFinal<lstResultados.length()){
+
+                    if(lstResultados.getJSONObject(contadorFinal).getInt("cantidad_en_recoleccion")==0)
+                        contadorFinal++;
+                    else
+                        banderaFinalCantidad= false;
+                }
+            }
+            else{
+                Utilities.showAlert(myself,"Verifique la trasa con codigo:"+ lstResultados.getJSONObject(bandera1).getString("traza"));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
-
-
-
-        return "holi";
-
+        return "0";
     }
 
-
+    public boolean revisionEmbalajes ( int pesoRecoleccion, int cantidadRecoleccion, JSONArray embalajes ){
+        int cont=0;
+        try {
+        if(pesoRecoleccion == 0 && cantidadRecoleccion == 0)
+        {
+            cont=0;
+            for(int i=0;i<embalajes.length();i++)
+            {
+                JSONObject auxSelect = embalajes.getJSONObject(i);
+                if(auxSelect.getJSONArray("pesos_embalaje").length()>0 && auxSelect.getJSONArray("barras_embalaje").length()>0 )
+                    cont++;
+            }
+            if(cont==embalajes.length())
+                return true;
+            else
+                return false;
+        }
+        else if(pesoRecoleccion == 0 && cantidadRecoleccion == 1){
+            cont=0;
+            for(int i=0;i<embalajes.length();i++)
+            {
+                JSONObject auxSelect = embalajes.getJSONObject(i);
+                if(auxSelect.getJSONArray("pesos_embalaje").length()>0)
+                    cont++;
+            }
+            if(cont==embalajes.length())
+                return true;
+            else
+                return false;
+        }
+        else if(pesoRecoleccion == 1 && cantidadRecoleccion == 0)  {
+            cont=0;
+            for(int i=0;i<embalajes.length();i++)
+            {
+                JSONObject auxSelect = embalajes.getJSONObject(i);
+                if(auxSelect.getJSONArray("barras_embalaje").length()>0)
+                    cont++;
+            }
+            if(cont==embalajes.length())
+                return true;
+            else
+                return false;
+        }
+        else if(pesoRecoleccion == 1 && cantidadRecoleccion == 1)
+            return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
 
