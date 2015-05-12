@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +32,7 @@ public class L_RegistrarPesoManual extends Activity {
 
     public void adicionarPeso(View view){
 
+        if(!this.edtPesoNuevo.getText().toString().equals("")){
         actualizarEmbalaje();
         try {
 
@@ -49,7 +51,9 @@ public class L_RegistrarPesoManual extends Activity {
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }}
+        else
+            Toast.makeText(this,"Adicione algun valor de peso en kilogramos",Toast.LENGTH_LONG).show();
 
 
     }

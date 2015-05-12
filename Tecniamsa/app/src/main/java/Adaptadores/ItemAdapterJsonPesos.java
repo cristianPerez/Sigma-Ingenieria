@@ -94,7 +94,7 @@ public class ItemAdapterJsonPesos extends BaseAdapter {
 											public void onClick(DialogInterface dialog,int which) {
 
 
-											  jsonSelected = Utilities.delete(jsonSelected, pos);
+
 
                                                 JSONArray clientesPlaneados = null;
                                                 JSONObject clienteSeleccionado = null;
@@ -111,16 +111,18 @@ public class ItemAdapterJsonPesos extends BaseAdapter {
                                                     trazaSeleccionada = listaTrazas.getJSONObject(sharedpreferences.getInt("SELECT_TRAZA", 0));
                                                     listaEmbalajes = trazaSeleccionada.getJSONArray("lstembalaje");
                                                     embalajeSeleccionado = listaEmbalajes.getJSONObject(sharedpreferences.getInt("SELECT_EMBALAJE", 0));
-                                                    embalajeSeleccionado.put("pesos_embalaje",jsonSelected);
                                                     pesoNuevo = embalajeSeleccionado.getDouble("pesoTotal") - jsonSelected.getJSONObject(pos).getDouble("peso_asignado");
+                                                    jsonSelected = Utilities.delete(jsonSelected, pos);
+                                                    embalajeSeleccionado.put("pesos_embalaje",jsonSelected);
                                                     embalajeSeleccionado.put("pesoTotal", pesoNuevo);
                                                 }catch (JSONException e) {
                                                     e.printStackTrace();
                                                 }
+                                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                                editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
+                                                editor.commit();
 
-                                                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                                                    editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
-                                                    editor.commit();
+
 
                                                 ((L_RegistrarPeso)activity).actionAdapter();
                                                 ((L_RegistrarPeso)activity).restarPeso(String.valueOf(pesoNuevo)+" KG");

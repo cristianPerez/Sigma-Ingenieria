@@ -101,7 +101,18 @@ public class E_MenuCiclo extends Activity {
     public void startCollection(View v) {
 
         Intent intent = new Intent(this, F_Seleccionar_cliente.class);
+        intent.putExtra("Metodo","gestionarTrazas");
         startActivityForResult(intent, 10);
+    }
+
+    /**
+     * Method to display the select route interface
+     * @param v
+     */
+    public void inoperability(View v) {
+
+        Intent intent = new Intent(this, I_inoperatividad.class);
+        startActivity(intent);
     }
 
     /**
@@ -111,6 +122,7 @@ public class E_MenuCiclo extends Activity {
     public void trazasCliente(View v) {
 
         Intent intent = new Intent(this, G_TrazasEmbalaje.class);
+        intent.putExtra("Metodo","gestionarTrazas");
         startActivityForResult(intent, 10);
 
     }
@@ -137,32 +149,37 @@ public class E_MenuCiclo extends Activity {
                                 clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
                                 clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
 
+                                String estadoNuevo = getEstadoSolicitud();
+                                if(!estadoNuevo.equals("0")){
+                                    clienteSeleccionado =clienteSeleccionado.put("estado",estadoNuevo);
 
-                                clienteSeleccionado =clienteSeleccionado.put("estado","terminada");
+                                    send_data_json = new JSONArray();
+                                    JSONObject auxobject = new JSONObject();
+                                    auxobject.put("fecha_hora_evento",Utilities.getDate());
+                                    auxobject.put("metodo","json_tecni_finporte");
+                                    //auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putInt("CURRENT_STATE", 4);
+                                    editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
+                                    editor.commit();
+                                    send_data_json.put(auxobject);
+                                    auxobject = new JSONObject();
+                                    auxobject.put("operarios", new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", "[]")));
+                                    send_data_json.put(clienteSeleccionado);
+                                    send_data_json.put(auxobject);
+                                    send_data_json.put(auxjson.get(0));
+                                    method="json_tecni_finporte";
+                                    methodInt="47";
+                                    Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                                    buttonsFinishCollection();
+                                }
+                                else
+                                    dialog.dismiss();
 
-                                send_data_json = new JSONArray();
-                                JSONObject auxobject = new JSONObject();
-                                auxobject.put("fecha_hora_evento",Utilities.getDate());
-                                auxobject.put("metodo","json_tecni_finporte");
-                                //auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
-                                SharedPreferences.Editor editor = sharedpreferences.edit();
-                                editor.putInt("CURRENT_STATE", 4);
-                                editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
-                                editor.commit();
-                                send_data_json.put(auxobject);
-                                auxobject = new JSONObject();
-                                auxobject.put("operarios", new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", "[]")));
-                                send_data_json.put(clienteSeleccionado);
-                                send_data_json.put(auxobject);
-                                send_data_json.put(auxjson.get(0));
-                                method="json_tecni_finporte";
-                                methodInt="47";
-                                Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
-                                //sendInformation();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            buttonsFinishCollection();
+
                         }
                     });
             this.adb.setNegativeButton(
@@ -211,29 +228,38 @@ public class E_MenuCiclo extends Activity {
 
             if(bandera) {
 
-                boolean banderaFinalPeso=true;
-                boolean banderaFinalCantidad=true;
-                int contadorFinal=0;
+                boolean banderaFinalPeso = true;
+                boolean banderaFinalCantidad = true;
+                int contadorFinal = 0;
 
-                while(banderaFinalPeso && contadorFinal<lstResultados.length()){
+                while (banderaFinalPeso && contadorFinal < lstResultados.length()) {
 
-                      if(lstResultados.getJSONObject(contadorFinal).getInt("peso_en_recoleccion")==0)
-                          contadorFinal++;
-                      else
-                          banderaFinalPeso= false;
-                }
-
-                contadorFinal=0;
-                while(banderaFinalCantidad && contadorFinal<lstResultados.length()){
-
-                    if(lstResultados.getJSONObject(contadorFinal).getInt("cantidad_en_recoleccion")==0)
+                    if (lstResultados.getJSONObject(contadorFinal).getInt("peso_en_recoleccion") == 0)
                         contadorFinal++;
                     else
-                        banderaFinalCantidad= false;
+                        banderaFinalPeso = false;
                 }
+
+                contadorFinal = 0;
+                while (banderaFinalCantidad && contadorFinal < lstResultados.length()) {
+
+                    if (lstResultados.getJSONObject(contadorFinal).getInt("cantidad_en_recoleccion") == 0)
+                        contadorFinal++;
+                    else
+                        banderaFinalCantidad = false;
+                }
+
+                if (banderaFinalPeso && banderaFinalCantidad)
+                    return "Atendida total";
+                else if (banderaFinalPeso && !banderaFinalCantidad)
+                    return "Atendida Con Peso (sin cantidad)";
+                else if (!banderaFinalPeso && banderaFinalCantidad)
+                    return "Atendida con Cantidad (sin peso)";
+                else if (!banderaFinalPeso && !banderaFinalCantidad)
+                    return "No Peso Ni Cantidad";
             }
             else{
-                Utilities.showAlert(myself,"Verifique la trasa con codigo:"+ lstResultados.getJSONObject(bandera1).getString("traza"));
+                Utilities.showAlert(myself, "No registró peso ó codigos de barras. Por favor regístre el peso o cambie la opción en cantidad en recolección o peso en recolección. s"+"Verifique la trasa con codigo:"+ lstResultados.getJSONObject(bandera1).getString("traza"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -775,6 +801,41 @@ public class E_MenuCiclo extends Activity {
         this.btn_arrive_final_disposition.setEnabled(false);
     }
 
+    /**
+     * Method to configure the buttons logic, when there is inoperability or filler
+     *
+     */
+    public void buttonsFinishFiller(){
+
+        this.btn_base_exit.setImageDrawable(this.d_base_exit_two);
+        this.btn_base_exit.setEnabled(false);
+
+        this.btn_llegada_zona_franca.setImageDrawable(this.d_llegada_zona_franca_two);
+        this.btn_llegada_zona_franca.setEnabled(false);
+
+        this.btn_start_collection.setEnabled(true);
+        this.btn_start_collection.setImageDrawable(this.d_start_collection);
+
+        //boton nuevo
+        this.btn_trazas.setImageDrawable(this.g_trazas_two);
+        this.btn_trazas.setEnabled(false);
+
+        this.btn_cancelacion_visita.setImageDrawable(this.d_cancelacion_visita_two);
+        this.btn_cancelacion_visita.setEnabled(false);
+
+        this.btn_collection_finish.setImageDrawable(this.d_collection_finish_two);
+        this.btn_collection_finish.setEnabled(false);
+
+        this.btn_come_back_to_base.setImageDrawable(this.d_come_back_to_base);
+        this.btn_come_back_to_base.setEnabled(true);
+
+        this.btn_inoperability.setImageDrawable(this.d_inoperability);
+        this.btn_inoperability.setEnabled(true);
+
+        this.btn_arrive_final_disposition.setImageDrawable(this.d_arrive_final_disposition_two);
+        this.btn_arrive_final_disposition.setEnabled(false);
+    }
+
 
     /**
      * Method to close the session
@@ -909,6 +970,8 @@ public class E_MenuCiclo extends Activity {
                 buttonsOutBase();
             }else if (current_state == 2) {
                 buttonsStartCollection();
+            }else if (current_state == 3) {
+                buttonsFinishFiller();
             }else if (current_state == 4) {
                 buttonsFinishCollection();
             }else if(current_state == 5)  {

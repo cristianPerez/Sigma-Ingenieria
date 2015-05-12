@@ -35,7 +35,7 @@ public class Utilities {
 	
 	public static boolean compareDates(String dateServer , String hourServer){
 		Calendar c = Calendar.getInstance();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
 		String currentTime = dateFormat.format(c.getTime());
 		String[] vecInitilize = currentTime.split(" ");
 		String[] dateIntern = vecInitilize[0].split("-");
@@ -47,27 +47,33 @@ public class Utilities {
 			Integer.parseInt(dateIntern[1])== Integer.parseInt(dateServerVec[1])&&
 			 Integer.parseInt(dateIntern[2])== Integer.parseInt(dateServerVec[2]))
 		{
-            if((Integer.parseInt(hourIntern[0])- Integer.parseInt(hourServerVec[0])<=1 || Integer.parseInt(hourIntern[0])- Integer.parseInt(hourServerVec[0])<=1)
-                    && Integer.parseInt(hourIntern[1])>=50 && Integer.parseInt(hourIntern[1])<60
-                    && Integer.parseInt(hourServerVec[1])<=10){
+            int aux1 = Integer.parseInt(hourIntern[0]) - Integer.parseInt(hourServerVec[0]);
+            int aux2 = Integer.parseInt(hourServerVec[0]) - Integer.parseInt(hourIntern[0]);
 
-                return true;
-
+            if(aux1==1  || aux2==1) {
+                if (Integer.parseInt(hourIntern[1]) >= 50 && Integer.parseInt(hourIntern[1]) < 60 &&  Integer.parseInt(hourServerVec[1]) <= 10) {
+                    return true;
+                }
             }
-            else{
-            if((Integer.parseInt(hourIntern[1])- Integer.parseInt(hourServerVec[1])<=10 && Integer.parseInt(hourIntern[1])- Integer.parseInt(hourServerVec[1])>0)
-                    ||(Integer.parseInt(hourServerVec[1])- Integer.parseInt(hourIntern[1])<=10 && Integer.parseInt(hourServerVec[1])- Integer.parseInt(hourIntern[1])>0)
-                    ||(Integer.parseInt(hourServerVec[1])== Integer.parseInt(hourIntern[1])))
-                return true;
-
-            else return false;
-		}
+            else
+            {
+                int aux3 = Integer.parseInt(hourIntern[1]) - Integer.parseInt(hourServerVec[1]);
+                int aux4 = Integer.parseInt(hourServerVec[1]) - Integer.parseInt(hourIntern[1]);
+                    if((Integer.parseInt(hourServerVec[0]) == Integer.parseInt(hourIntern[0]))){
+                        if (  aux3<= 10 && aux3 >=0 ||aux4 <=10 && aux4 >=0 || (Integer.parseInt(hourServerVec[1]) == Integer.parseInt(hourIntern[1])))
+                        return true;
+                    else
+                        return false;
+                    }
+                else
+                   return false;
+		    }
         }
 		else
 		{
 			return false;
 		}
-
+        return false;
 	}
 	
 	
@@ -194,5 +200,8 @@ public class Utilities {
 
         return cliente;
     }
+
+
+
 
 }

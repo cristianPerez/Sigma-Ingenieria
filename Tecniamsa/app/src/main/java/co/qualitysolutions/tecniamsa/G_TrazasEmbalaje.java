@@ -28,7 +28,7 @@ import java.util.Arrays;
 import utilidades.Utilities;
 
 
-public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSelectedListener,CompoundButton.OnCheckedChangeListener {
+public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSelectedListener,CompoundButton.OnCheckedChangeListener,View.OnClickListener {
 
     private ArrayList<String> lstItemsCategoria1,lstItemsCategoria2;
     private ArrayAdapter<String> adapterItemsCategoria1,adapterItemsCategoria2;
@@ -45,9 +45,11 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
     private String methodInt;
     private TextView date;
     private LinearLayout causalesDeNoCargue;
-    private Button btnPregunta;
+    private Button btnPregunta,btnMenuPrincipal;
     private ArrayList<String> lstItemsCausalesNoCargue;
     private ArrayAdapter<String> adapterItemsCausalesNoCargue;
+    private String Metodo;
+    private AlertDialog.Builder adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         setContentView(R.layout.g_trazas_embalaje);
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         this.myself=this;
+        this.Metodo = getIntent().getExtras().getString("Metodo");
         inicializarComponentes();
     }
 
@@ -62,6 +65,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
     public void inicializarComponentes() {
 
+        this.adb = new AlertDialog.Builder(this);
         this.date = (TextView)findViewById(R.id.dateNow);
         this.date.setText(this.sharedpreferences.getString("FECHA_SERVER", Utilities.getDate().split(" ")[0]));
         this.barras_total_traza=(TextView) findViewById(R.id.cantidad_total_traza);
@@ -97,6 +101,8 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         this.checkBoxTirillas.setOnCheckedChangeListener(this);
 
         this.btnPregunta = (Button) findViewById(R.id.btnPregunta);
+        this.btnMenuPrincipal = (Button) findViewById(R.id.btnMenuPrincipal);
+        this.btnMenuPrincipal.setOnClickListener(this);
 
         try {
             this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
@@ -123,6 +129,27 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        if(Metodo.equals("actualizarTrazas")){
+
+            this.btnMenuPrincipal.setText("Guardar Traza");
+            this.spinnerCantidadRecoleccion.setEnabled(false);
+
+            this.spinnerPesoRecoleccion.setEnabled(false);
+
+            this.spinnerPuntoPesaje.setEnabled(false);
+
+            this.spinnerAptoCargue.setEnabled(false);
+
+            this.spinnerCausalesAptoCargue.setEnabled(false);
+
+            this.checkBoxRecoleccion.setEnabled(false);
+
+            this.checkBoxTirillas.setEnabled(false);
+
+
+        }
+
     }
 
     public void llenarSpinnerNoCargue (){
@@ -205,6 +232,26 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+
+        if(Metodo.equals("actualizarTrazas")){
+
+            this.btnMenuPrincipal.setText("Guardar Traza");
+            this.spinnerCantidadRecoleccion.setEnabled(false);
+
+            this.spinnerPesoRecoleccion.setEnabled(false);
+
+            this.spinnerPuntoPesaje.setEnabled(false);
+
+            this.spinnerAptoCargue.setEnabled(false);
+
+            this.spinnerCausalesAptoCargue.setEnabled(false);
+
+            this.checkBoxRecoleccion.setEnabled(false);
+
+            this.checkBoxTirillas.setEnabled(false);
+
+
         }
     }
 
@@ -521,12 +568,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         startActivity(intent);
     }
 
-    public void mainMenu(View view){
 
-        Intent intent = new Intent(this, E_MenuCiclo.class);
-        startActivity(intent);
-
-    }
 
     /**
      * Method to close the session
@@ -621,4 +663,202 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
            }
 
     }
+
+    @Override
+    public void onClick(View v) {
+
+        if(Metodo.equals("gestionarTrazas")){
+
+            Intent intent = new Intent(this, E_MenuCiclo.class);
+            startActivity(intent);
+
+        }
+        else {
+
+            this.adb.setTitle(getResources().getString(R.string.alertMensaje));
+            adb.setMessage(getResources().getString(R.string.confirmFinishCollection));
+            this.adb.setPositiveButton(
+                    getResources().getString(R.string.confirm_button_1),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            JSONArray auxjson;
+
+                            try {
+                                auxjson = new JSONArray(sharedpreferences.getString("TRUCK_INFO",null));
+                                clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+                                clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+
+                                String estadoNuevo = getEstadoSolicitud();
+                                if(!estadoNuevo.equals("0")){
+                                    clienteSeleccionado =clienteSeleccionado.put("estado",estadoNuevo);
+
+                                    send_data_json = new JSONArray();
+                                    JSONObject auxobject = new JSONObject();
+                                    auxobject.put("fecha_hora_evento",Utilities.getDate());
+                                    auxobject.put("metodo","json_tecni_actualizartraza");
+                                    //auxobject.put("compactaciones",sharedpreferences.getInt("COMPACTIONS",0));
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putInt("CURRENT_STATE", 4);
+                                    editor.putString("PLANNED_CLIENTS",clientesPlaneados.toString());
+                                    editor.commit();
+                                    send_data_json.put(auxobject);
+                                    auxobject = new JSONObject();
+                                    auxobject.put("operarios", new JSONArray(sharedpreferences.getString("SELECT_OPERATORS", "[]")));
+                                    send_data_json.put(clienteSeleccionado);
+                                    send_data_json.put(auxobject);
+                                    send_data_json.put(auxjson.get(0));
+                                    method="json_tecni_actualizartraza";
+                                    methodInt="53";
+                                    Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                                    finish();
+                                }
+                                else
+                                    dialog.dismiss();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+            this.adb.setNegativeButton(
+                    getResources().getString(R.string.confirm_button_2),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            this.adb.show();
+
+        }
+
+
+
+    }
+
+    public String getEstadoSolicitud() {
+
+        boolean bandera = true;
+        int bandera1=0;
+
+        JSONArray lstResultados = new JSONArray();
+        try {
+            this.clientesPlaneados = new JSONArray(this.sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
+            this.clienteSeleccionado = clientesPlaneados.getJSONObject(this.sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
+            this.lstTrazasCliente = this.clienteSeleccionado.getJSONArray("lsttrazas");
+
+            for (int i = 0; i < lstTrazasCliente.length(); i++) {
+
+                this.trazaSeleccionada = this.lstTrazasCliente.getJSONObject(i);
+                JSONObject aux = new JSONObject();
+                aux.put("traza",this.trazaSeleccionada.getString("traza"));
+                aux.put("peso_en_recoleccion",this.trazaSeleccionada.getInt("peso_en_recoleccion"));
+                aux.put("cantidad_en_recoleccion",this.trazaSeleccionada.getInt("cantidad_en_recoleccion"));
+                aux.put("resultado",revisionEmbalajes(this.trazaSeleccionada.getInt("peso_en_recoleccion"),
+                        this.trazaSeleccionada.getInt("cantidad_en_recoleccion"),
+                        this.trazaSeleccionada.getJSONArray("lstembalaje")));
+                lstResultados.put(aux);
+            }
+
+            while(bandera && bandera1<lstResultados.length()){
+                if(lstResultados.getJSONObject(bandera1).getBoolean("resultado"))
+                    bandera1++;
+                else
+                    bandera= false;
+            }
+
+            if(bandera) {
+
+                boolean banderaFinalPeso = true;
+                boolean banderaFinalCantidad = true;
+                int contadorFinal = 0;
+
+                while (banderaFinalPeso && contadorFinal < lstResultados.length()) {
+
+                    if (lstResultados.getJSONObject(contadorFinal).getInt("peso_en_recoleccion") == 0)
+                        contadorFinal++;
+                    else
+                        banderaFinalPeso = false;
+                }
+
+                contadorFinal = 0;
+                while (banderaFinalCantidad && contadorFinal < lstResultados.length()) {
+
+                    if (lstResultados.getJSONObject(contadorFinal).getInt("cantidad_en_recoleccion") == 0)
+                        contadorFinal++;
+                    else
+                        banderaFinalCantidad = false;
+                }
+
+                if (banderaFinalPeso && banderaFinalCantidad)
+                    return "Atendida total";
+                else if (banderaFinalPeso && !banderaFinalCantidad)
+                    return "Atendida Con Peso (sin cantidad)";
+                else if (!banderaFinalPeso && banderaFinalCantidad)
+                    return "Atendida con Cantidad (sin peso)";
+                else if (!banderaFinalPeso && !banderaFinalCantidad)
+                    return "No Peso Ni Cantidad";
+            }
+            else{
+                Utilities.showAlert(myself, "No registró peso ó codigos de barras. Por favor regístre el peso o cambie la opción en cantidad en recolección o peso en recolección. s"+"Verifique la trasa con codigo:"+ lstResultados.getJSONObject(bandera1).getString("traza"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "0";
+    }
+
+    public boolean revisionEmbalajes ( int pesoRecoleccion, int cantidadRecoleccion, JSONArray embalajes ){
+        int cont=0;
+        try {
+            if(pesoRecoleccion == 0 && cantidadRecoleccion == 0)
+            {
+                cont=0;
+                for(int i=0;i<embalajes.length();i++)
+                {
+                    JSONObject auxSelect = embalajes.getJSONObject(i);
+                    if(auxSelect.getJSONArray("pesos_embalaje").length()>0 && auxSelect.getJSONArray("barras_embalaje").length()>0 )
+                        cont++;
+                }
+                if(cont==embalajes.length())
+                    return true;
+                else
+                    return false;
+            }
+            else if(pesoRecoleccion == 0 && cantidadRecoleccion == 1){
+                cont=0;
+                for(int i=0;i<embalajes.length();i++)
+                {
+                    JSONObject auxSelect = embalajes.getJSONObject(i);
+                    if(auxSelect.getJSONArray("pesos_embalaje").length()>0)
+                        cont++;
+                }
+                if(cont==embalajes.length())
+                    return true;
+                else
+                    return false;
+            }
+            else if(pesoRecoleccion == 1 && cantidadRecoleccion == 0)  {
+                cont=0;
+                for(int i=0;i<embalajes.length();i++)
+                {
+                    JSONObject auxSelect = embalajes.getJSONObject(i);
+                    if(auxSelect.getJSONArray("barras_embalaje").length()>0)
+                        cont++;
+                }
+                if(cont==embalajes.length())
+                    return true;
+                else
+                    return false;
+            }
+            else if(pesoRecoleccion == 1 && cantidadRecoleccion == 1)
+                return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

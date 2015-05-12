@@ -261,19 +261,6 @@ public void onClick(DialogInterface dialog, int which) {
         adb.show();
         }
 
-/**
- *Method that send the information to server, from whatever method
- */
-public void sendInformation(){
-
-        try {
-        new SaveInformation(this).execute("http://www.concesionesdeaseo.com/gruposala/FUNEventosMovil/Eventos",
-        this.methodInt,
-        this.method,
-        this.send_data_json.toString());
-        } catch (Exception e) {
-        }
-        }
 
 
 public void conectar() {

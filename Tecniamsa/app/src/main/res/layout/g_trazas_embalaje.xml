@@ -260,27 +260,6 @@
             android:layout_marginTop="10dp">
 
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Peso en recolección"
-                    android:id="@+id/textView6"
-                    android:gravity="center_horizontal"/>
-
-                <Spinner
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spinnerPesoRecoleccion"
-                    android:gravity="center_horizontal"/>
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -303,6 +282,29 @@
                     android:id="@+id/spinnerCantidadRecoleccion"
                     android:gravity="center_horizontal"/>
 
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Peso en recolección"
+                    android:id="@+id/textView6"
+                    android:gravity="center_horizontal"/>
+
+                <Spinner
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinnerPesoRecoleccion"
+                    android:gravity="center_horizontal"/>
             </LinearLayout>
 
 
@@ -442,12 +444,12 @@
             android:background="@color/gray"/>
 
         <Button
+            android:id="@+id/btnMenuPrincipal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@color/btn6"
             android:text="Menu Principal"
             android:textColor="@color/white"
-            android:onClick="mainMenu"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             />

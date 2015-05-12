@@ -248,7 +248,7 @@
     <string name="truckInformation">Datos del vehículo</string>
     <string name="alertEmptyToll">INTRODUCE EL NUEMRO DE TICKET Y SELECCIONA UN TIPO DE PEAJE PARA CONTINUAR</string>
     <string name="alertPayToll">SEGURO QUE PAGO UN PEAJE TIPO</string>
-    <string name="version">Version 1.0</string>
+    <string name="version">Version 1.0.2</string>
 
 
     <!-- I CREAR RUTA -->

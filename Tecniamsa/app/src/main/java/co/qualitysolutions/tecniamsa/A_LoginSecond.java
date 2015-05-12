@@ -154,6 +154,7 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
             if(params.length==4){
                 String[] parameters = {"login_1",params[0],params[1]};
                 conection.setUrl("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login2?ciudad="+params[2]+"&vehiculo="+params[3]);
+                //conection.setUrl("http://www.concesionesdeaseo.com/gruposala/FUNLoginTecniamsa/Login2?ciudad="+params[2]+"&vehiculo="+params[3]);
                 this.answer = conection.conectar(parameters);
                 try {
                     if(this.answer.getJSONObject(0).getJSONArray("lstdatos_cliente").length()>0){
@@ -276,7 +277,7 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
                     editor.putString("FECHA_SERVER",fecha);
                     editor.putString("HORA_SERVER",hora);
                     //editor.putString("URL_MAP", url);
-                    //editor.putBoolean("SERVER_SYNC", false);
+                    editor.putBoolean("SERVER_SYNC", false);
                     editor.putString("USER_ID", user);
                     editor.putString("OPERATORS", operators.toString());
                     editor.putString("SELECT_OPERATORS", "[]");

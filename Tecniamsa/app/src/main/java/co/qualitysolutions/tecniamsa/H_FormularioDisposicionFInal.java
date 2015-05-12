@@ -87,6 +87,7 @@ public class H_FormularioDisposicionFInal extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         Intent intent = new Intent(myself,F_Seleccionar_cliente.class);
+                        intent.putExtra("Metodo","actualizarTrazas");
                         startActivity(intent);
 
                     }
@@ -140,6 +141,7 @@ public class H_FormularioDisposicionFInal extends Activity {
 
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putBoolean("IN_FILLER", false);
+            editor.putInt("CURRENT_STATE", 3);
             editor.commit();
 
             Intent intent = new Intent();

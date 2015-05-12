@@ -47,6 +47,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
     private JSONArray send_data_json;
     private Activity myself;
     private ProgressDialog progress;
+    private String Metodo;
 
 
     @Override
@@ -55,6 +56,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         setContentView(R.layout.f_seleccionar_cliente);
         this.myself=this;
         this.sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        this.Metodo = getIntent().getExtras().getString("Metodo");
         inicializarComponentes();
     }
 
@@ -87,15 +89,20 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
             this.clientesVisualizados=this.clientesPlaneados;
 
         ArrayList<String> listRouteNames = new ArrayList<String>();
-        for(int i=0; i<this.clientesVisualizados.length(); i++){
-            try {
-                if(this.clientesVisualizados.getJSONObject(i).getString("estado").equals("terminada"))
-                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("solicitud") +"--\n" +"Atendido");
-                else
-                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("solicitud"));
-            } catch (JSONException e) {
+
+
+
+            for(int i=0; i<this.clientesVisualizados.length(); i++){
+                try {
+
+                    listRouteNames.add(this.clientesVisualizados.getJSONObject(i).getString("nombre_cliente")+ " -- " + this.clientesVisualizados.getJSONObject(i).getString("solicitud") +"--\n" +this.clientesVisualizados.getJSONObject(i).getString("estado").toString());
+
+                } catch (JSONException e) {
+                }
             }
-        }
+
+
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listRouteNames);
         this.lstClientes.setAdapter(adapter);
     }
@@ -108,20 +115,61 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         editor.putInt("CLIENTE_SELECCIONADO",position);
         editor.commit();
 
-        try {
-            if(this.clientesPlaneados.getJSONObject(position).getString("estado").equals("terminada")){
-                Toast.makeText(this,"El cliente ya fue atendido",Toast.LENGTH_LONG).show();
+
+
+
+            try {
+                if(this.clientesPlaneados.getJSONObject(position).getString("estado").equals("Atendida total")){
+                    Toast.makeText(this,"El cliente ya fue atendido !",Toast.LENGTH_LONG).show();
+                }
+                else if(this.clientesPlaneados.getJSONObject(position).getString("estado").equals("No Atendida")){
+                    Toast.makeText(this,"El cliente no pudo ser atendido y su solicitud fue cancelada !",Toast.LENGTH_LONG).show();
+                }
+                else{
+
+                    if(Metodo.equals("gestionarTrazas")) {
+
+
+                        if(this.clientesPlaneados.getJSONObject(position).getString("estado").equals("inactiva")){
+
+                            Intent intent = new Intent(this, F_Datos_cliente.class);
+                            startActivityForResult(intent, 10);
+
+                        }
+                        else{
+
+                            Toast.makeText(this,"El cliente ya fue atendido.!",Toast.LENGTH_LONG).show();
+
+                        }
+
+
+                    }
+                    else  if(Metodo.equals("actualizarTrazas")){
+
+                        if(this.clientesPlaneados.getJSONObject(position).getString("estado").equals("inactiva")){
+                            Toast.makeText(this,"Debes atender esta traza por la opción de menu inicio recolección !",Toast.LENGTH_LONG).show();
+                        }
+
+                        else{
+                            Intent intent = new Intent(this, G_TrazasEmbalaje.class);
+                            intent.putExtra("Metodo","actualizarTrazas");
+                            startActivityForResult(intent, 10);
+
+                        }
+
+
+                    }
+
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            else{
-                Intent intent = new Intent(this, F_Datos_cliente.class);
-                startActivityForResult(intent, 10);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+
         }
 
 
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -171,9 +219,15 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
 
                         try {
                             JSONArray truck = new JSONArray(sharedpreferences.getString("TRUCK_INFO","[]"));
+
                             new ConsultarInformacion(myself).execute("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login2?ciudad="+sharedpreferences.getString("CITY","")+"&vehiculo="+truck.getJSONObject(0).getString("placa").replace(" ","%20"),
                                     sharedpreferences.getString("USER_ID",""),
                                     sharedpreferences.getString("PASSWORD",""));
+
+                            /*new ConsultarInformacion(myself).execute("http://www.concesionesdeaseo.com/gruposala/FUNLoginTecniamsa/Login2?ciudad="+sharedpreferences.getString("CITY","")+"&vehiculo="+truck.getJSONObject(0).getString("placa").replace(" ","%20"),
+                                    sharedpreferences.getString("USER_ID",""),
+                                    sharedpreferences.getString("PASSWORD",""));*/
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -252,7 +306,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
         private JSONArray nuevasSolicitudes= new JSONArray();
         private int lengthClientesPlaneados;
 
-    public ConsultarInformacion(Activity activity) {
+    public  ConsultarInformacion(Activity activity) {
         this.connection = new WebService();
         this.activity = activity;
         this.sharedpreferences = activity.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
@@ -318,9 +372,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                 try {
                     bandera=0;
                     objetoNuevo = nuevasSolicitudes.getJSONObject(i);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
                 for(int j=0;j<clientesPlaneados.length();j++){
 
                     try {
@@ -332,8 +384,16 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                         e.printStackTrace();
                     }
                 }
-                if(bandera==0)
+                if(bandera==0){
+                    objetoNuevo.put("estado", "inactiva");
+                    objetoNuevo.put("tipo", "planeada");
                     clientesPlaneados.put(Utilities.inicializarCliente(objetoNuevo));
+                }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             SharedPreferences.Editor editor = sharedpreferences.edit();
