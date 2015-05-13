@@ -147,7 +147,6 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
 
             this.checkBoxTirillas.setEnabled(false);
 
-
         }
 
     }
@@ -676,7 +675,7 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
         else {
 
             this.adb.setTitle(getResources().getString(R.string.alertMensaje));
-            adb.setMessage(getResources().getString(R.string.confirmFinishCollection));
+            adb.setMessage("Desea actualizar la traza seleccionada");
             this.adb.setPositiveButton(
                     getResources().getString(R.string.confirm_button_1),
                     new DialogInterface.OnClickListener() {

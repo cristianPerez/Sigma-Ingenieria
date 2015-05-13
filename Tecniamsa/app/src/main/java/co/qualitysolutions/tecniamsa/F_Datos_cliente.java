@@ -98,9 +98,9 @@ public class F_Datos_cliente extends Activity {
             try {
                 SharedPreferences.Editor editor = this.sharedpreferences.edit();
 
-                clienteSeleccionado.put("estado", "iniciada");
+                //clienteSeleccionado.put("estado", "iniciada");
                 clienteSeleccionado.put("fecha_inicio", Utilities.getDate());
-                clienteSeleccionado.put("estado", String.valueOf(this.spinner_estado.getSelectedItemPosition()));
+                //clienteSeleccionado.put("estado", String.valueOf(this.spinner_estado.getSelectedItemPosition()));
                 clienteSeleccionado.put("observacion", this.observacion_cliente.getText());
                 clienteSeleccionado.put("latitud", gps.getLatitud());
                 clienteSeleccionado.put("longitud", gps.getLongitud());

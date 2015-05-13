@@ -130,7 +130,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                     if(Metodo.equals("gestionarTrazas")) {
 
 
-                        if(this.clientesPlaneados.getJSONObject(position).getString("estado").equals("inactiva")){
+                         if(this.clientesPlaneados.getJSONObject(position).getString("estado").equals("inactiva")){
 
                             Intent intent = new Intent(this, F_Datos_cliente.class);
                             startActivityForResult(intent, 10);
@@ -363,20 +363,20 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
 
         public void compararSolicitudes(JSONArray nuevasSolicitudes){
 
+            JSONArray planeadosActuales = clientesPlaneados;
             JSONObject objetoNuevo=new JSONObject();
             JSONObject objetoViejo=new JSONObject();
             int bandera=0;
-
 
             for(int i=0;i<nuevasSolicitudes.length();i++){
                 try {
                     bandera=0;
                     objetoNuevo = nuevasSolicitudes.getJSONObject(i);
 
-                for(int j=0;j<clientesPlaneados.length();j++){
+                for(int j=0;j<planeadosActuales.length();j++){
 
                     try {
-                        objetoViejo = clientesPlaneados.getJSONObject(i);
+                        objetoViejo = planeadosActuales.getJSONObject(i);
                         if(objetoNuevo.getString("solicitud").equals(objetoViejo.getString("solicitud")))
                         bandera=1;
 
@@ -387,6 +387,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                 if(bandera==0){
                     objetoNuevo.put("estado", "inactiva");
                     objetoNuevo.put("tipo", "planeada");
+                    objetoNuevo.put("hora_llegada_sitio_entrega", "0");
                     clientesPlaneados.put(Utilities.inicializarCliente(objetoNuevo));
                 }
 
