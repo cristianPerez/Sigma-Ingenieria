@@ -153,8 +153,8 @@ public class A_LoginSecond extends Activity implements AdapterView.OnItemClickLi
         protected Boolean doInBackground(String... params) {
             if(params.length==4){
                 String[] parameters = {"login_1",params[0],params[1]};
-                conection.setUrl("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login2?ciudad="+params[2]+"&vehiculo="+params[3]);
-                //conection.setUrl("http://www.concesionesdeaseo.com/gruposala/FUNLoginTecniamsa/Login2?ciudad="+params[2]+"&vehiculo="+params[3]);
+                //conection.setUrl("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login2?ciudad="+params[2]+"&vehiculo="+params[3]);
+                conection.setUrl("http://www.concesionesdeaseo.com/gruposala/FUNLoginTecniamsa/Login2?ciudad="+params[2]+"&vehiculo="+params[3]);
                 this.answer = conection.conectar(parameters);
                 try {
                     if(this.answer.getJSONObject(0).getJSONArray("lstdatos_cliente").length()>0){

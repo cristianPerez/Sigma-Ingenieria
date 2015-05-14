@@ -173,8 +173,11 @@ public class E_MenuCiclo extends Activity {
                                     Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
                                     buttonsFinishCollection();
                                 }
-                                else
+                                else{
                                     dialog.dismiss();
+                                    Toast.makeText(myself,"No fue posible finalizar el porte, vuelva a intentarlo nuevamente",Toast.LENGTH_LONG).show();
+                                }
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -226,7 +229,7 @@ public class E_MenuCiclo extends Activity {
                     bandera= false;
             }
 
-            if(bandera) {
+            if(bandera){
 
                 boolean banderaFinalPeso = true;
                 boolean banderaFinalCantidad = true;

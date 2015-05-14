@@ -141,8 +141,8 @@ public class A_Login extends Activity {
         protected Boolean doInBackground(String... params) {
             if(params.length==2){
                 String[] parameters = {"login",params[0],params[1]};
-                conection.setUrl("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login1");
-                //conection.setUrl("http://www.concesionesdeaseo.com/gruposala/FUNLoginTecniamsa/Login1");
+                //conection.setUrl("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login1");
+                conection.setUrl("http://www.concesionesdeaseo.com/gruposala/FUNLoginTecniamsa/Login1");
                 this.answer = conection.conectar(parameters);
                 try {
                     if(answer.getJSONObject(0).getString("informacion_vehiculo")!=null){

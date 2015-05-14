@@ -126,7 +126,6 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                     Toast.makeText(this,"El cliente no pudo ser atendido y su solicitud fue cancelada !",Toast.LENGTH_LONG).show();
                 }
                 else{
-
                     if(Metodo.equals("gestionarTrazas")) {
 
 
@@ -175,9 +174,17 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 10) {
             if (resultCode == 2) {
+
                 Intent intent = new Intent();
                 setResult(2, intent);
                 finish();
+
+            }
+            else if(resultCode == 3){
+
+                inicializarComponentes();
+                mostrarCLientes();
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -220,13 +227,13 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                         try {
                             JSONArray truck = new JSONArray(sharedpreferences.getString("TRUCK_INFO","[]"));
 
-                            new ConsultarInformacion(myself).execute("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login2?ciudad="+sharedpreferences.getString("CITY","")+"&vehiculo="+truck.getJSONObject(0).getString("placa").replace(" ","%20"),
-                                    sharedpreferences.getString("USER_ID",""),
-                                    sharedpreferences.getString("PASSWORD",""));
-
-                            /*new ConsultarInformacion(myself).execute("http://www.concesionesdeaseo.com/gruposala/FUNLoginTecniamsa/Login2?ciudad="+sharedpreferences.getString("CITY","")+"&vehiculo="+truck.getJSONObject(0).getString("placa").replace(" ","%20"),
+                            /*new ConsultarInformacion(myself).execute("http://www.concesionesdeaseo.com/pruebas/FUNLoginTecniamsa/Login2?ciudad="+sharedpreferences.getString("CITY","")+"&vehiculo="+truck.getJSONObject(0).getString("placa").replace(" ","%20"),
                                     sharedpreferences.getString("USER_ID",""),
                                     sharedpreferences.getString("PASSWORD",""));*/
+
+                            new ConsultarInformacion(myself).execute("http://www.concesionesdeaseo.com/gruposala/FUNLoginTecniamsa/Login2?ciudad="+sharedpreferences.getString("CITY","")+"&vehiculo="+truck.getJSONObject(0).getString("placa").replace(" ","%20"),
+                                    sharedpreferences.getString("USER_ID",""),
+                                    sharedpreferences.getString("PASSWORD",""));
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -363,7 +370,12 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
 
         public void compararSolicitudes(JSONArray nuevasSolicitudes){
 
-            JSONArray planeadosActuales = clientesPlaneados;
+            JSONArray planeadosActuales = null;
+            try {
+                planeadosActuales = new JSONArray(clientesPlaneados.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             JSONObject objetoNuevo=new JSONObject();
             JSONObject objetoViejo=new JSONObject();
             int bandera=0;
@@ -373,13 +385,16 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                     bandera=0;
                     objetoNuevo = nuevasSolicitudes.getJSONObject(i);
 
-                for(int j=0;j<planeadosActuales.length();j++){
-
+                int j=0;
+                while(j<planeadosActuales.length() && bandera==0){
                     try {
-                        objetoViejo = planeadosActuales.getJSONObject(i);
-                        if(objetoNuevo.getString("solicitud").equals(objetoViejo.getString("solicitud")))
-                        bandera=1;
-
+                        objetoViejo = planeadosActuales.getJSONObject(j);
+                        if(objetoNuevo.getString("hoja").equals(objetoViejo.getString("hoja"))){
+                            bandera=1;
+                        }
+                        else{
+                            j++;
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -388,6 +403,7 @@ public class F_Seleccionar_cliente extends Activity implements OnQueryTextListen
                     objetoNuevo.put("estado", "inactiva");
                     objetoNuevo.put("tipo", "planeada");
                     objetoNuevo.put("hora_llegada_sitio_entrega", "0");
+                    objetoNuevo = Utilities.inicializarCliente(objetoNuevo);
                     clientesPlaneados.put(Utilities.inicializarCliente(objetoNuevo));
                 }
 

@@ -688,9 +688,9 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                                 clientesPlaneados = new JSONArray(sharedpreferences.getString("PLANNED_CLIENTS", "[]"));
                                 clienteSeleccionado = clientesPlaneados.getJSONObject(sharedpreferences.getInt("CLIENTE_SELECCIONADO", 0));
 
-                                String estadoNuevo = getEstadoSolicitud();
-                                if(!estadoNuevo.equals("0")){
-                                    clienteSeleccionado =clienteSeleccionado.put("estado",estadoNuevo);
+                                /*String estadoNuevo = getEstadoSolicitud();
+                                if(!estadoNuevo.equals("0")){*/
+                                    clienteSeleccionado =clienteSeleccionado.put("estado","Atendida total");
 
                                     send_data_json = new JSONArray();
                                     JSONObject auxobject = new JSONObject();
@@ -710,10 +710,12 @@ public class G_TrazasEmbalaje extends Activity implements AdapterView.OnItemSele
                                     method="json_tecni_actualizartraza";
                                     methodInt="53";
                                     Utilities.sendInformation(myself,methodInt,method,send_data_json.toString());
+                                    Intent intent = new Intent();
+                                    setResult(3, intent);
                                     finish();
-                                }
+                                /*}
                                 else
-                                    dialog.dismiss();
+                                    dialog.dismiss();*/
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
