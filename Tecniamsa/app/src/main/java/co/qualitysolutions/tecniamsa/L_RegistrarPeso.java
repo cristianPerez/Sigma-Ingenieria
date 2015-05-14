@@ -420,7 +420,7 @@ public void handleMessage(Message msg) {
 public void pesomanual(View view){
 
         try {
-        if(this.trazaSeleccionada.getInt("punto_pesaje")==3){
+        if(this.trazaSeleccionada.getInt("punto_pesaje")==2 || this.trazaSeleccionada.getInt("punto_pesaje")==3){
 
         Intent intent = new Intent(this, L_RegistrarPesoManual.class);
         startActivityForResult(intent, 10);
